@@ -1554,6 +1554,8 @@ CREATE TABLE `creature_template_spells` (
   `spell6` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `spell7` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `spell8` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `spell9` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `spell10` mediumint(8) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`entry`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Creature System (Spells used by creature)';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1609,7 +1611,7 @@ CREATE TABLE `db_version` (
   `version` varchar(120) DEFAULT NULL,
   `creature_ai_version` varchar(120) DEFAULT NULL,
   `cache_id` int(10) DEFAULT '0',
-  `required_12300_01_mangos_mangos_string` bit(1) DEFAULT NULL
+  `required_12310_01_mangos_creature_template_spells` bit(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1619,7 +1621,7 @@ CREATE TABLE `db_version` (
 
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
-INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_12300_01_mangos_mangos_string`) VALUES
+INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_12310_01_mangos_creature_template_spells`) VALUES
 ('Mangos default database.','Creature EventAI not provided.',0,NULL);
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
