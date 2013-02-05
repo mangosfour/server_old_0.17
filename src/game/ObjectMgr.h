@@ -722,6 +722,7 @@ class ObjectMgr
         void LoadQuestPhaseMaps();
 
         void LoadNPCSpellClickSpells();
+        void LoadSpellTemplate();
         void LoadCreatureTemplateSpells();
 
         void LoadWeatherZoneChances();
