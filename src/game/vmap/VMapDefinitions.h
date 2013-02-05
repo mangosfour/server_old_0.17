@@ -26,6 +26,7 @@ namespace VMAP
 {
     const char VMAP_MAGIC[] = "VMAP_4.0";                   // used in final vmap files
     const char RAW_VMAP_MAGIC[] = "VMAP004";                // used in extracted vmap files with raw data
+    const char GAMEOBJECT_MODELS[] = "temp_gameobject_models";
 
     // defined in TileAssembler.cpp currently...
     bool readChunk(FILE* rf, char* dest, const char* compare, uint32 len);
