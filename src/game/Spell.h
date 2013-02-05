@@ -366,6 +366,9 @@ class Spell
         void EffectQuestOffer(SpellEffectEntry const* effect);
         void EffectActivateRune(SpellEffectEntry const* effect);
         void EffectTeachTaxiNode(SpellEffectEntry const* effect);
+        void EffectWMODamage(SpellEffectEntry const* effect);
+        void EffectWMORepair(SpellEffectEntry const* effect);
+        void EffectWMOChange(SpellEffectEntry const* effect);
         void EffectTitanGrip(SpellEffectEntry const* effect);
         void EffectEnchantItemPrismatic(SpellEffectEntry const* effect);
         void EffectPlaySound(SpellEffectEntry const* effect);
