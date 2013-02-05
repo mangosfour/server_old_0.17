@@ -3383,9 +3383,7 @@ void Aura::HandleAuraWaterWalk(bool apply, bool Real)
     if (!Real)
         return;
 
-    WorldPacket data;
-    GetTarget()->BuildMoveWaterWalkPacket(&data, apply, 0);
-    GetTarget()->SendMessageToSet(&data, true);
+    GetTarget()->SetWaterWalk(apply);
 }
 
 void Aura::HandleAuraFeatherFall(bool apply, bool Real)
@@ -4578,9 +4576,7 @@ void Aura::HandleAuraModStun(bool apply, bool Real)
             target->SetStandState(UNIT_STAND_STATE_STAND);// in 1.5 client
         }
 
-        WorldPacket data;
-        target->BuildForceMoveRootPacket(&data, true, 0);
-        target->SendMessageToSet(&data, true);
+        target->SetRoot(true);
 
         // Summon the Naj'entus Spine GameObject on target if spell is Impaling Spine
         if (GetId() == 39837)
@@ -4635,9 +4631,7 @@ void Aura::HandleAuraModStun(bool apply, bool Real)
             if (target->getVictim() && target->isAlive())
                 target->SetTargetGuid(target->getVictim()->GetObjectGuid());
 
-            WorldPacket data;
-            target->BuildForceMoveRootPacket(&data, false, 0);
-            target->SendMessageToSet(&data, true);
+            target->SetRoot(false);
         }
 
         // Wyvern Sting
@@ -4868,9 +4862,7 @@ void Aura::HandleAuraModRoot(bool apply, bool Real)
 
         if (target->GetTypeId() == TYPEID_PLAYER)
         {
-            WorldPacket data;
-            target->BuildForceMoveRootPacket(&data, true, 2);
-            target->SendMessageToSet(&data, true);
+            target->SetRoot(true);
 
             // Clear unit movement flags
             ((Player*)target)->m_movementInfo.SetMovementFlags(MOVEFLAG_NONE);
@@ -4915,11 +4907,7 @@ void Aura::HandleAuraModRoot(bool apply, bool Real)
                 target->SetTargetGuid(target->getVictim()->GetObjectGuid());
 
             if (target->GetTypeId() == TYPEID_PLAYER)
-            {
-                WorldPacket data;
-                target->BuildForceMoveRootPacket(&data, false, 2);
-                target->SendMessageToSet(&data, true);
-            }
+                target->SetRoot(false);
         }
     }
 }

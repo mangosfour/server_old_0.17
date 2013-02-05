@@ -20385,16 +20385,8 @@ void Player::SendInitialPacketsAfterAddToMap()
             auraList.front()->ApplyModifier(true, true);
     }
 
-    if (HasAuraType(SPELL_AURA_MOD_STUN))
+    if (HasAuraType(SPELL_AURA_MOD_STUN) || HasAuraType(SPELL_AURA_MOD_ROOT))
         SetRoot(true);
-
-    // manual send package (have code in ApplyModifier(true,true); that don't must be re-applied.
-    if (HasAuraType(SPELL_AURA_MOD_ROOT))
-    {
-        WorldPacket data2;
-        BuildForceMoveRootPacket(&data2, true, 2);
-        SendMessageToSet(&data2, true);
-    }
 
     SendAurasForTarget(this);
     SendEnchantmentDurations();                             // must be after add to map
