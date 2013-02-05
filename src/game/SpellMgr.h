@@ -484,6 +484,35 @@ inline bool HasAuraWithTriggerEffect(SpellEntry const* spellInfo)
     return false;
 }
 
+inline bool IsOnlySelfTargeting(SpellEntry const* spellInfo)
+{
+    for (int32 i = 0; i < MAX_EFFECT_INDEX; ++i)
+    {
+        SpellEffectEntry const* effectEntry = spellInfo->GetSpellEffect(SpellEffectIndex(i));
+        if(!effectEntry)
+            continue;
+
+        switch (effectEntry->EffectImplicitTargetA)
+        {
+            case TARGET_SELF:
+            case TARGET_SELF2:
+                break;
+            default:
+                return false;
+        }
+        switch (effectEntry->EffectImplicitTargetB)
+        {
+            case TARGET_SELF:
+            case TARGET_SELF2:
+            case TARGET_NONE:
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
+}
+
 inline bool IsDispelSpell(SpellEntry const* spellInfo)
 {
     return IsSpellHaveEffect(spellInfo, SPELL_EFFECT_DISPEL);
