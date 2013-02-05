@@ -1587,6 +1587,26 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\game\vmap\BIHWrap.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\vmap\DynamicTree.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\vmap\DynamicTree.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\vmap\GameObjectModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\vmap\GameObjectModel.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\game\vmap\IVMapManager.h"
 				>
 			</File>
@@ -1604,6 +1624,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\game\vmap\ModelInstance.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\vmap\RegularGrid.h"
 				>
 			</File>
 			<File
