@@ -961,15 +961,15 @@ struct FactionTemplateEntry
 
 struct GameObjectDisplayInfoEntry
 {
-    uint32      Displayid;                                  // 0        m_ID
-    //DBCString filename;                                   // 1
-    //uint32  unk1[10];                                     // 2-11
-    float   minX;                                           // 1
-    float   minY;                                           // 13
-    float   minZ;                                           // 14
-    float   maxX;                                           // 15
-    float   maxY;                                           // 16
-    float   maxZ;                                           // 17
+    uint32 Displayid;                                       // 0 m_ID
+    char* filename;                                         // 1 m_modelName
+    // uint32 unknown2[10];                                 // 2-11 m_Sound
+    float geoBoxMinX;                                       // 12 m_geoBoxMinX (use first value as interact dist, mostly in hacks way)
+    float geoBoxMinY;                                       // 13 m_geoBoxMinY
+    float geoBoxMinZ;                                       // 14 m_geoBoxMinZ
+    float geoBoxMaxX;                                       // 15 m_geoBoxMaxX
+    float geoBoxMaxY;                                       // 16 m_geoBoxMaxY
+    float geoBoxMaxZ;                                       // 17 m_geoBoxMaxZ
     //uint32 transport;                                     // 18
     //uint32 unk;                                           // 19
     //uint32 unk1;                                          // 20
