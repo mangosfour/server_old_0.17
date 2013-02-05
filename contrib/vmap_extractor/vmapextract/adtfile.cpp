@@ -88,7 +88,7 @@ ADTFile::ADTFile(char* filename): ADT(WorldMpq, filename)
     Adtfilename.append(filename);
 }
 
-bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY)
+bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failedPaths)
 {
     if (ADT.isEof())
         return false;
@@ -153,6 +153,7 @@ bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY)
                     ModelInstansName[t++] = s;
 
                     string path(p);
+                    ExtractSingleModel(path, failedPaths);
 
                     p = p + strlen(p) + 1;
                 }
@@ -214,6 +215,7 @@ bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY)
     }
     ADT.close();
     fclose(dirfile);
+
     return true;
 }
 

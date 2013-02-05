@@ -23,7 +23,7 @@
 #include <list>
 #include <errno.h>
 
-#ifdef WIN32
+#if defined WIN32
 #include <Windows.h>
 #include <sys/stat.h>
 #include <direct.h>
@@ -46,6 +46,8 @@
 #include "dbcfile.h"
 #include "wmo.h"
 #include "mpqfile.h"
+
+#include "vmapexport.h"
 
 #include "vmapexport.h"
 
@@ -405,6 +407,7 @@ void ParsMapFiles()
     char fn[512];
     //char id_filename[64];
     char id[10];
+    StringSet failedPaths;
     for (unsigned int i = 0; i < map_count; ++i)
     {
         sprintf(id, "%03u", map_ids[i].id);
@@ -420,7 +423,7 @@ void ParsMapFiles()
                     if (ADTFile* ADT = WDT.GetMap(x, y))
                     {
                         //sprintf(id_filename,"%02u %02u %03u",x,y,map_ids[i].id);//!!!!!!!!!
-                        ADT->init(map_ids[i].id, x, y);
+                        ADT->init(map_ids[i].id, x, y, failedPaths);
                         delete ADT;
                     }
                 }
@@ -429,6 +432,14 @@ void ParsMapFiles()
             }
             printf("]\n");
         }
+    }
+
+    if (!failedPaths.empty())
+    {
+        printf("Warning: Some models could not be extracted, see below\n");
+        for (StringSet::const_iterator itr = failedPaths.begin(); itr != failedPaths.end(); ++itr)
+            printf("Could not find file of model %s\n", itr->c_str());
+        printf("A few not found models can be expected and are not alarming.\n");
     }
 }
 
@@ -471,7 +482,7 @@ bool scan_patches(char* scanmatch, std::vector<std::string>& pArchiveNames)
     return(true);
 }
 
-bool processArgv(int argc, char** argv, const char* versionString)
+bool processArgv(int argc, char** argv)
 {
     bool result = true;
     bool hasInputPathParam = false;
@@ -520,7 +531,7 @@ bool processArgv(int argc, char** argv, const char* versionString)
 
     if (!result)
     {
-        printf("Extract %s.\n", versionString);
+        printf("Extract for %s.\n", szRawVMAPMagic);
         printf("%s [-?][-s][-l][-d <path>]\n", argv[0]);
         printf("   -s : (default) small size (data size optimization), ~500MB less vmap data.\n");
         printf("   -l : large size, ~500MB more vmap data. (might contain more details)\n");
@@ -548,10 +559,9 @@ bool processArgv(int argc, char** argv, const char* versionString)
 int main(int argc, char** argv)
 {
     bool success = true;
-    const char* versionString = "V4.00 2012_08";
 
     // Use command line arguments, when some
-    if (!processArgv(argc, argv, versionString))
+    if (!processArgv(argc, argv))
         return 1;
 
     // some simple check if working dir is dirty
@@ -570,7 +580,7 @@ int main(int argc, char** argv)
         }
     }
 
-    printf("Extract %s. Beginning work ....\n", versionString);
+    printf("Extract for %s. Beginning work ....\n", szRawVMAPMagic);
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     // Create the working directory
     if (mkdir(szWorkDirWmo
@@ -629,6 +639,8 @@ int main(int argc, char** argv)
         ParsMapFiles();
         delete [] map_ids;
         //nError = ERROR_SUCCESS;
+        // Extract models, listed in DameObjectDisplayInfo.dbc
+        ExtractGameobjectModels();
     }
 
     SFileCloseArchive(LocaleMpq);
@@ -637,11 +649,11 @@ int main(int argc, char** argv)
     printf("\n");
     if (!success)
     {
-        printf("ERROR: Extract %s. Work NOT complete.\n   Precise vector data=%d.\nPress any key.\n", versionString, preciseVectorData);
+        printf("ERROR: Extract for %s. Work NOT complete.\n   Precise vector data=%d.\nPress any key.\n", szRawVMAPMagic, preciseVectorData);
         getchar();
     }
 
-    printf("Extract %s. Work complete. No errors.\n", versionString);
+    printf("Extract for %s. Work complete. No errors.\n", szRawVMAPMagic);
     delete [] LiqType;
     return 0;
 }

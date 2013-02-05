@@ -20,6 +20,9 @@
 #define VMAPEXPORT_H
 
 #include <string>
+#include <set>
+
+typedef std::set<std::string> StringSet;
 
 enum ModelFlags
 {
@@ -35,5 +38,8 @@ bool FileExists(const char* file);
 void strToLower(char* str);
 
 bool ExtractSingleWmo(std::string& fname);
+bool ExtractSingleModel(std::string& fname, StringSet& failedPaths);
+
+void ExtractGameobjectModels();
 
 #endif

@@ -32,7 +32,7 @@ Model::Model(std::string& filename) : filename(filename), vertices(0), indices(0
 {
 }
 
-bool Model::open()
+bool Model::open(StringSet& failedPaths)
 {
     MPQFile f(WorldMpq, filename.c_str());
 
@@ -41,8 +41,7 @@ bool Model::open()
     if (!ok)
     {
         f.close();
-        // Do not show this error on console to avoid confusion, the extractor can continue working even if some models fail to load
-        //printf("Error loading model %s\n", filename.c_str());
+        failedPaths.insert(filename);
         return false;
     }
 

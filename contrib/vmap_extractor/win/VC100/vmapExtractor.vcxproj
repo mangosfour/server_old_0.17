@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\vmapextract\adtfile.cpp" />
     <ClCompile Include="..\..\vmapextract\dbcfile.cpp" />
+    <ClCompile Include="..\..\vmapextract\gameobject_extract.cpp" />
     <ClCompile Include="..\..\vmapextract\model.cpp" />
     <ClCompile Include="..\..\vmapextract\mpqfile.cpp" />
     <ClCompile Include="..\..\vmapextract\vmapexport.cpp" />

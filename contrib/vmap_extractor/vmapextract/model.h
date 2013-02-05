@@ -23,8 +23,8 @@
 //#include "mpq.h"
 #include "modelheaders.h"
 #include <vector>
+#include "vmapexport.h"
 
-class Model;
 class WMOInstance;
 class MPQFile;
 
@@ -39,7 +39,7 @@ class Model
         uint16* BB_indices, *indices;
         size_t nIndices;
 
-        bool open();
+        bool open(StringSet& failedPaths);
         bool ConvertToVMAPModel(const char* outfilename);
 
         bool ok;

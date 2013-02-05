@@ -21,6 +21,7 @@
 
 #include "mpqfile.h"
 #include "wmo.h"
+#include "vmapexport.h"
 #include "model.h"
 
 #define TILESIZE (533.33333f)
@@ -116,7 +117,7 @@ class ADTFile
         int nMDX;
         string* WmoInstansName;
         string* ModelInstansName;
-        bool init(uint32 map_num, uint32 tileX, uint32 tileY);
+        bool init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failedPaths);
         //void LoadMapChunks();
 
         //uint32 wmo_count;
