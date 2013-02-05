@@ -2238,10 +2238,17 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
         case TARGET_AREAEFFECT_INSTANT:
         {
             SpellTargets targetB = SPELL_TARGETS_AOE_DAMAGE;
-
-            // Select friendly targets for positive effect
-            if (IsPositiveEffect(m_spellInfo, effIndex))
-                targetB = SPELL_TARGETS_FRIENDLY;
+            switch (spellEffect->Effect)
+            {
+                case SPELL_EFFECT_QUEST_COMPLETE:
+                case SPELL_EFFECT_KILL_CREDIT_PERSONAL:
+                case SPELL_EFFECT_KILL_CREDIT_GROUP:
+                    targetB = SPELL_TARGETS_ALL;
+                default:
+                    // Select friendly targets for positive effect
+                    if (IsPositiveEffect(m_spellInfo, effIndex))
+                        targetB = SPELL_TARGETS_FRIENDLY;
+            }
 
             UnitList tempTargetUnitMap;
             SpellScriptTargetBounds bounds = sSpellMgr.GetSpellScriptTargetBounds(m_spellInfo->Id);
