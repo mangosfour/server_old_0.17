@@ -3,7 +3,7 @@
 #include "dbcfile.h"
 #include "loadlib/loadlib.h"
 
-DBCFile::DBCFile(const std::string &filename):
+DBCFile::DBCFile(const std::string& filename):
     filename(filename),
     data(0)
 {
@@ -21,7 +21,7 @@ bool DBCFile::open()
     //    return false;
 
     char header[4];
-    unsigned int na,nb,es,ss;
+    unsigned int na, nb, es, ss;
 
     if (!SFileReadFile(fileHandle, header, 4, NULL, NULL))              // Magic header
     {
@@ -29,7 +29,7 @@ bool DBCFile::open()
         return false;
     }
 
-    if (header[0]!='W' || header[1]!='D' || header[2]!='B' || header[3]!='C')
+    if (header[0] != 'W' || header[1] != 'D' || header[2] != 'B' || header[3] != 'C')
     {
         SFileCloseFile(fileHandle);
         return false;
@@ -69,10 +69,10 @@ bool DBCFile::open()
         return false;
     }
 
-    data = new unsigned char[recordSize*recordCount+stringSize];
-    stringTable = data + recordSize*recordCount;
+    data = new unsigned char[recordSize * recordCount + stringSize];
+    stringTable = data + recordSize * recordCount;
 
-    size_t data_size = recordSize*recordCount+stringSize;
+    size_t data_size = recordSize * recordCount + stringSize;
 
     if (!SFileReadFile(fileHandle, data, data_size, NULL, NULL))
     {
@@ -92,7 +92,7 @@ DBCFile::~DBCFile()
 DBCFile::Record DBCFile::getRecord(size_t id)
 {
     assert(data);
-    return Record(*this, data + id*recordSize);
+    return Record(*this, data + id * recordSize);
 }
 
 size_t DBCFile::getMaxId()
@@ -100,9 +100,9 @@ size_t DBCFile::getMaxId()
     assert(data);
 
     size_t maxId = 0;
-    for(size_t i = 0; i < getRecordCount(); ++i)
+    for (size_t i = 0; i < getRecordCount(); ++i)
     {
-        if(maxId < getRecord(i).getUInt(0))
+        if (maxId < getRecord(i).getUInt(0))
             maxId = getRecord(i).getUInt(0);
     }
     return maxId;
