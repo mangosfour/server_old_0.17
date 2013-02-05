@@ -833,6 +833,34 @@ struct CurrencyTypesEntry
     float GetPrecision() const  { return HasPrecision() ? CURRENCY_PRECISION : 1.0f; }
 };
 
+struct DestructibleModelDataEntry
+{
+    uint32 m_ID;                                            // 0        m_ID
+    uint32 damagedDisplayId;                                // 1
+    // uint32 unk1;                                         // 2
+    // uint32 unk2;                                         // 3
+    // uint32 unk3;                                         // 4
+    uint32 destroyedDisplayId;                              // 5
+    // uint32 unk4;                                         // 6
+    // uint32 unk5;                                         // 7
+    // uint32 unk6;                                         // 8
+    // uint32 unk7;                                         // 9
+    uint32 rebuildingDisplayId;                             // 10       // Maybe rebuildingDisplayIdWhileDestroyed
+    // uint32 unk8;                                         // 11
+    // uint32 unk9;                                         // 12
+    // uint32 unk10;                                        // 13
+    // uint32 unk11;                                        // 14
+    // uint32 smokeDisplayId;                               // 15
+    // uint32 unk12;                                        // 16
+    // uint32 unk13;                                        // 17
+    // uint32 unk14;                                        // 18
+    // uint32 unk15;                                        // 19
+    // uint32 unk16;                                        // 20
+    // uint32 unk17;                                        // 21
+    // uint32 unk18;                                        // 22
+    // uint32 unk19;                                        // 23
+};
+
 struct DungeonEncounterEntry
 {
     uint32 Id;                                              // 0        m_ID
