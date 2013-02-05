@@ -375,7 +375,7 @@ void ReadLiquidTypeTableDBC(int const locale)
 
 // Map file format data
 static char const* MAP_MAGIC         = "MAPS";
-static char const* MAP_VERSION_MAGIC = "v1.2";
+static char const* MAP_VERSION_MAGIC = "c1.3";
 static char const* MAP_AREA_MAGIC    = "AREA";
 static char const* MAP_HEIGHT_MAGIC  = "MHGT";
 static char const* MAP_LIQUID_MAGIC  = "MLIQ";
@@ -713,7 +713,7 @@ bool ConvertADT(char* filename, char* filename2, int cell_y, int cell_x, uint32 
     {
         for (int j = 0; j < ADT_CELLS_PER_GRID; j++)
         {
-            adt_MCNK* cell = cells->getMCNK(i, j);
+            adt_MCNK* cell = adt.cells[i][j];
             if (!cell)
                 continue;
 

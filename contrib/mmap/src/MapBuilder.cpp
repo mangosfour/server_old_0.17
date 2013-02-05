@@ -792,6 +792,7 @@ namespace MMAP
                 case 597:   // CraigTest.wdt
                 case 605:   // development_nonweighted.wdt
                 case 606:   // QA_DVD.wdt
+                case 627:   // unused.wdt
                     return true;
                 default:
                     if (isTransportMap(mapID))
@@ -809,6 +810,10 @@ namespace MMAP
                 case 566:   // EotS
                 case 607:   // SotA
                 case 628:   // IoC
+                case 727:   // TP
+                case 728:   // BfG
+                case 761:   // BfG2
+                case 968:   // EotS2
                     return true;
                 default:
                     break;
@@ -848,9 +853,26 @@ namespace MMAP
             case 647:
             case 672:
             case 673:
+            case 674:
             case 712:
             case 713:
             case 718:
+            case 738:
+            case 739:
+            case 740:
+            case 741:
+            case 742:
+            case 743:
+            case 746:
+            case 747:
+            case 748:
+            case 749:
+            case 750:
+            case 762:
+            case 763:
+            case 765:
+            case 766:
+            case 767:
                 return true;
             default:
                 return false;
