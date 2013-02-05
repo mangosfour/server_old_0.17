@@ -968,9 +968,8 @@ enum MangosStrings
     LANG_NPC_EVENTAI_PHASE              = 1506,
     LANG_NPC_EVENTAI_MOVE               = 1507,
     LANG_NPC_EVENTAI_COMBAT             = 1508,
-    LANG_VENDOR_WRONG_ITEM_TYPE         = 1509,
-    LANG_VENDOR_WRONG_CURRENCY_MAXCOUNT = 1510,
-    // Room for more Level 2              1509-1599 not used
+    LANG_POOL_ENTRY_LOWER_MAX_POOL      = 1509,
+    // Room for more Level 2              1510-1599 not used
 
     // Outdoor PvP
     LANG_OPVP_EP_CAPTURE_NPT_H          = 1600,
@@ -1016,7 +1015,11 @@ enum MangosStrings
     LANG_OPVP_SI_CAPTURE_H              = 1635,
     LANG_OPVP_SI_CAPTURE_A              = 1636,
 
-    // FREE IDS                           1700-9999
+    // Room for 4.x clients only          1700-1799
+    LANG_VENDOR_WRONG_ITEM_TYPE         = 1700,
+    LANG_VENDOR_WRONG_CURRENCY_MAXCOUNT = 1701,
+
+    // FREE IDS                           1800-9999
 
     // Use for not-in-official-sources patches
     //                                    10000-10999
