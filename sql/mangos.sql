@@ -1433,7 +1433,7 @@ CREATE TABLE `db_version` (
 
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
-INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_12310_01_mangos_creature_template_spells`) VALUES
+INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_12361_01_mangos_mangos_string`) VALUES
 ('Mangos default database.','Creature EventAI not provided.',0,NULL);
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
