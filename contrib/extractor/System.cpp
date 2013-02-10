@@ -20,7 +20,9 @@
 #include "loadlib/wdt.h"
 #include <fcntl.h>
 
-#include "unistd.h"
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 #if defined( __GNUC__ )
 #define _open   open
