@@ -101,7 +101,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleAuraTrackResources,                        // 45 SPELL_AURA_TRACK_RESOURCES
     &Aura::HandleUnused,                                    // 46 SPELL_AURA_46 4 spells in 4.3.4
     &Aura::HandleAuraModParryPercent,                       // 47 SPELL_AURA_MOD_PARRY_PERCENT
-    &Aura::HandleNULL,                                      // 48 SPELL_AURA_48 4 spells in 4.3.4 Napalm (area damage spell with additional delayed damage effect)
+    &Aura::HandleNoImmediateEffect,                         // 48 SPELL_AURA_PERIODIC_TRIGGER_BY_CLIENT (Client periodic trigger spell by self (4 spells in 4.3.4 )). Implemented in pet/player cast chains.
     &Aura::HandleAuraModDodgePercent,                       // 49 SPELL_AURA_MOD_DODGE_PERCENT
     &Aura::HandleNoImmediateEffect,                         // 50 SPELL_AURA_MOD_CRITICAL_HEALING_AMOUNT implemented in Unit::SpellCriticalHealingBonus
     &Aura::HandleAuraModBlockChancePercent,                 // 51 SPELL_AURA_MOD_BLOCK_CHANCE_PERCENT
