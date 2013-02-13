@@ -7555,7 +7555,7 @@ void Spell::EffectScriptEffect(SpellEffectEntry const* effect)
                     // "escort" aura not present, so let nothing happen
                     if (!m_caster->HasAura(effect->CalculateSimpleValue()))
                         return;
-                    // "escort" aura is present so break; and let DB table spell_scripts be used and process further.
+                    // "escort" aura is present so break; and let DB table dbscripts_on_spell be used and process further.
                     else
                         break;
                 }
