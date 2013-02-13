@@ -5299,6 +5299,9 @@ SpellCastResult Spell::CheckCast(bool strict)
                 if (m_spellInfo != sSpellMgr.SelectAuraRankForLevel(m_spellInfo, target->getLevel()))
                     return SPELL_FAILED_LOWLEVEL;
             }
+
+            if (strict && m_spellInfo->HasAttribute(SPELL_ATTR_EX3_TARGET_ONLY_PLAYER) && target->GetTypeId() != TYPEID_PLAYER && !IsAreaOfEffectSpell(m_spellInfo))
+                return SPELL_FAILED_BAD_TARGETS;
         }
         else if (m_caster == target)
         {
@@ -7496,6 +7499,10 @@ bool Spell::CheckTarget(Unit* target, SpellEffectIndex eff)
                         return false;
             break;
     }
+
+    if (target->GetTypeId() != TYPEID_PLAYER && m_spellInfo->HasAttribute(SPELL_ATTR_EX3_TARGET_ONLY_PLAYER)
+        && spellEffect->EffectImplicitTargetA != TARGET_SCRIPT && spellEffect->EffectImplicitTargetA != TARGET_SELF)
+        return false;
 
     switch (m_spellInfo->Id)
     {
