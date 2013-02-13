@@ -1,0 +1,4 @@
+ALTER TABLE db_version CHANGE COLUMN required_12378_03_mangos_fishing_loot_template required_12378_04_mangos_reference_loot_template bit;
+
+
+ALTER TABLE reference_loot_template DROP COLUMN lootcondition, DROP COLUMN condition_value1, DROP COLUMN condition_value2;
