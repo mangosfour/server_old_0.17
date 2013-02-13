@@ -1237,10 +1237,6 @@ CREATE TABLE `creature_template` (
   `resistance4` smallint(5) NOT NULL DEFAULT '0',
   `resistance5` smallint(5) NOT NULL DEFAULT '0',
   `resistance6` smallint(5) NOT NULL DEFAULT '0',
-  `spell1` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `spell2` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `spell3` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `spell4` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `PetSpellDataId` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `mingold` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `maxgold` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -1427,7 +1423,7 @@ CREATE TABLE `db_version` (
   `version` varchar(120) DEFAULT NULL,
   `creature_ai_version` varchar(120) DEFAULT NULL,
   `cache_id` int(10) DEFAULT '0',
-  `required_12378_14_mangos_gossip_menu_option` bit(1) default NULL
+  `required_12388_01_mangos_creature_template` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
