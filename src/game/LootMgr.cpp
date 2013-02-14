@@ -412,7 +412,7 @@ LootItem::LootItem(uint32 itemid_, uint8 type_, uint32 count_, uint32 randomSuff
 bool LootItem::AllowedForPlayer(Player const* player) const
 {
     // DB conditions check
-    if (conditionId && !sObjectMgr.IsPlayerMeetToCondition(player, conditionId))
+    if (conditionId && !sObjectMgr.IsPlayerMeetToCondition(conditionId, player, NULL, NULL, CONDITION_FROM_LOOT))
         return false;
 
     if (type == LOOT_ITEM_TYPE_ITEM)
