@@ -1561,8 +1561,16 @@ void Aura::TriggerSpell()
 //                    case 36556: break;
 //                    // Cursed Scarab Despawn Periodic
 //                    case 36561: break;
-//                    // Vision Guide
-//                    case 36573: break;
+                    case 36573:                             // Vision Guide
+                    {
+                        if (GetAuraTicks() == 10 && target->GetTypeId() == TYPEID_PLAYER)
+                        {
+                            ((Player*)target)->AreaExploredOrEventHappens(10525);
+                            target->RemoveAurasDueToSpell(36573);
+                        }
+
+                        return;
+                    }
 //                    // Cannon Charging (platform)
 //                    case 36785: break;
 //                    // Cannon Charging (self)
@@ -2274,6 +2282,11 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                     case 33326:                             // Stolen Soul Dispel
                     {
                         target->RemoveAurasDueToSpell(32346);
+                        return;
+                    }
+                    case 36587:                             // Vision Guide
+                    {
+                        target->CastSpell(target, 36573, true, NULL, this);
                         return;
                     }
                     // Gender spells
