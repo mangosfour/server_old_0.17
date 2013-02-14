@@ -409,10 +409,10 @@ LootItem::LootItem(uint32 itemid_, uint8 type_, uint32 count_, uint32 randomSuff
 }
 
 // Basic checks for player/item compatibility - if false no chance to see the item in the loot
-bool LootItem::AllowedForPlayer(Player const* player) const
+bool LootItem::AllowedForPlayer(Player const* player, WorldObject const* lootTarget) const
 {
     // DB conditions check
-    if (conditionId && !sObjectMgr.IsPlayerMeetToCondition(conditionId, player, NULL, NULL, CONDITION_FROM_LOOT))
+    if (conditionId && !sObjectMgr.IsPlayerMeetToCondition(conditionId, player, player->GetMap(), lootTarget, CONDITION_FROM_LOOT))
         return false;
 
     if (type == LOOT_ITEM_TYPE_ITEM)
@@ -460,10 +460,10 @@ bool LootItem::AllowedForPlayer(Player const* player) const
     return true;
 }
 
-LootSlotType LootItem::GetSlotTypeForSharedLoot(PermissionTypes permission, Player* viewer, bool condition_ok /*= false*/) const
+LootSlotType LootItem::GetSlotTypeForSharedLoot(PermissionTypes permission, Player* viewer, WorldObject const* lootTarget, bool condition_ok /*= false*/) const
 {
     // ignore currencies, looted items, FFA (each player get own copy) and not allowed items
-    if (currency || is_looted || freeforall || (conditionId && !condition_ok) || !AllowedForPlayer(viewer))
+    if (currency || is_looted || freeforall || (conditionId && !condition_ok) || !AllowedForPlayer(viewer, lootTarget))
         return MAX_LOOT_SLOT_TYPE;
 
     switch (permission)
@@ -574,7 +574,7 @@ QuestItemList* Loot::FillCurrencyLoot(Player* player)
     for (uint8 i = 0; i < items.size(); ++i)
     {
         LootItem& item = items[i];
-        if (!item.is_looted && item.currency && item.AllowedForPlayer(player))
+        if (!item.is_looted && item.currency && item.AllowedForPlayer(player, m_lootTarget))
         {
             ql->push_back(QuestItem(i));
             ++unlootedCount;
@@ -597,7 +597,7 @@ QuestItemList* Loot::FillFFALoot(Player* player)
     for (uint8 i = 0; i < items.size(); ++i)
     {
         LootItem& item = items[i];
-        if (!item.is_looted && item.freeforall && item.AllowedForPlayer(player))
+        if (!item.is_looted && item.freeforall && item.AllowedForPlayer(player, m_lootTarget))
         {
             ql->push_back(QuestItem(i));
             ++unlootedCount;
@@ -621,7 +621,7 @@ QuestItemList* Loot::FillQuestLoot(Player* player)
     for (uint8 i = 0; i < m_questItems.size(); ++i)
     {
         LootItem& item = m_questItems[i];
-        if (!item.is_looted && item.AllowedForPlayer(player))
+        if (!item.is_looted && item.AllowedForPlayer(player, m_lootTarget))
         {
             ql->push_back(QuestItem(i));
 
@@ -655,7 +655,7 @@ QuestItemList* Loot::FillNonQuestNonFFANonCurrencyConditionalLoot(Player* player
     for (uint8 i = 0; i < items.size(); ++i)
     {
         LootItem& item = items[i];
-        if (!item.is_looted && !item.freeforall && !item.currency && item.conditionId && item.AllowedForPlayer(player))
+        if (!item.is_looted && !item.freeforall && !item.currency && item.conditionId && item.AllowedForPlayer(player, m_lootTarget))
         {
             ql->push_back(QuestItem(i));
             if (!item.is_counted)
@@ -885,7 +885,7 @@ ByteBuffer& operator<<(ByteBuffer& b, LootView const& lv)
 
     for (uint8 i = 0; i < l.items.size(); ++i)
     {
-        LootSlotType slot_type = l.items[i].GetSlotTypeForSharedLoot(lv.permission, lv.viewer);
+        LootSlotType slot_type = l.items[i].GetSlotTypeForSharedLoot(lv.permission, lv.viewer, l.GetLootTarget());
         if (slot_type >= MAX_LOOT_SLOT_TYPE)
             continue;
 
@@ -903,7 +903,7 @@ ByteBuffer& operator<<(ByteBuffer& b, LootView const& lv)
         {
             LootItem& item = l.items[ci->index];
 
-            LootSlotType slot_type = item.GetSlotTypeForSharedLoot(lv.permission, lv.viewer, !ci->is_looted);
+            LootSlotType slot_type = item.GetSlotTypeForSharedLoot(lv.permission, lv.viewer, l.GetLootTarget(), !ci->is_looted);
             if (slot_type >= MAX_LOOT_SLOT_TYPE)
                 continue;
 
@@ -1147,7 +1147,7 @@ void LootTemplate::Process(Loot& loot, LootStore const& store, bool rate, uint8 
                 continue;                                   // Error message already printed at loading stage
 
             // Check condition
-            if (i->conditionId && !sObjectMgr.IsPlayerMeetToCondition(i->conditionId, NULL, NULL, NULL, CONDITION_FROM_REFERING_LOOT))
+            if (i->conditionId && !sObjectMgr.IsPlayerMeetToCondition(i->conditionId, NULL, NULL, loot.GetLootTarget(), CONDITION_FROM_REFERING_LOOT))
                 continue;
 
             for (uint32 loop = 0; loop < i->maxcount; ++loop) // Ref multiplicator

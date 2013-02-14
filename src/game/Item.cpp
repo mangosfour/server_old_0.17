@@ -359,7 +359,8 @@ float ItemPrototype::getDPS() const
     return damage;
 }
 
-Item::Item()
+Item::Item() :
+    loot(NULL)
 {
     m_objectType |= TYPEMASK_ITEM;
     m_objectTypeId = TYPEID_ITEM;
