@@ -20,7 +20,7 @@
 #include "loadlib/wdt.h"
 #include <fcntl.h>
 
-#ifndef _WIN32
+#ifndef WIN32
 #include <unistd.h>
 #endif
 
