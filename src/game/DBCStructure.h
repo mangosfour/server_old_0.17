@@ -396,7 +396,6 @@ struct AchievementCriteriaEntry
             uint32  goldInCopper;                           // 4
         } quest_reward_money;
 
-
         // ACHIEVEMENT_CRITERIA_TYPE_LOOT_MONEY             = 67
         struct
         {

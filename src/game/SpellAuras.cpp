@@ -4244,7 +4244,6 @@ void Aura::HandleModPossess(bool apply, bool Real)
         {
             ((Player*)target)->SetClientControl(target, 0);
         }
-
     }
     else
     {
@@ -5460,7 +5459,6 @@ void Aura::HandlePeriodicEnergize(bool apply, bool Real)
                 if (Unit* caster = GetCaster())
                     m_modifier.m_amount = int32(caster->GetCreateMana() * GetBasePoints() / (200 * GetAuraMaxTicks()));
                 break;
-
             }
             case 29166:                                     // Innervate (value% of casters base mana)
             {
@@ -6829,7 +6827,6 @@ void Aura::HandleShapeshiftBoosts(bool apply)
                 else
                     ++itr;
             }
-
 
             // Master Shapeshifter
             if (MasterShaperSpellId)

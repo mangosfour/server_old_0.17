@@ -166,7 +166,6 @@ void LootStore::LoadLootTable()
             // Adds current row to the template
             tab->second->AddEntry(storeitem);
             ++count;
-
         }
         while (result->NextRow());
 

@@ -76,7 +76,6 @@ namespace MaNGOS
     };
 }                                                           // namespace MaNGOS
 
-
 bool AchievementCriteriaRequirement::IsValid(AchievementCriteriaEntry const* criteria)
 {
     switch (criteria->requiredType)
@@ -610,7 +609,6 @@ void AchievementMgr::LoadFromDB(QueryResult* achievementResult, QueryResult* cri
         while (criteriaResult->NextRow());
         delete criteriaResult;
     }
-
 }
 
 void AchievementMgr::SendAchievementEarned(AchievementEntry const* achievement)
@@ -1143,7 +1141,6 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, ui
                 change = 1;
                 progressType = PROGRESS_ACCUMULATE;
                 break;
-
             }
             case ACHIEVEMENT_CRITERIA_TYPE_KILLED_BY_CREATURE:
                 // AchievementMgr::UpdateAchievementCriteria might also be called on login - skip in this case
@@ -2800,7 +2797,6 @@ void AchievementGlobalMgr::LoadRewards()
 
         m_achievementRewards.insert(AchievementRewardsMap::value_type(entry, reward));
         ++count;
-
     }
     while (result->NextRow());
 
@@ -2894,7 +2890,6 @@ void AchievementGlobalMgr::LoadRewardLocales()
         }
 
         m_achievementRewardLocales.insert(AchievementRewardLocalesMap::value_type(entry, data));
-
     }
     while (result->NextRow());
 

@@ -288,7 +288,6 @@ bool TradeData::HasItem(ObjectGuid item_guid) const
     return false;
 }
 
-
 Item* TradeData::GetSpellCastItem() const
 {
     return m_spellCastItem ?  m_player->GetItemByGuid(m_spellCastItem) : NULL;
@@ -3545,7 +3544,6 @@ void Player::removeSpell(uint32 spell_id, bool disabled, bool learn_low_rank, bo
                 SetSkill(prevSkill->skill, skill_value, skill_max_value, prevSkill->step);
             }
         }
-
     }
     else
     {
@@ -5014,7 +5012,6 @@ void Player::CleanupChannels()
         ch->Leave(GetObjectGuid(), false);                  // not send to client, not remove from player's channel list
         if (ChannelMgr* cMgr = channelMgr(GetTeam()))
             cMgr->LeftChannel(ch->GetName());               // deleted channel if empty
-
     }
     DEBUG_LOG("Player: channels cleaned up!");
 }
@@ -5984,7 +5981,6 @@ bool Player::IsActionButtonDataValid(uint8 button, uint32 action, uint8 type, Pl
                 sLog.outError("Action %u not added into button %u for player %s: button must be < %u", action, button, player->GetName(), MAX_ACTION_BUTTONS);
             else
                 sLog.outError("Table `playercreateinfo_action` have action %u into button %u : button must be < %u", action, button, MAX_ACTION_BUTTONS);
-
         }
         return false;
     }
@@ -7591,7 +7587,6 @@ void Player::DestroyItemWithOnStoreSpell(Item* item, uint32 spellId)
     }
 }
 
-
 /// handles unique effect of Deadly Poison: apply poison of the other weapon when already at max. stack
 void Player::_HandleDeadlyPoison(Unit* Target, WeaponAttackType attType, SpellEntry const* spellInfo)
 {
@@ -7712,7 +7707,6 @@ void Player::CastItemCombatSpell(Unit* Target, WeaponAttackType attType)
             float chance = ppmRate
                            ? GetPPMProcChance(proto->Delay, ppmRate)
                            : pEnchant->amount[s] != 0 ? float(pEnchant->amount[s]) : GetWeaponProcChance();
-
 
             ApplySpellMod(spellInfo->Id, SPELLMOD_CHANCE_OF_SUCCESS, chance);
             ApplySpellMod(spellInfo->Id, SPELLMOD_FREQUENCY_OF_SUCCESS, chance);
@@ -9534,7 +9528,6 @@ bool Player::IsValidPos(uint8 bag, uint8 slot, bool explicit_pos) const
     // where this?
     return false;
 }
-
 
 bool Player::HasItemCount(uint32 item, uint32 count, bool inBankAlso) const
 {
@@ -12715,7 +12708,6 @@ void Player::ApplyEnchantment(Item* item, EnchantmentSlot slot, bool apply, bool
     if (slot == TEMP_ENCHANTMENT_SLOT)
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (item->GetSlot() * 2), 1, apply ? item->GetEnchantmentId(slot) : 0);
 
-
     if (apply_dur)
     {
         if (apply)
@@ -14446,7 +14438,6 @@ void Player::GiveQuestSourceItemIfNeed(Quest const* pQuest)
     }
 }
 
-
 bool Player::TakeQuestSourceItem(uint32 quest_id, bool msg)
 {
     Quest const* qInfo = sObjectMgr.GetQuestTemplate(quest_id);
@@ -15290,7 +15281,6 @@ void Player::_LoadArenaTeamInfo(QueryResult* result)
         SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_GAMES_SEASON, played_season);
         SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_WINS_SEASON, wons_season);
         SetArenaTeamInfoField(arenaSlot, ARENA_TEAM_PERSONAL_RATING, personal_rating);
-
     }
     while (result->NextRow());
     delete result;
@@ -16207,7 +16197,6 @@ void Player::_LoadGlyphs(QueryResult* result)
         }
 
         m_glyphs[spec][slot].id = glyph;
-
     }
     while (result->NextRow());
 
@@ -16426,7 +16415,6 @@ void Player::_LoadItemLoot(QueryResult* result)
             }
 
             item->LoadLootFromDB(fields);
-
         }
         while (result->NextRow());
 
@@ -16522,7 +16510,6 @@ void Player::_LoadMails(QueryResult* result)
 
         if (m->mailTemplateId && !m->has_items)
             m->prepareTemplateItems(this);
-
     }
     while (result->NextRow());
     delete result;
@@ -17987,7 +17974,6 @@ void Player::_SaveSpells()
             itr->second.state = PLAYERSPELL_UNCHANGED;
             ++itr;
         }
-
     }
 }
 
@@ -18713,7 +18699,6 @@ void Player::RemovePetitionsAndSigns(ObjectGuid guid)
             Player* owner = sObjectMgr.GetPlayer(ownerguid);
             if (owner)
                 owner->GetSession()->SendPetitionQueryOpcode(petitionguid);
-
         }
         while (result->NextRow());
 
@@ -18741,7 +18726,6 @@ void Player::LeaveAllArenaTeams(ObjectGuid guid)
         if (uint32 at_id = fields[0].GetUInt32())
             if (ArenaTeam* at = sObjectMgr.GetArenaTeamById(at_id))
                 at->DelMember(guid);
-
     }
     while (result->NextRow());
 
@@ -21819,7 +21803,6 @@ void Player::InitRunes()
     for (uint32 i = 0; i < NUM_RUNE_TYPES; ++i)
         SetFloatValue(PLAYER_RUNE_REGEN_1 + i, 0.1f);
 }
-
 
 bool Player::IsBaseRuneSlotsOnCooldown(RuneType runeType) const
 {

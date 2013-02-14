@@ -750,7 +750,6 @@ void WorldSession::HandleAutoStoreBagItemOpcode(WorldPacket& recv_data)
     _player->StoreItem(dest, pItem, true);
 }
 
-
 bool WorldSession::CheckBanker(ObjectGuid guid)
 {
     // GM case
@@ -1147,7 +1146,6 @@ void WorldSession::HandleSocketOpcode(WorldPacket& recv_data)
                         }
                     }
                 }
-
             }
         }
 

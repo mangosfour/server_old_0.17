@@ -250,7 +250,6 @@ class adt_MH2O
             else
                 return 0xFFFFFFFFFFFFFFFFLL;
         }
-
 };
 
 //
@@ -287,7 +286,6 @@ class adt_MHDR
         bool prepareLoadedData();
         adt_MCIN* getMCIN() { return offsMCIN ? (adt_MCIN*)((uint8*)&flags + offsMCIN) : 0; }
         adt_MH2O* getMH2O() { return offsMH2O ? (adt_MH2O*)((uint8*)&flags + offsMH2O) : 0; }
-
 };
 
 class ADT_file : public FileLoader
