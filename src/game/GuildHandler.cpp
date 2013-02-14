@@ -27,6 +27,7 @@
 #include "GuildMgr.h"
 #include "GossipDef.h"
 #include "SocialMgr.h"
+#include "Calendar.h"
 
 void WorldSession::HandleGuildQueryOpcode(WorldPacket& recvPacket)
 {
@@ -591,6 +592,8 @@ void WorldSession::HandleGuildLeaveOpcode(WorldPacket& /*recvPacket*/)
         SendGuildCommandResult(GUILD_INVITE_S, "", ERR_GUILD_UNDELETABLE_DUE_TO_LEVEL);
         return;
     }
+
+    sCalendarMgr.RemoveGuildCalendar(_player->GetObjectGuid(), guild->GetId());
 
     if (_player->GetObjectGuid() == guild->GetLeaderGuid())
     {

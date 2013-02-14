@@ -206,6 +206,9 @@ class ArenaTeam
         void FinishWeek();
         void FinishGame(int32 mod);
 
+        // Calendar
+        void MassInviteToEvent(WorldSession* session);
+
     protected:
 
         uint32 m_TeamId;
