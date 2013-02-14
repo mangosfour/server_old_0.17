@@ -279,7 +279,7 @@ void WorldSession::HandleDestroyItemOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleReadItemOpcode(WorldPacket& recv_data)
 {
-    // DEBUG_LOG( "WORLD: CMSG_READ_ITEM");
+    // DEBUG_LOG("WORLD: Received opcode CMSG_READ_ITEM");
 
     uint8 bag, slot;
     recv_data >> bag >> slot;
@@ -312,7 +312,7 @@ void WorldSession::HandleReadItemOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandlePageQuerySkippedOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_PAGE_TEXT_QUERY");
+    DEBUG_LOG("WORLD: Received opcode CMSG_PAGE_TEXT_QUERY");
 
     uint32 itemid;
     ObjectGuid guid;
@@ -324,7 +324,7 @@ void WorldSession::HandlePageQuerySkippedOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleSellItemOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_SELL_ITEM");
+    DEBUG_LOG("WORLD: Received opcode CMSG_SELL_ITEM");
 
     ObjectGuid vendorGuid;
     ObjectGuid itemGuid;
@@ -437,7 +437,7 @@ void WorldSession::HandleSellItemOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleBuybackItem(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_BUYBACK_ITEM");
+    DEBUG_LOG("WORLD: Received opcode CMSG_BUYBACK_ITEM");
     ObjectGuid vendorGuid;
     uint32 slot;
 
@@ -490,7 +490,7 @@ void WorldSession::HandleBuyItemOpcode(WorldPacket& recv_data)
     uint8 type, bagSlot;
 
     recv_data >> vendorGuid >> type >> item >> slot >> count >> bagGuid >> bagSlot;
-    DEBUG_LOG("WORLD: Received CMSG_BUY_ITEM, vendorguid: %s, type: %u, item: %u, slot: %u, count: %u, bagGuid: %s, bagSlog: %u",
+    DEBUG_LOG("WORLD: Received opcode CMSG_BUY_ITEM, vendorguid: %s, type: %u, item: %u, slot: %u, count: %u, bagGuid: %s, bagSlog: %u",
         vendorGuid.GetString().c_str(), type, item, slot, count, bagGuid.GetString().c_str(), bagSlot);
 
     // client side expected counting from 1, and we send to client vendorslot+1 already
@@ -545,7 +545,7 @@ void WorldSession::HandleListInventoryOpcode(WorldPacket& recv_data)
     if (!GetPlayer()->isAlive())
         return;
 
-    DEBUG_LOG("WORLD: Recvd CMSG_LIST_INVENTORY");
+    DEBUG_LOG("WORLD: Received opcode CMSG_LIST_INVENTORY");
 
     SendListInventory(guid);
 }

@@ -40,7 +40,7 @@ void WorldSession::HandleBattlemasterHelloOpcode(WorldPacket& recv_data)
     ObjectGuid guid;
     recv_data >> guid;
 
-    DEBUG_LOG("WORLD: Recvd CMSG_BATTLEMASTER_HELLO Message from %s", guid.GetString().c_str());
+    DEBUG_LOG("WORLD: Received opcode CMSG_BATTLEMASTER_HELLO from %s", guid.GetString().c_str());
 
     Creature* pCreature = GetPlayer()->GetMap()->GetCreature(guid);
 
@@ -92,7 +92,7 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& recv_data)
     recv_data.ReadGuidBytes<2, 6, 4, 3, 7, 0, 5, 1>(guid);
 
     bgTypeId_ = guid.GetCounter();
-    DEBUG_LOG("WORLD: Recvd CMSG_BATTLEMASTER_JOIN Message from %s, typeid: %u, asGroup: %u, bg guid: %s",
+    DEBUG_LOG("WORLD: Received opcode CMSG_BATTLEMASTER_JOIN from %s, typeid: %u, asGroup: %u, bg guid: %s",
         _player->GetGuidStr().c_str(), bgTypeId_, joinAsGroup, guid.GetString().c_str());
 
     if (!sBattlemasterListStore.LookupEntry(bgTypeId_))
@@ -214,7 +214,7 @@ void WorldSession::HandleBattlemasterJoinOpcode(WorldPacket& recv_data)
 void WorldSession::HandleBattleGroundPlayerPositionsOpcode(WorldPacket& /*recv_data*/)
 {
     // empty opcode
-    DEBUG_LOG("WORLD: Recvd CMSG_BATTLEGROUND_PLAYER_POSITIONS Message");
+    DEBUG_LOG("WORLD: Received opcode CMSG_BATTLEGROUND_PLAYER_POSITIONS");
 
     BattleGround* bg = _player->GetBattleGround();
     if (!bg)                                                // can't be received if player not in battleground
@@ -279,7 +279,7 @@ void WorldSession::HandleBattleGroundPlayerPositionsOpcode(WorldPacket& /*recv_d
 
 void WorldSession::HandlePVPLogDataOpcode(WorldPacket& /*recv_data*/)
 {
-    DEBUG_LOG("WORLD: Recvd CMSG_PVP_LOG_DATA Message");
+    DEBUG_LOG("WORLD: Received opcode CMSG_PVP_LOG_DATA");
 
     BattleGround* bg = _player->GetBattleGround();
     if (!bg)
@@ -298,7 +298,7 @@ void WorldSession::HandlePVPLogDataOpcode(WorldPacket& /*recv_data*/)
 
 void WorldSession::HandleBattlefieldListOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Recvd CMSG_BATTLEFIELD_LIST Message");
+    DEBUG_LOG("WORLD: Received opcode CMSG_BATTLEFIELD_LIST");
 
     uint32 bgTypeId;
     recv_data >> bgTypeId;                                  // id from DBC
@@ -317,7 +317,7 @@ void WorldSession::HandleBattlefieldListOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Recvd CMSG_BATTLEFIELD_PORT Message");
+    DEBUG_LOG("WORLD: Received opcode CMSG_BATTLEFIELD_PORT");
 
     uint32 time;
     uint32 queueSlot;
@@ -483,7 +483,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleLeaveBattlefieldOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Recvd CMSG_LEAVE_BATTLEFIELD Message");
+    DEBUG_LOG("WORLD: Received opcode CMSG_LEAVE_BATTLEFIELD");
 
     // not allow leave battleground in combat
     if (_player->isInCombat())

@@ -748,7 +748,7 @@ void WorldSession::HandleChatIgnoredOpcode(WorldPacket& recv_data)
 {
     ObjectGuid iguid;
     uint8 unk;
-    // DEBUG_LOG("WORLD: Received CMSG_CHAT_IGNORED");
+    // DEBUG_LOG("WORLD: Received opcode CMSG_CHAT_IGNORED");
 
     recv_data >> unk;                                       // probably related to spam reporting
     recv_data.ReadGuidMask<2, 5, 6, 4, 7, 0, 1, 3>(iguid);

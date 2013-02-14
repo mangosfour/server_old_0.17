@@ -566,7 +566,7 @@ void WorldSession::HandlePlayerLoginOpcode(WorldPacket & recv_data )
     recv_data.ReadGuidMask<2, 3, 0, 6, 4, 5, 1, 7>(playerGuid);
     recv_data.ReadGuidBytes<2, 7, 0, 3, 5, 6, 1, 4>(playerGuid);
 
-    DEBUG_LOG("WORLD: Recvd Player Logon Message from %s", playerGuid.GetString().c_str());
+    DEBUG_LOG("WORLD: Received opcode Player Logon Message from %s", playerGuid.GetString().c_str());
 
     LoginQueryHolder* holder = new LoginQueryHolder(GetAccountId(), playerGuid);
     if (!holder->Initialize())
@@ -841,7 +841,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder *holder)
 
 void WorldSession::HandleSetFactionAtWarOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_SET_FACTION_ATWAR");
+    DEBUG_LOG("WORLD: Received opcode CMSG_SET_FACTION_ATWAR");
 
     uint32 repListID;
     uint8  flag;
@@ -886,7 +886,7 @@ void WorldSession::HandleTutorialResetOpcode(WorldPacket& /*recv_data*/)
 
 void WorldSession::HandleSetWatchedFactionOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_SET_WATCHED_FACTION");
+    DEBUG_LOG("WORLD: Received opcode CMSG_SET_WATCHED_FACTION");
     int32 repId;
     recv_data >> repId;
     GetPlayer()->SetInt32Value(PLAYER_FIELD_WATCHED_FACTION_INDEX, repId);
@@ -894,7 +894,7 @@ void WorldSession::HandleSetWatchedFactionOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleSetFactionInactiveOpcode(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: Received CMSG_SET_FACTION_INACTIVE");
+    DEBUG_LOG("WORLD: Received opcode CMSG_SET_FACTION_INACTIVE");
     uint32 replistid;
     uint8 inactive;
     recv_data >> replistid >> inactive;
