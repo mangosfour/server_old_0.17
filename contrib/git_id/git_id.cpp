@@ -92,6 +92,18 @@ char db_sql_rev_field[NUM_DATABASES][MAX_PATH] =
     "REVISION_DB_REALMD"
 };
 
+bool db_sql_rev_parent[NUM_DATABASES] =
+{
+    false,
+    false,
+    true
+};
+
+#define REV_PREFIX "c"
+#define REV_SCAN   REV_PREFIX "%d"
+#define REV_PRINT  REV_PREFIX "%04d"
+#define REV_FORMAT "[" REV_PRINT "]"
+
 bool allow_replace = false;
 bool local = false;
 bool do_fetch = false;
@@ -236,8 +248,10 @@ int get_rev(const char* from_msg)
 {
     // accept only the rev number format, not the sql update format
     char nr_str[256];
-    if (sscanf(from_msg, "[%[0123456789]]", nr_str) != 1) return 0;
-    if (from_msg[strlen(nr_str) + 1] != ']') return 0;
+    if (sscanf(from_msg, "[" REV_PREFIX "%[0123456789]]", nr_str) != 1) return 0;
+    // ("[")+(REV_PREFIX)+("]")-1
+    if (from_msg[strlen(nr_str) + strlen(REV_PREFIX) + 2 - 1] != ']') return 0;
+
     return atoi(nr_str);
 }
 
@@ -264,7 +278,7 @@ bool find_rev()
         pclose(cmd_pipe);
     }
 
-    if (rev > 0) printf("Found [%d].\n", rev);
+    if (rev > 0) printf("Found " REV_FORMAT ".\n", rev);
 
     return rev > 0;
 }
@@ -285,7 +299,9 @@ std::string generateSqlHeader()
     newData << "#ifndef __REVISION_SQL_H__" << std::endl;
     newData << "#define __REVISION_SQL_H__"  << std::endl;
     for (int i = 0; i < NUM_DATABASES; ++i)
+    {
         newData << " #define " << db_sql_rev_field[i] << " \"required_" << last_sql_update[i] << "\"" << std::endl;
+    }
     newData << "#endif // __REVISION_SQL_H__" << std::endl;
     return newData.str();
 }
@@ -307,7 +323,7 @@ bool write_rev_nr()
 {
     printf("+ writing revision_nr.h\n");
     char rev_str[256];
-    sprintf(rev_str, "%d", rev);
+    sprintf(rev_str, "%04d", rev);
     std::string header = generateNrHeader(rev_str);
 
     char prefixed_file[MAX_PATH];
@@ -368,7 +384,7 @@ bool find_head_msg()
     {
         if (!allow_replace)
         {
-            printf("Last commit on HEAD is [%d]. Use -r to replace it with [%d].\n", head_rev, rev);
+            printf("Last commit on HEAD is " REV_FORMAT ". Use -r to replace it with " REV_FORMAT ".\n", head_rev, rev);
             return false;
         }
 
@@ -394,7 +410,7 @@ bool amend_commit()
     if ((cmd_pipe = popen(cmd, "w")) == NULL)
         return false;
 
-    fprintf(cmd_pipe, "[%d] %s", rev, head_message);
+    fprintf(cmd_pipe, REV_FORMAT " %s", rev, head_message);
     pclose(cmd_pipe);
     if (use_new_index && putenv(old_index_cmd) != 0) return false;
 
@@ -404,6 +420,7 @@ bool amend_commit()
 struct sql_update_info
 {
     int rev;
+    char parentRev[MAX_BUF];
     int nr;
     int db_idx;
     char db[MAX_BUF];
@@ -415,11 +432,11 @@ bool get_sql_update_info(const char* buffer, sql_update_info& info)
 {
     info.table[0] = '\0';
     int dummy[3];
-    if (sscanf(buffer, "%d_%d_%d", &dummy[0], &dummy[1], &dummy[2]) == 3)
+    if (sscanf(buffer, REV_SCAN "_%[^_]_%d_%d", &dummy[0], &dummy[1], &dummy[2]) == 3)
         return false;
 
-    if (sscanf(buffer, "%d_%d_%[^_]_%[^.].sql", &info.rev, &info.nr, info.db, info.table) != 4 &&
-            sscanf(buffer, "%d_%d_%[^.].sql", &info.rev, &info.nr, info.db) != 3)
+    if (sscanf(buffer, REV_SCAN "_%[^_]_%d_%[^_]_%[^.].sql", &info.rev, &info.nr, info.db, info.table) != 4 &&
+            sscanf(buffer, REV_SCAN "_%[^_]_%d_%[^.].sql", &info.rev, &info.nr, info.db) != 3)
     {
         info.rev = 0;       // this may be set by the first scans, even if they fail
         if (sscanf(buffer, "%d_%[^_]_%[^.].sql", &info.nr, info.db, info.table) != 3 &&
@@ -464,10 +481,10 @@ bool find_sql_updates()
     pclose(cmd_pipe);
 
     // Add last milestone's file information
-    last_sql_rev[0] = 11785;
+    last_sql_rev[0] = 12300;
     last_sql_nr[0] = 2;
     sscanf("12300_02_characters_mail", "%s", last_sql_update[0]);
-    last_sql_rev[2] = 10008;
+    last_sql_rev[2] = 12112;
     last_sql_nr[2] = 1;
     sscanf("12112_01_realmd_account_access", "%s", last_sql_update[2]);
 
@@ -740,6 +757,7 @@ bool change_sql_database()
         }
 
         fprintf(fout, "  `required_%s` bit(1) default NULL\n", last_sql_update[i]);
+
         while (fgets(buffer, MAX_BUF, fin))
             fputs(buffer, fout);
 
