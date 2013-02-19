@@ -2297,6 +2297,9 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
 
                     for (SQLMultiStorage::SQLMultiSIterator<SpellTargetEntry> i_spellST = bounds.first; i_spellST != bounds.second; ++i_spellST)
                     {
+                        if (i_spellST->CanNotHitWithSpellEffect(effIndex))
+                            continue;
+
                         // only creature entries supported for this target type
                         if (i_spellST->type == SPELL_TARGET_TYPE_GAMEOBJECT)
                             continue;
@@ -2346,6 +2349,9 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
 
                     for (SQLMultiStorage::SQLMultiSIterator<SpellTargetEntry> i_spellST = bounds.first; i_spellST != bounds.second; ++i_spellST)
                     {
+                        if (i_spellST->CanNotHitWithSpellEffect(effIndex))
+                            continue;
+
                         // only creature entries supported for this target type
                         if (i_spellST->type == SPELL_TARGET_TYPE_GAMEOBJECT)
                             continue;
@@ -2396,6 +2402,9 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
             SQLMultiStorage::SQLMSIteratorBounds<SpellTargetEntry> bounds = sSpellScriptTargetStorage.getBounds<SpellTargetEntry>(m_spellInfo->Id);
             for (SQLMultiStorage::SQLMultiSIterator<SpellTargetEntry> i_spellST = bounds.first; i_spellST != bounds.second; ++i_spellST)
             {
+                if (i_spellST->CanNotHitWithSpellEffect(effIndex))
+                    continue;
+
                 if (i_spellST->type == SPELL_TARGET_TYPE_GAMEOBJECT)
                 {
                     fixedTargetExist = true;
@@ -5607,6 +5616,9 @@ SpellCastResult Spell::CheckCast(bool strict)
 
                 for (SQLMultiStorage::SQLMultiSIterator<SpellTargetEntry> i_spellST = bounds.first; i_spellST != bounds.second; ++i_spellST)
                 {
+                    if (i_spellST->CanNotHitWithSpellEffect(SpellEffectIndex(j)))
+                        continue;
+
                     switch (i_spellST->type)
                     {
                         case SPELL_TARGET_TYPE_GAMEOBJECT:

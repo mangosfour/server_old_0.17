@@ -1425,7 +1425,7 @@ CREATE TABLE `db_version` (
   `version` varchar(120) DEFAULT NULL,
   `creature_ai_version` varchar(120) DEFAULT NULL,
   `cache_id` int(10) DEFAULT '0',
-  `required_12458_01_mangos_dbscripts_on_creature_death` bit(1) default NULL
+  `required_c12466_01_mangos_spell_script_target` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -21305,6 +21305,7 @@ CREATE TABLE `spell_script_target` (
   `entry` mediumint(8) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `targetEntry` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `inverseEffectMask` mediumint(8) unsigned NOT NULL default '0',
   UNIQUE KEY `entry_type_target` (`entry`,`type`,`targetEntry`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Spell System';
 /*!40101 SET character_set_client = @saved_cs_client */;
