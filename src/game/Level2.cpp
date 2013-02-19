@@ -1617,6 +1617,10 @@ bool ChatHandler::HandleNpcAddVendorCurrencyCommand(char* args)
     if (!ExtractUInt32(&args, maxcount))
         return false;
 
+    uint32 incrtime;
+    if (!ExtractOptUInt32(&args, incrtime, 0))
+        return false;
+
     uint32 extendedcost;
     if (!ExtractUInt32(&args, extendedcost))
         return false;
@@ -1625,7 +1629,7 @@ bool ChatHandler::HandleNpcAddVendorCurrencyCommand(char* args)
 
     uint32 vendor_entry = vendor ? vendor->GetEntry() : 0;
 
-    if (!sObjectMgr.IsVendorItemValid(false, "npc_vendor", vendor_entry, currencyId, VENDOR_ITEM_TYPE_CURRENCY, maxcount, 0, extendedcost, m_session->GetPlayer()))
+    if (!sObjectMgr.IsVendorItemValid(false, "npc_vendor", vendor_entry, currencyId, VENDOR_ITEM_TYPE_CURRENCY, maxcount, incrtime, extendedcost, 0, m_session->GetPlayer()))
     {
         SetSentErrorMessage(true);
         return false;
@@ -1666,7 +1670,7 @@ bool ChatHandler::HandleNpcAddVendorItemCommand(char* args)
 
     uint32 vendor_entry = vendor ? vendor->GetEntry() : 0;
 
-    if (!sObjectMgr.IsVendorItemValid(false, "npc_vendor", vendor_entry, itemId, VENDOR_ITEM_TYPE_ITEM, maxcount, incrtime, extendedcost, m_session->GetPlayer()))
+    if (!sObjectMgr.IsVendorItemValid(false, "npc_vendor", vendor_entry, itemId, VENDOR_ITEM_TYPE_ITEM, maxcount, incrtime, extendedcost, 0, m_session->GetPlayer()))
     {
         SetSentErrorMessage(true);
         return false;
