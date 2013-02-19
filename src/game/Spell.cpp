@@ -47,6 +47,7 @@
 #include "DB2Stores.h"
 #include "SQLStorages.h"
 #include "Vehicle.h"
+#include "SQLStorages.h"
 
 extern pEffect SpellEffects[TOTAL_SPELL_EFFECTS];
 
