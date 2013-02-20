@@ -19434,7 +19434,7 @@ bool Player::BuyCurrencyFromVendorSlot(ObjectGuid vendorGuid, uint32 vendorslot,
     if (!pCurrency)
         return false;
 
-    if (currencyId == CURRENCY_CONQUEST_ARENA_META || currencyId == CURRENCY_CONQUEST_BG_META)
+    if (pCurrency->Category == CURRENCY_CATEGORY_META)
         return false;
 
     Creature* pCreature = GetNPCIfCanInteractWith(vendorGuid, UNIT_NPC_FLAG_VENDOR);
@@ -23708,7 +23708,7 @@ void Player::ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek, bool m
             WorldPacket packet(SMSG_SET_CURRENCY, 13);
             bool bit0 = modifyWeek && weekCap && diff > 0;
             bool bit1 = currency->HasSeasonCount();
-            bool bit2 = currency->ID == CURRENCY_CONQUEST_ARENA_META || currency->ID == CURRENCY_CONQUEST_BG_META; // hides message in client when set
+            bool bit2 = currency->Category == CURRENCY_CATEGORY_META;   // hides message in client when set
             packet.WriteBit(bit0);
             packet.WriteBit(bit1);
             packet.WriteBit(bit2);

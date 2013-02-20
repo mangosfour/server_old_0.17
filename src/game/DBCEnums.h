@@ -383,6 +383,7 @@ enum AbilitySkillFlags
 enum CurrencyCategory
 {
     CURRENCY_CATEGORY_ARCHAEOLOGY   = 82,
+    CURRENCY_CATEGORY_META          = 89,
 };
 
 enum CurrencyFlags

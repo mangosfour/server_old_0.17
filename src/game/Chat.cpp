@@ -1915,7 +1915,7 @@ bool ChatHandler::isValidChatMessage(const char* message)
                     // verify the link name
                     if (linkedCurrency)
                     {
-                        if (linkedCurrency->ID == CURRENCY_CONQUEST_ARENA_META || linkedCurrency->ID == CURRENCY_CONQUEST_BG_META)
+                        if (linkedCurrency->Category == CURRENCY_CATEGORY_META)
                             return false;
 
                         bool foundName = false;

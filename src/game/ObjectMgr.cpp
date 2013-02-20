@@ -9446,7 +9446,7 @@ bool ObjectMgr::IsVendorItemValid(bool isTemplate, char const* tableName, uint32
         }
         else
         {
-            if (currencyEntry->ID == CURRENCY_CONQUEST_ARENA_META || currencyEntry->ID == CURRENCY_CONQUEST_BG_META)
+            if (currencyEntry->Category == CURRENCY_CATEGORY_META)
             {
                 if (pl)
                     ChatHandler(pl).PSendSysMessage(LANG_VENDOR_META_CURRENCY_NOT_ALLOWED, item_id);

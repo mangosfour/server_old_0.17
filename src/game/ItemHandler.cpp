@@ -648,7 +648,7 @@ void WorldSession::SendListInventory(ObjectGuid vendorguid)
                 if (!pCurrency)
                     continue;
 
-                if (pCurrency->ID == CURRENCY_CONQUEST_ARENA_META || pCurrency->ID == CURRENCY_CONQUEST_BG_META)
+                if (pCurrency->Category == CURRENCY_CATEGORY_META)
                     continue;
 
                 ++count;
