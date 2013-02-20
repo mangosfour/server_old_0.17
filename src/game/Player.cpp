@@ -17081,6 +17081,7 @@ void Player::SendRaidInfo()
                 data << uint8(1);                           // expired = 0
                 data << uint8(0);                           // extended = 1
                 data << uint32(state->GetResetTime() - now);// reset time
+                data << uint32(state->GetCompletedEncountersMask());// completed encounter mask
                 ++counter;
             }
         }
