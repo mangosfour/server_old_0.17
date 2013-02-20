@@ -427,7 +427,7 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 updateFlags) const
             if (hasTransportTime3)
                 *data << uint32(unit->m_movementInfo.GetFallTime());
 
-            *data << int32(unit->m_movementInfo.GetTransportSeat());
+            *data << int8(unit->m_movementInfo.GetTransportSeat());
             data->WriteGuidBytes<1, 6, 2, 4>(tGuid);
         }
 
