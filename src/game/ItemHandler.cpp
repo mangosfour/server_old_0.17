@@ -1219,9 +1219,10 @@ void WorldSession::HandleSocketOpcode(WorldPacket& recv_data)
     {
         if (GemEnchants[i])
         {
+            uint32 count = 1;
             itemTarget->SetEnchantment(EnchantmentSlot(SOCK_ENCHANTMENT_SLOT + i), GemEnchants[i], 0, 0);
             if (Item* guidItem = gemGuids[i] ? _player->GetItemByGuid(gemGuids[i]) : NULL)
-                _player->DestroyItem(guidItem->GetBagSlot(), guidItem->GetSlot(), true);
+                _player->DestroyItemCount(guidItem, count, true);
         }
     }
 
