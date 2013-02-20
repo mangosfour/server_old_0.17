@@ -444,7 +444,7 @@ CREATE TABLE `character_db_version` (
 
 LOCK TABLES `character_db_version` WRITE;
 /*!40000 ALTER TABLE `character_db_version` DISABLE KEYS */;
-INSERT INTO `character_db_version` (`required_12300_02_characters_mail`) VALUES
+INSERT INTO `character_db_version` (`required_12447_02_characters_calendar_invites`) VALUES
 (NULL);
 /*!40000 ALTER TABLE `character_db_version` ENABLE KEYS */;
 UNLOCK TABLES;
