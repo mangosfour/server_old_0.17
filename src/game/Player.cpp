@@ -1897,6 +1897,8 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
             // code for finish transfer to new map called in WorldSession::HandleMoveWorldportAckOpcode at client packet
             SetSemaphoreTeleportFar(true);
 
+            final_o = NormalizeOrientation(final_o);
+
             if (!GetSession()->PlayerLogout())
             {
                 // transfer finished, inform client to start load
@@ -1905,21 +1907,21 @@ bool Player::TeleportTo(uint32 mapid, float x, float y, float z, float orientati
                 {
                     data << float(m_movementInfo.GetTransportPos()->x);
                     data << float(m_movementInfo.GetTransportPos()->o);
-                    data << float(m_movementInfo.GetTransportPos()->z);
+                    data << float(m_movementInfo.GetTransportPos()->y);
                 }
                 else
                 {
                     data << float(final_x);
                     data << float(final_o);
-                    data << float(final_z);
+                    data << float(final_y);
                 }
 
                 data << uint32(mapid);
 
                 if (m_transport)
-                    data << float(m_movementInfo.GetTransportPos()->y);
+                    data << float(m_movementInfo.GetTransportPos()->z);
                 else
-                    data << float(final_y);
+                    data << float(final_z);
 
                 GetSession()->SendPacket(&data);
                 SendSavedInstances();

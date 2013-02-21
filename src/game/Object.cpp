@@ -413,7 +413,7 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 updateFlags) const
 
             data->WriteGuidBytes<5, 7>(tGuid);
             *data << uint32(unit->m_movementInfo.GetTransportTime());
-            *data << float(unit->m_movementInfo.GetTransportPos()->o);
+            *data << float(NormalizeOrientation(unit->m_movementInfo.GetTransportPos()->o));
 
             if (hasTransportTime2)
                 *data << uint32(unit->m_movementInfo.GetTransportTime2());
