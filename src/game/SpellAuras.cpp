@@ -8983,7 +8983,21 @@ void SpellAuraHolder::_AddSpellAuraHolder()
     for (int32 i = 0; i < MAX_EFFECT_INDEX; ++i)
     {
         if (m_auras[i])
+        {
             flags |= (1 << i);
+
+            if (m_auras[i]->GetModifier()->m_amount)
+            {
+                switch (m_auras[i]->GetModifier()->m_auraname)
+                {
+                    case SPELL_AURA_SCHOOL_ABSORB:
+                        flags |= AFLAG_EFFECT_AMOUNT_SEND;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     if (GetCasterGuid() == GetTarget()->GetObjectGuid())
