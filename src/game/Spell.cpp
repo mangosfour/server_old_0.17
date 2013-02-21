@@ -6853,9 +6853,17 @@ uint32 Spell::CalculatePowerCost(SpellEntry const* spellInfo, Unit* caster, Spel
                 return 0;
         }
     }
-    SpellSchools school = GetFirstSchoolInMask(spell ? spell->m_spellSchoolMask : GetSpellSchoolMask(spellInfo));
+
+    SpellSchoolMask schoolMask = spell ? spell->m_spellSchoolMask : GetSpellSchoolMask(spellInfo);
     // Flat mod from caster auras by spell school
-    powerCost += caster->GetInt32Value(UNIT_FIELD_POWER_COST_MODIFIER + school);
+    Unit::AuraList const& pwrCostAuras = caster->GetAurasByType(SPELL_AURA_MOD_POWER_COST_SCHOOL);
+    for (Unit::AuraList::const_iterator itr = pwrCostAuras.begin(); itr != pwrCostAuras.end(); ++itr)
+    {
+        if (((*itr)->GetModifier()->m_miscvalue & schoolMask) &&
+            (!(*itr)->GetSpellEffect()->EffectMiscValueB || (*itr)->GetSpellEffect()->EffectMiscValueB & (1 << spellInfo->powerType)))
+            powerCost += (*itr)->GetModifier()->m_amount;
+    }
+
     // Shiv - costs 20 + weaponSpeed*10 energy (apply only to non-triggered spell with energy cost)
     if (spellInfo->HasAttribute(SPELL_ATTR_EX4_SPELL_VS_EXTEND_COST))
         powerCost += caster->GetAttackTime(OFF_ATTACK) / 100;
