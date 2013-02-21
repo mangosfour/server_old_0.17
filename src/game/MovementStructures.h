@@ -1535,9 +1535,9 @@ MovementStatusElements MovementStopAscendSequence[] =
 
 MovementStatusElements MovementStopPitchSequence[] =
 {
-    MSEPositionY,
     MSEPositionX,
     MSEPositionZ,
+    MSEPositionY,
     MSEGuidBit0,
     MSEGuidBit5,
     MSEGuidBit3,
@@ -2540,7 +2540,7 @@ MovementStatusElements* GetMovementStatusElementsSequence(uint16 opcode)
         case CMSG_MOVE_STOP_ASCEND:
             return MovementStopAscendSequence;
         case CMSG_MOVE_START_PITCH_DOWN:
-                return MovementStartPitchDownSequence;
+            return MovementStartPitchDownSequence;
         case CMSG_MOVE_START_PITCH_UP:
             return MovementStartPitchUpSequence;
         case CMSG_MOVE_STOP_PITCH:
