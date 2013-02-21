@@ -1024,8 +1024,6 @@ enum MangosStrings
     // Use for not-in-official-sources patches
     //                                    10000-10999
 
-    LANG_INVALID_REALMID                = 11001,
-
     // Use for custom patches             11000-11999
 
     // NOT RESERVED IDS                   12000-1999999999
