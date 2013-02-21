@@ -1775,7 +1775,7 @@ struct SpellEffectEntry
     int32     EffectMiscValueB;                             // 118-120  m_effectMiscValueB
     float     EffectPointsPerComboPoint;                    // 124-126  m_effectPointsPerCombo
     uint32    EffectRadiusIndex;                            // 94-96    m_effectRadiusIndex - spellradius.dbc
-    //uint32   EffectRadiusMaxIndex;                        // 97-99    4.0.0
+    uint32    EffectRadiusMaxIndex;                         // 97-99    4.0.0
     float     EffectRealPointsPerLevel;                     // 79-81    m_effectRealPointsPerLevel
     ClassFamilyMask EffectSpellClassMask;                   // 127-129  m_effectSpellClassMask
     uint32    EffectTriggerSpell;                           // 121-123  m_effectTriggerSpell
@@ -1788,6 +1788,14 @@ struct SpellEffectEntry
     // helpers
 
     int32 CalculateSimpleValue() const { return EffectBasePoints; }
+
+    uint32 GetRadiusIndex() const
+    {
+        if (EffectRadiusIndex != 0)
+            return EffectRadiusIndex;
+
+        return EffectRadiusMaxIndex;
+    }
 };
 
 // SpellEquippedItems.dbc

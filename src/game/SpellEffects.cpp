@@ -4575,7 +4575,7 @@ void Spell::EffectPersistentAA(SpellEffectEntry const* effect)
     if (!pCaster)
         pCaster = m_caster;
 
-    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->EffectRadiusIndex));
+    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->GetRadiusIndex()));
 
     if (Player* modOwner = pCaster->GetSpellModOwner())
         modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_RADIUS, radius);
@@ -4961,7 +4961,7 @@ void Spell::EffectSummonType(SpellEffectEntry const* effect)
     }
 
     // Set summon positions
-    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->EffectRadiusIndex));
+    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->GetRadiusIndex()));
     CreatureSummonPositions::iterator itr = summonPositions.begin();
     for (++itr; itr != summonPositions.end(); ++itr)        // In case of multiple summons around position for not-fist positions
     {
@@ -5814,7 +5814,7 @@ void Spell::EffectTeleUnitsFaceCaster(SpellEffectEntry const* effect)
         m_targets.getDestination(fx, fy, fz);
     else
     {
-        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->EffectRadiusIndex));
+        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->GetRadiusIndex()));
         m_caster->GetClosePoint(fx, fy, fz, unitTarget->GetObjectBoundingRadius(), dis);
     }
 
@@ -9316,7 +9316,7 @@ void Spell::EffectLeapForward(SpellEffectEntry const* effect)
 
     if (m_spellInfo->rangeIndex == 1)                       // self range
     {
-        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->EffectRadiusIndex));
+        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->GetRadiusIndex()));
 
         // before caster
         float fx, fy, fz;
@@ -9691,9 +9691,9 @@ void Spell::EffectTransmitted(SpellEffectEntry const* effect)
     if (m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION)
         m_targets.getDestination(fx, fy, fz);
     // FIXME: this can be better check for most objects but still hack
-    else if (effect->EffectRadiusIndex && m_spellInfo->speed == 0)
+    else if (effect->GetRadiusIndex() && m_spellInfo->speed == 0)
     {
-        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->EffectRadiusIndex));
+        float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(effect->GetRadiusIndex()));
         m_caster->GetClosePoint(fx, fy, fz, DEFAULT_WORLD_OBJECT_SIZE, dis);
     }
     else

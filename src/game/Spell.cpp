@@ -1658,9 +1658,12 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
     SpellEffectEntry const* spellEffect = m_spellInfo->GetSpellEffect(effIndex);
     SpellClassOptionsEntry const* classOpt = m_spellInfo->GetSpellClassOptions();
 
+    if (!spellEffect)
+        return;
+
     float radius;
-    if (spellEffect && spellEffect->EffectRadiusIndex)
-        radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->EffectRadiusIndex));
+    if (uint32 radiusIndex = spellEffect->GetRadiusIndex())
+        radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->GetRadiusIndex()));
     else
         radius = GetSpellMaxRange(sSpellRangeStore.LookupEntry(m_spellInfo->rangeIndex));
 
@@ -1902,7 +1905,7 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
                 case 24811:                                 // Draw Spirit (Lethon)
                 {
                     if (effIndex == EFFECT_INDEX_0)         // Copy range from EFF_1 to 0
-                        radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->EffectRadiusIndex));
+                        radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->GetRadiusIndex()));
                     break;
                 }
                 case 28241:                                 // Poison (Naxxramas, Grobbulus Cloud)
@@ -2988,7 +2991,7 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
                 // "at the base of", in difference to 0 which appear to be "directly in front of".
                 // TODO: some summoned will make caster be half inside summoned object. Need to fix
                 // that in the below code (nearpoint vs closepoint, etc).
-                if (!spellEffect || spellEffect->EffectRadiusIndex == 0)
+                if (!spellEffect || spellEffect->GetRadiusIndex() == 0)
                     radius = 0.0f;
 
                 if (m_spellInfo->Id == 50019)               // Hawk Hunting, problematic 50K radius
@@ -5811,7 +5814,7 @@ SpellCastResult Spell::CheckCast(bool strict)
                     if (target->GetOwnerGuid() != m_caster->GetObjectGuid())
                         return SPELL_FAILED_BAD_IMPLICIT_TARGETS;
 
-                    float dist = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->EffectRadiusIndex));
+                    float dist = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->GetRadiusIndex()));
                     if (!target->IsWithinDistInMap(m_caster,dist))
                         return SPELL_FAILED_OUT_OF_RANGE;
 
@@ -5851,7 +5854,7 @@ SpellCastResult Spell::CheckCast(bool strict)
                 if (m_targets.m_targetMask & (TARGET_FLAG_DEST_LOCATION | TARGET_FLAG_SOURCE_LOCATION))
                 {
                     UnitList targetsCombat;
-                    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->EffectRadiusIndex));
+                    float radius = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->GetRadiusIndex()));
 
                     FillAreaTargets(targetsCombat, radius, PUSH_DEST_CENTER, SPELL_TARGETS_AOE_DAMAGE);
 
@@ -6189,7 +6192,7 @@ SpellCastResult Spell::CheckCast(bool strict)
             case SPELL_EFFECT_LEAP:
             case SPELL_EFFECT_TELEPORT_UNITS_FACE_CASTER:
             {
-                float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->EffectRadiusIndex));
+                float dis = GetSpellRadius(sSpellRadiusStore.LookupEntry(spellEffect->GetRadiusIndex()));
                 float fx = m_caster->GetPositionX() + dis * cos(m_caster->GetOrientation());
                 float fy = m_caster->GetPositionY() + dis * sin(m_caster->GetOrientation());
                 // teleport a bit above terrain level to avoid falling below it
