@@ -116,7 +116,7 @@ void WorldSession::HandleSendMail(WorldPacket& recv_data)
     recv_data >> unk1;                                      // stationery?
     recv_data >> unk2;                                      // 0x00000000
 
-    recv_data >> money >> COD;                              // money and cod
+    recv_data >> COD >> money;                              // cod and money
 
     bodyLen = recv_data.ReadBits(12);
     subjectLen = recv_data.ReadBits(9);
