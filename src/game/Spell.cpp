@@ -6867,6 +6867,7 @@ uint32 Spell::CalculatePowerCost(SpellEntry const* spellInfo, Unit* caster, Spel
     // Shiv - costs 20 + weaponSpeed*10 energy (apply only to non-triggered spell with energy cost)
     if (spellInfo->HasAttribute(SPELL_ATTR_EX4_SPELL_VS_EXTEND_COST))
         powerCost += caster->GetAttackTime(OFF_ATTACK) / 100;
+
     // Apply cost mod by spell
     if (spell)
         if (Player* modOwner = caster->GetSpellModOwner())
@@ -6876,7 +6877,17 @@ uint32 Spell::CalculatePowerCost(SpellEntry const* spellInfo, Unit* caster, Spel
         powerCost = int32(powerCost / (1.117f * spellInfo->GetSpellLevel() / caster->getLevel() - 0.1327f));
 
     // PCT mod from user auras by school
-    powerCost = int32(powerCost * (1.0f + caster->GetFloatValue(UNIT_FIELD_POWER_COST_MULTIPLIER + school)));
+    float pctCostMultiplier = 1.0f;
+    Unit::AuraList const& pwrCostPctAuras = caster->GetAurasByType(SPELL_AURA_MOD_POWER_COST_SCHOOL_PCT);
+    for (Unit::AuraList::const_iterator itr = pwrCostPctAuras.begin(); itr != pwrCostPctAuras.end(); ++itr)
+    {
+        if (((*itr)->GetModifier()->m_miscvalue & schoolMask) &&
+            (!(*itr)->GetSpellEffect()->EffectMiscValueB || (*itr)->GetSpellEffect()->EffectMiscValueB & (1 << spellInfo->powerType)))
+            pctCostMultiplier += (*itr)->GetModifier()->m_amount / 100.0f;
+    }
+
+    // PCT mod from user auras by school
+    powerCost = int32(powerCost * pctCostMultiplier);
     if (powerCost < 0)
         powerCost = 0;
     return powerCost;
