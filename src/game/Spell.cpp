@@ -4872,6 +4872,29 @@ void Spell::TakePower()
     if (m_CastItem || m_triggeredByAuraSpell)
         return;
 
+    bool hit = true;
+    if (m_caster->GetTypeId() == TYPEID_PLAYER)
+    {
+        if (m_spellInfo->powerType == POWER_RAGE || m_spellInfo->powerType == POWER_ENERGY || m_spellInfo->powerType == POWER_HOLY_POWER)
+        {
+            ObjectGuid targetGuid = m_targets.getUnitTargetGuid();
+            if (!targetGuid.IsEmpty())
+                for (TargetList::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+                    if (ihit->targetGUID == targetGuid)
+                    {
+                        if (ihit->missCondition != SPELL_MISS_NONE && ihit->missCondition != SPELL_MISS_MISS)
+                            hit = false;
+                        if (ihit->missCondition != SPELL_MISS_NONE)
+                        {
+                            // lower spell cost on fail (by talent aura)
+                            if (Player* modOwner = ((Player*)m_caster)->GetSpellModOwner())
+                                modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_SPELL_COST_REFUND_ON_FAIL, m_powerCost);
+                        }
+                        break;
+                    }
+        }
+    }
+
     // health as power used
     if (m_spellInfo->powerType == POWER_HEALTH)
     {
