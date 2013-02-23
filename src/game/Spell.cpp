@@ -431,6 +431,7 @@ Spell::Spell(Unit* caster, SpellEntry const* info, bool triggered, ObjectGuid or
 
     m_runesState = 0;
     m_powerCost = 0;                                        // setup to correct value in Spell::prepare, don't must be used before.
+    m_usedHolyPower = 0;
     m_casttime = 0;                                         // setup to correct value in Spell::prepare, don't must be used before.
     m_timer = 0;                                            // will set to cast time in prepare
     m_duration = 0;
@@ -4909,6 +4910,31 @@ void Spell::TakePower()
     }
 
     Powers powerType = Powers(m_spellInfo->powerType);
+
+    if (powerType == POWER_HOLY_POWER)
+    {
+        m_usedHolyPower = m_powerCost;
+
+        // spells consume all holy power when successfully hit
+        if (hit)
+        {
+            // Divine Purpose
+            if (m_caster->HasAura(90174))
+            {
+                m_usedHolyPower = m_caster->GetMaxPower(POWER_HOLY_POWER);
+                return;
+            }
+            else
+                m_usedHolyPower = m_caster->GetPower(POWER_HOLY_POWER);
+        }
+
+        // Zealotry - does not take power
+        if (m_spellInfo->Id == 85696)
+            return;
+
+        m_caster->ModifyPower(powerType, -(int32)m_usedHolyPower);
+        return;
+    }
 
     if (powerType == POWER_RUNE)
     {
