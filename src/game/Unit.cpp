@@ -9466,7 +9466,7 @@ int32 Unit::CalculateSpellDamage(Unit const* target, SpellEntry const* spellProt
     return value;
 }
 
-int32 Unit::CalculateAuraDuration(SpellEntry const* spellProto, uint32 effectMask, int32 duration, Unit const* caster)
+int32 Unit::CalculateAuraDuration(SpellEntry const* spellProto, uint32 effectMask, int32 duration, Unit const* caster, Spell const* spell /*=NULL*/)
 {
     if (duration <= 0)
         return duration;
@@ -9531,6 +9531,12 @@ int32 Unit::CalculateAuraDuration(SpellEntry const* spellProto, uint32 effectMas
                     // Glyph of Blessing of Wisdom
                     if (Aura* aur = GetAura(57979, EFFECT_INDEX_0))
                         duration += aur->GetModifier()->m_amount * MINUTE * IN_MILLISECONDS;
+                }
+                // Inquisition
+                else if (spellProto->Id == 84963)
+                {
+                    if (spell && GetPowerIndex(POWER_HOLY_POWER) != INVALID_POWER_INDEX)
+                        duration *= spell->GetUsedHolyPower();
                 }
                 break;
             default:

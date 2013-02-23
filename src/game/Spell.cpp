@@ -1431,7 +1431,7 @@ void Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask)
                 }
             }
 
-            duration = unit->CalculateAuraDuration(m_spellInfo, effectMask, duration, m_caster);
+            duration = unit->CalculateAuraDuration(m_spellInfo, effectMask, duration, m_caster, this);
 
             if (duration != originalDuration)
             {
