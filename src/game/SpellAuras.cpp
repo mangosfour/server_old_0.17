@@ -383,7 +383,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleUnused,                                    //327 0 spells in 4.3.4
     &Aura::HandleNULL,                                      //328 3 spells in 4.3.4 Eclipse Mastery Driver Passive
     &Aura::HandleNULL,                                      //329 SPELL_AURA_MOD_RUNIC_POWER_REGEN 3 spells in 4.3.4
-    &Aura::HandleNULL,                                      //330 SPELL_AURA_ALLOW_CAST_WHILE_MOVING 16 spells in 4.3.4
+    &Aura::HandleNoImmediateEffect,                         //330 SPELL_AURA_ALLOW_CAST_WHILE_MOVING 16 spells in 4.3.4
     &Aura::HandleNULL,                                      //331 SPELL_AURA_MOD_WEATHER 10 spells in 4.3.4
     &Aura::HandleNULL,                                      //332 SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS 16 spells in 4.3.4
     &Aura::HandleNULL,                                      //333 SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_2 10 spells in 4.3.4
@@ -9360,6 +9360,8 @@ bool SpellAuraHolder::IsNeedVisibleSlot(Unit const* caster) const
     else if (IsSpellHaveAura(m_spellProto, SPELL_AURA_MOD_IGNORE_SHAPESHIFT))
         return true;
     else if (IsSpellHaveAura(m_spellProto, SPELL_AURA_IGNORE_UNIT_STATE))
+        return true;
+    else if (IsSpellHaveAura(m_spellProto, SPELL_AURA_ALLOW_CAST_WHILE_MOVING))
         return true;
 
     // passive auras (except totem auras) do not get placed in the slots

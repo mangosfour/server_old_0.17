@@ -3779,7 +3779,8 @@ void Unit::_UpdateAutoRepeatSpell()
     bool isAutoShot = m_currentSpells[CURRENT_AUTOREPEAT_SPELL]->m_spellInfo->Id == SPELL_ID_AUTOSHOT;
 
     // check movement
-    if (GetTypeId() == TYPEID_PLAYER && ((Player*)this)->isMoving())
+    if (GetTypeId() == TYPEID_PLAYER && ((Player*)this)->isMoving() &&
+        !HasAffectedAura(SPELL_AURA_ALLOW_CAST_WHILE_MOVING, m_currentSpells[CURRENT_AUTOREPEAT_SPELL]->m_spellInfo))
     {
         // cancel wand shoot
         if (!isAutoShot)
