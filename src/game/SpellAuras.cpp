@@ -402,7 +402,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleNULL,                                      //346 32 spells in 4.3.4 shows progressbar-like ui?
     &Aura::HandleNULL,                                      //347 SPELL_AURA_MOD_CD_FROM_HASTE 2 spells in 4.3.4
     &Aura::HandleNULL,                                      //348 SPELL_AURA_MOD_MONEY_TO_GUILD_BANK 2 spells in 4.3.4
-    &Aura::HandleNULL,                                      //349 SPELL_AURA_MOD_CURRENCY_GAIN 16 spells in 4.3.4
+    &Aura::HandleNoImmediateEffect,                         //349 SPELL_AURA_MOD_CURRENCY_GAIN 16 spells in 4.3.4
     &Aura::HandleNULL,                                      //350 SPELL_AURA_MOD_MATERIAL_GAIN 1 spells in 4.3.4
     &Aura::HandleNULL,                                      //351 8 spells in 4.3.4 archaeology-related
     &Aura::HandleNULL,                                      //352 SPELL_AURA_ALLOW_WORGEN_TRANSFORM 1 spells in 4.3.4 enables worgen<>human form switches
