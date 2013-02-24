@@ -7045,6 +7045,16 @@ int32 Unit::SpellBaseDamageBonusDone(SpellSchoolMask schoolMask)
 {
     int32 DoneAdvertisedBenefit = 0;
 
+    Unit::AuraList const& mOverrideSpellPowerAuras = GetAurasByType(SPELL_AURA_OVERRIDE_SPELL_POWER_BY_AP_PCT);
+    if (!mOverrideSpellPowerAuras.empty())
+    {
+        for (Unit::AuraList::const_iterator itr = mOverrideSpellPowerAuras.begin(); itr != mOverrideSpellPowerAuras.end(); ++itr)
+            if (schoolMask & (*itr)->GetModifier()->m_miscvalue)
+                DoneAdvertisedBenefit += (*itr)->GetModifier()->m_amount;
+
+        return int32(GetTotalAttackPowerValue(BASE_ATTACK) * (100.0f + DoneAdvertisedBenefit) / 100.0f);
+    }
+
     // ..done
     AuraList const& mDamageDone = GetAurasByType(SPELL_AURA_MOD_DAMAGE_DONE);
     for (AuraList::const_iterator i = mDamageDone.begin(); i != mDamageDone.end(); ++i)
@@ -7083,6 +7093,15 @@ int32 Unit::SpellBaseDamageBonusDone(SpellSchoolMask schoolMask)
                 DoneAdvertisedBenefit += int32(GetTotalAttackPowerValue(BASE_ATTACK) * (*i)->GetModifier()->m_amount / 100.0f);
         }
     }
+
+    // pct spell power modifier
+    Unit::AuraList const& mSpellPowerPctAuras = GetAurasByType(SPELL_AURA_MOD_INCREASE_SPELL_POWER_PCT);
+    for (Unit::AuraList::const_iterator itr = mSpellPowerPctAuras.begin(); itr != mSpellPowerPctAuras.end(); ++itr)
+    {
+        if (!(*itr)->GetModifier()->m_miscvalue || (*itr)->GetModifier()->m_miscvalue & schoolMask)
+            DoneAdvertisedBenefit = int32(DoneAdvertisedBenefit * (100.0f + (*itr)->GetModifier()->m_amount) / 100.0f);
+    }
+
     return DoneAdvertisedBenefit;
 }
 
@@ -7531,6 +7550,16 @@ int32 Unit::SpellBaseHealingBonusDone(SpellSchoolMask schoolMask)
 {
     int32 AdvertisedBenefit = 0;
 
+    Unit::AuraList const& mOverrideSpellPowerAuras = GetAurasByType(SPELL_AURA_OVERRIDE_SPELL_POWER_BY_AP_PCT);
+    if (!mOverrideSpellPowerAuras.empty())
+    {
+        for (Unit::AuraList::const_iterator itr = mOverrideSpellPowerAuras.begin(); itr != mOverrideSpellPowerAuras.end(); ++itr)
+            if (schoolMask & (*itr)->GetModifier()->m_miscvalue)
+                AdvertisedBenefit += (*itr)->GetModifier()->m_amount;
+
+        return int32(GetTotalAttackPowerValue(BASE_ATTACK) * (100.0f + AdvertisedBenefit) / 100.0f);
+    }
+
     AuraList const& mHealingDone = GetAurasByType(SPELL_AURA_MOD_HEALING_DONE);
     for (AuraList::const_iterator i = mHealingDone.begin(); i != mHealingDone.end(); ++i)
         if (!(*i)->GetModifier()->m_miscvalue || ((*i)->GetModifier()->m_miscvalue & schoolMask) != 0)
@@ -7560,6 +7589,15 @@ int32 Unit::SpellBaseHealingBonusDone(SpellSchoolMask schoolMask)
             if ((*i)->GetModifier()->m_miscvalue & schoolMask)
                 AdvertisedBenefit += int32(GetTotalAttackPowerValue(BASE_ATTACK) * (*i)->GetModifier()->m_amount / 100.0f);
     }
+
+    // pct spell power modifier
+    Unit::AuraList const& mSpellPowerPctAuras = GetAurasByType(SPELL_AURA_MOD_INCREASE_SPELL_POWER_PCT);
+    for (Unit::AuraList::const_iterator itr = mSpellPowerPctAuras.begin(); itr != mSpellPowerPctAuras.end(); ++itr)
+    {
+        if (!(*itr)->GetModifier()->m_miscvalue || (*itr)->GetModifier()->m_miscvalue & schoolMask)
+            AdvertisedBenefit = int32(AdvertisedBenefit * (100.0f + (*itr)->GetModifier()->m_amount) / 100.0f);
+    }
+
     return AdvertisedBenefit;
 }
 

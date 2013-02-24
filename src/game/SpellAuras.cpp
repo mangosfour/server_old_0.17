@@ -370,7 +370,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleNULL,                                      //314 SPELL_AURA_PREVENT_RESURRECTION 2 spells int 4.3.4 prevents ressurection ?
     &Aura::HandleNULL,                                      //315 SPELL_AURA_UNDERWATER_WALKING 4 spells in 4.3.4 underwater walking
     &Aura::HandleUnused,                                    //316 0 spells in 4.3.4
-    &Aura::HandleNULL,                                      //317 SPELL_AURA_MOD_INCREASE_SPELL_POWER_PCT 13 spells in 4.3.4
+    &Aura::HandleModIncreaseSpellPowerPct,                  //317 SPELL_AURA_MOD_INCREASE_SPELL_POWER_PCT 13 spells in 4.3.4, implemented in Unit::SpellBaseDamageBonusDone and Unit::SpellBaseHealingBonusDone
     &Aura::HandleAuraMastery,                               //318 SPELL_AURA_MASTERY 12 spells in 4.3
     &Aura::HandleNULL,                                      //319 SPELL_AURA_MOD_MELEE_ATTACK_SPEED 47 spells in 4.3.4
     &Aura::HandleNULL,                                      //320 SPELL_AURA_MOD_RANGED_ATTACK_SPEED 5 spells in 4.3.4
@@ -419,7 +419,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleNULL,                                      //363 1 spells in 4.3.4 Throw Totem
     &Aura::HandleUnused,                                    //364 0 spells in 4.3.4
     &Aura::HandleNULL,                                      //365 1 spells in 4.3.4 Max Far Clip Plane
-    &Aura::HandleNULL,                                      //366 SPELL_AURA_MOD_SPELL_POWER_OF_ATTACK_POWER 1 spells in 4.3.4
+    &Aura::HandleOverrideSpellPowerByAp,                    //366 SPELL_AURA_OVERRIDE_SPELL_POWER_BY_AP_PCT 1 spells in 4.3.4
     &Aura::HandleNULL,                                      //367 2 spells in 4.3.4 test spells
     &Aura::HandleUnused,                                    //368 0 spells in 4.3.4
     &Aura::HandleNULL,                                      //369 5 spells in 4.3.4 darkmoon faire related
@@ -10307,4 +10307,20 @@ void SpellAuraHolder::UnregisterAndCleanupTrackedAuras()
     }
 
     m_trackedAuraType = TRACK_AURA_TYPE_NOT_TRACKED;
+}
+
+void Aura::HandleModIncreaseSpellPowerPct(bool apply, bool Real)
+{
+    if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+        return;
+
+    ((Player*)GetTarget())->UpdateSpellDamageAndHealingBonus();
+}
+
+void Aura::HandleOverrideSpellPowerByAp(bool apply, bool Real)
+{
+    if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
+        return;
+
+    ((Player*)GetTarget())->UpdateSpellDamageAndHealingBonus();
 }

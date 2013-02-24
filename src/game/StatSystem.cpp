@@ -111,6 +111,8 @@ void Player::UpdateSpellDamageAndHealingBonus()
     // Get damage bonus for all schools
     for (int i = SPELL_SCHOOL_HOLY; i < MAX_SPELL_SCHOOL; ++i)
         SetStatInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + i, SpellBaseDamageBonusDone(SpellSchoolMask(1 << i)));
+
+    SetStatFloatValue(PLAYER_FIELD_OVERRIDE_SPELL_POWER_BY_AP_PCT, GetTotalAuraModifier(SPELL_AURA_OVERRIDE_SPELL_POWER_BY_AP_PCT));
 }
 
 bool Player::UpdateAllStats()
