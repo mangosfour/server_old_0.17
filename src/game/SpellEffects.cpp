@@ -2795,6 +2795,7 @@ void Spell::EffectDummy(SpellEffectEntry const* effect)
                         return;
 
                     m_caster->CastSpell(unitTarget, 74453, true);
+                    m_caster->CastSpell(unitTarget, 74454, true, NULL, NULL, m_caster->GetObjectGuid(), m_spellInfo);
                     return;
                 }
             }
