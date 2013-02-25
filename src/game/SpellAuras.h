@@ -337,8 +337,6 @@ class MANGOS_DLL_SPEC Aura
         void HandleModTargetResistance(bool apply, bool Real);
         void HandleAuraModAttackPowerPercent(bool apply, bool Real);
         void HandleAuraModRangedAttackPowerPercent(bool apply, bool Real);
-        void HandleAuraModRangedAttackPowerOfStatPercent(bool apply, bool Real);
-        void HandleAuraModAttackPowerOfStatPercent(bool apply, bool Real);
         void HandleAuraModAttackPowerOfArmor(bool apply, bool Real);
         void HandleSpiritOfRedemption(bool apply, bool Real);
         void HandleModManaRegen(bool apply, bool Real);
@@ -367,7 +365,6 @@ class MANGOS_DLL_SPEC Aura
         void HandleAuraIncreaseBaseHealthPercent(bool Apply, bool Real);
         void HandleNoReagentUseAura(bool Apply, bool Real);
         void HandlePhase(bool Apply, bool Real);
-        void HandleModTargetArmorPct(bool Apply, bool Real);
         void HandleAuraModAllCritChance(bool Apply, bool Real);
         void HandleAuraOpenStable(bool apply, bool Real);
         void HandleAuraAddMechanicAbilities(bool apply, bool Real);

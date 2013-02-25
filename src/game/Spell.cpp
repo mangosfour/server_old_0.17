@@ -1947,14 +1947,6 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
             break;
     }
 
-    Unit::AuraList const& mod = m_caster->GetAurasByType(SPELL_AURA_MOD_MAX_AFFECTED_TARGETS);
-    for (Unit::AuraList::const_iterator m = mod.begin(); m != mod.end(); ++m)
-    {
-        if (!(*m)->isAffectedOnSpell(m_spellInfo))
-            continue;
-        unMaxTargets += (*m)->GetModifier()->m_amount;
-    }
-
     std::list<GameObject*> tempTargetGOList;
 
     switch (targetMode)
