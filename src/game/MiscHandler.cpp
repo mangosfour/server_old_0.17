@@ -928,6 +928,9 @@ void WorldSession::HandleSetActionButtonOpcode(WorldPacket& recv_data)
             case ACTION_BUTTON_ITEM:
                 DETAIL_LOG("MISC: Added Item %u into button %u", action, button);
                 break;
+            case ACTION_BUTTON_EXPANDABLE:
+                DETAIL_LOG("MISC: Added Expandable action %u into button %u", action, button);
+                break;
             default:
                 sLog.outError("MISC: Unknown action button type %u for action %u into button %u", type, action, button);
                 return;
