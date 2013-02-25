@@ -111,6 +111,8 @@ void Player::UpdateSpellDamageAndHealingBonus()
     // Get damage bonus for all schools
     for (int i = SPELL_SCHOOL_HOLY; i < MAX_SPELL_SCHOOL; ++i)
         SetStatInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + i, SpellBaseDamageBonusDone(SpellSchoolMask(1 << i)));
+
+    SetStatFloatValue(PLAYER_FIELD_OVERRIDE_SPELL_POWER_BY_AP_PCT, GetTotalAuraModifier(SPELL_AURA_OVERRIDE_SPELL_POWER_BY_AP_PCT));
 }
 
 bool Player::UpdateAllStats()
@@ -311,21 +313,8 @@ void Player::UpdateAttackPowerAndDamage(bool ranged)
     float attPowerMod = GetModifierValue(unitMod, TOTAL_VALUE);
 
     // add dynamic flat mods
-    if (ranged)
+    if (!ranged)
     {
-        if ((getClassMask() & CLASSMASK_WAND_USERS) == 0)
-        {
-            AuraList const& mRAPbyStat = GetAurasByType(SPELL_AURA_MOD_RANGED_ATTACK_POWER_OF_STAT_PERCENT);
-            for (AuraList::const_iterator i = mRAPbyStat.begin(); i != mRAPbyStat.end(); ++i)
-                attPowerMod += int32(GetStat(Stats((*i)->GetModifier()->m_miscvalue)) * (*i)->GetModifier()->m_amount / 100.0f);
-        }
-    }
-    else
-    {
-        AuraList const& mAPbyStat = GetAurasByType(SPELL_AURA_MOD_ATTACK_POWER_OF_STAT_PERCENT);
-        for (AuraList::const_iterator i = mAPbyStat.begin(); i != mAPbyStat.end(); ++i)
-            attPowerMod += int32(GetStat(Stats((*i)->GetModifier()->m_miscvalue)) * (*i)->GetModifier()->m_amount / 100.0f);
-
         AuraList const& mAPbyArmor = GetAurasByType(SPELL_AURA_MOD_ATTACK_POWER_OF_ARMOR);
         for (AuraList::const_iterator iter = mAPbyArmor.begin(); iter != mAPbyArmor.end(); ++iter)
             // always: ((*i)->GetModifier()->m_miscvalue == 1 == SPELL_SCHOOL_MASK_NORMAL)
@@ -680,28 +669,6 @@ void Player::UpdateExpertise(WeaponAttackType attack)
 void Player::UpdateArmorPenetration()
 {
     m_armorPenetrationPct = GetRatingBonusValue(CR_ARMOR_PENETRATION);
-
-    AuraList const& armorAuras = GetAurasByType(SPELL_AURA_MOD_TARGET_ARMOR_PCT);
-    for (AuraList::const_iterator itr = armorAuras.begin(); itr != armorAuras.end(); ++itr)
-    {
-        // affects all weapons
-        if((*itr)->GetSpellProto()->GetEquippedItemClass() == -1)
-        {
-            m_armorPenetrationPct += (*itr)->GetModifier()->m_amount;
-            continue;
-        }
-
-        // dependent on weapon class
-        for (uint8 i = 0; i < MAX_ATTACK; ++i)
-        {
-            Item* weapon = GetWeaponForAttack(WeaponAttackType(i));
-            if (weapon && weapon->IsFitToSpellRequirements((*itr)->GetSpellProto()))
-            {
-                m_armorPenetrationPct += (*itr)->GetModifier()->m_amount;
-                break;
-            }
-        }
-    }
 }
 
 void Player::ApplyManaRegenBonus(int32 amount, bool apply)

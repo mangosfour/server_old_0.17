@@ -1471,7 +1471,7 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
     PlayerInfo const* info = sObjectMgr.GetPlayerInfo(pRace, pClass);
     if (!info)
     {
-        sLog.outError("Player %u has incorrect race/class pair. Don't build enum.", guid);
+        sLog.outError("%s has incorrect race/class pair. Don't build enum.", guid.GetString().c_str());
         return false;
     }
 
@@ -19532,11 +19532,11 @@ bool Player::BuyCurrencyFromVendorSlot(ObjectGuid vendorGuid, uint32 vendorslot,
     if (crItem->ExtendedCost)
         TakeExtendedCost(crItem->ExtendedCost, count);
 
-    ModifyCurrencyCount(currencyId, crItem->maxcount, true, false);
+    ModifyCurrencyCount(currencyId, crItem->maxcount, true, false, true);
 
 
     DEBUG_LOG("WORLD: BuyCurrencyFromVendorSlot - %s: Player %s buys currency %u amount %u count %u.",
-            vendorGuid.GetString().c_str(), GetGuidStr().c_str(), currencyId, crItem->maxcount, count);
+        vendorGuid.GetString().c_str(), GetGuidStr().c_str(), currencyId, crItem->maxcount, count);
 
     return true;
 }
@@ -23613,10 +23613,13 @@ uint32 Player::GetCurrencyWeekCount(uint32 id) const
     return itr != m_currencies.end() ? itr->second.weekCount : 0;
 }
 
-void Player::ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek, bool modifySeason)
+void Player::ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek, bool modifySeason, bool ignoreMultipliers)
 {
     if (!count)
         return;
+
+    if (!ignoreMultipliers && count > 0)
+        count *= GetTotalAuraMultiplierByMiscValue(SPELL_AURA_MOD_CURRENCY_GAIN, id);
 
     CurrencyTypesEntry const * currency = NULL;
 
@@ -23657,7 +23660,7 @@ void Player::ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek, bool m
         newWeekCount = 0;
 
     int32 totalCap = GetCurrencyTotalCap(currency);
-    if (totalCap && int32(totalCap) < newTotalCount)
+    if (totalCap && totalCap < newTotalCount)
     {
         int32 delta = newTotalCount - totalCap;
         newTotalCount = totalCap;
@@ -23718,13 +23721,13 @@ void Player::ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek, bool m
         }
 
         if (itr->first == CURRENCY_CONQUEST_ARENA_META || itr->first == CURRENCY_CONQUEST_BG_META)
-            ModifyCurrencyCount(CURRENCY_CONQUEST_POINTS, diff, modifyWeek);
+            ModifyCurrencyCount(CURRENCY_CONQUEST_POINTS, diff, modifyWeek, ignoreMultipliers);
     }
 }
 
 void Player::SetCurrencyCount(uint32 id, uint32 count)
 {
-    ModifyCurrencyCount(id, int32(count) - GetCurrencyCount(id));
+    ModifyCurrencyCount(id, int32(count) - GetCurrencyCount(id), false, false, true);
 }
 
 void Player::_LoadCurrencies(QueryResult* result)

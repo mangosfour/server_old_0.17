@@ -169,6 +169,7 @@ enum ActionButtonType
     ACTION_BUTTON_SPELL         = 0x00,
     ACTION_BUTTON_C             = 0x01,                     // click?
     ACTION_BUTTON_EQSET         = 0x20,
+    ACTION_BUTTON_EXPANDABLE    = 0x30,
     ACTION_BUTTON_MACRO         = 0x40,
     ACTION_BUTTON_CMACRO        = ACTION_BUTTON_C | ACTION_BUTTON_MACRO,
     ACTION_BUTTON_ITEM          = 0x80
@@ -1954,7 +1955,7 @@ class MANGOS_DLL_SPEC Player : public Unit
         uint32 GetCurrencySeasonCount(uint32 id) const;
         uint32 GetCurrencyWeekCount(uint32 id) const;
         void SendCurrencies() const;
-        void ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek = true, bool modifySeason = true);
+        void ModifyCurrencyCount(uint32 id, int32 count, bool modifyWeek = true, bool modifySeason = true, bool ignoreMultipliers = false);
         bool HasCurrencyCount(uint32 id, uint32 count) const { return GetCurrencyCount(id) >= count; }
         bool HasCurrencySeasonCount(uint32 id, uint32 count) const { return GetCurrencySeasonCount(id) >= count; }
         void SetCurrencyCount(uint32 id, uint32 count);

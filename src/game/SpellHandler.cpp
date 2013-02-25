@@ -388,6 +388,24 @@ void WorldSession::HandleCastSpellOpcode(WorldPacket& recvPacket)
         }
     }
 
+    Unit::AuraList swaps = mover->GetAurasByType(SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS);
+    Unit::AuraList const& swaps2 = mover->GetAurasByType(SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_2);
+    if (!swaps2.empty())
+        swaps.insert(swaps.end(), swaps2.begin(), swaps2.end());
+
+    for (Unit::AuraList::const_iterator itr = swaps.begin(); itr != swaps.end(); ++itr)
+    {
+        if ((*itr)->isAffectedOnSpell(spellInfo))
+        {
+            if (SpellEntry const* newInfo = sSpellStore.LookupEntry((*itr)->GetModifier()->m_amount))
+            {
+                spellInfo = newInfo;
+                spellId = newInfo->Id;
+            }
+            break;
+        }
+    }
+
     // client provided targets
     SpellCastTargets targets;
 

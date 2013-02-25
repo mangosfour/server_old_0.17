@@ -431,6 +431,7 @@ Spell::Spell(Unit* caster, SpellEntry const* info, bool triggered, ObjectGuid or
 
     m_runesState = 0;
     m_powerCost = 0;                                        // setup to correct value in Spell::prepare, don't must be used before.
+    m_usedHolyPower = 0;
     m_casttime = 0;                                         // setup to correct value in Spell::prepare, don't must be used before.
     m_timer = 0;                                            // will set to cast time in prepare
     m_duration = 0;
@@ -1430,7 +1431,7 @@ void Spell::DoSpellHitOnUnit(Unit* unit, uint32 effectMask)
                 }
             }
 
-            duration = unit->CalculateAuraDuration(m_spellInfo, effectMask, duration, m_caster);
+            duration = unit->CalculateAuraDuration(m_spellInfo, effectMask, duration, m_caster, this);
 
             if (duration != originalDuration)
             {
@@ -1944,14 +1945,6 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
         }
         default:
             break;
-    }
-
-    Unit::AuraList const& mod = m_caster->GetAurasByType(SPELL_AURA_MOD_MAX_AFFECTED_TARGETS);
-    for (Unit::AuraList::const_iterator m = mod.begin(); m != mod.end(); ++m)
-    {
-        if (!(*m)->isAffectedOnSpell(m_spellInfo))
-            continue;
-        unMaxTargets += (*m)->GetModifier()->m_amount;
     }
 
     std::list<GameObject*> tempTargetGOList;
@@ -3928,7 +3921,8 @@ void Spell::update(uint32 difftime)
     // check if the player caster has moved before the spell finished
     if ((m_caster->GetTypeId() == TYPEID_PLAYER && m_timer != 0) &&
         (m_castPositionX != m_caster->GetPositionX() || m_castPositionY != m_caster->GetPositionY() || m_castPositionZ != m_caster->GetPositionZ()) &&
-        ((spellEffect && spellEffect->Effect != SPELL_EFFECT_STUCK) || !((Player*)m_caster)->m_movementInfo.HasMovementFlag(MOVEFLAG_FALLINGFAR)))
+        ((spellEffect && spellEffect->Effect != SPELL_EFFECT_STUCK) || !((Player*)m_caster)->m_movementInfo.HasMovementFlag(MOVEFLAG_FALLINGFAR)) &&
+        !m_caster->HasAffectedAura(SPELL_AURA_ALLOW_CAST_WHILE_MOVING, m_spellInfo))
     {
         // always cancel for channeled spells
         if (m_spellState == SPELL_STATE_CASTING)
@@ -4872,6 +4866,29 @@ void Spell::TakePower()
     if (m_CastItem || m_triggeredByAuraSpell)
         return;
 
+    bool hit = true;
+    if (m_caster->GetTypeId() == TYPEID_PLAYER)
+    {
+        if (m_spellInfo->powerType == POWER_RAGE || m_spellInfo->powerType == POWER_ENERGY || m_spellInfo->powerType == POWER_HOLY_POWER)
+        {
+            ObjectGuid targetGuid = m_targets.getUnitTargetGuid();
+            if (!targetGuid.IsEmpty())
+                for (TargetList::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+                    if (ihit->targetGUID == targetGuid)
+                    {
+                        if (ihit->missCondition != SPELL_MISS_NONE && ihit->missCondition != SPELL_MISS_MISS)
+                            hit = false;
+                        if (ihit->missCondition != SPELL_MISS_NONE)
+                        {
+                            // lower spell cost on fail (by talent aura)
+                            if (Player* modOwner = ((Player*)m_caster)->GetSpellModOwner())
+                                modOwner->ApplySpellMod(m_spellInfo->Id, SPELLMOD_SPELL_COST_REFUND_ON_FAIL, m_powerCost);
+                        }
+                        break;
+                    }
+        }
+    }
+
     // health as power used
     if (m_spellInfo->powerType == POWER_HEALTH)
     {
@@ -4886,6 +4903,31 @@ void Spell::TakePower()
     }
 
     Powers powerType = Powers(m_spellInfo->powerType);
+
+    if (powerType == POWER_HOLY_POWER)
+    {
+        m_usedHolyPower = m_powerCost;
+
+        // spells consume all holy power when successfully hit
+        if (hit)
+        {
+            // Divine Purpose
+            if (m_caster->HasAura(90174))
+            {
+                m_usedHolyPower = m_caster->GetMaxPower(POWER_HOLY_POWER);
+                return;
+            }
+            else
+                m_usedHolyPower = m_caster->GetPower(POWER_HOLY_POWER);
+        }
+
+        // Zealotry - does not take power
+        if (m_spellInfo->Id == 85696)
+            return;
+
+        m_caster->ModifyPower(powerType, -(int32)m_usedHolyPower);
+        return;
+    }
 
     if (powerType == POWER_RUNE)
     {
@@ -5274,7 +5316,7 @@ SpellCastResult Spell::CheckCast(bool strict)
     {
         // cancel autorepeat spells if cast start when moving
         // (not wand currently autorepeat cast delayed to moving stop anyway in spell update code)
-        if (((Player*)m_caster)->isMoving())
+        if (((Player*)m_caster)->isMoving() && !m_caster->HasAffectedAura(SPELL_AURA_ALLOW_CAST_WHILE_MOVING, m_spellInfo))
         {
             // skip stuck spell to allow use it in falling case and apply spell limitations at movement
             if ((!((Player*)m_caster)->m_movementInfo.HasMovementFlag(MOVEFLAG_FALLINGFAR) || m_spellInfo->GetSpellEffectIdByIndex(EFFECT_INDEX_0) != SPELL_EFFECT_STUCK) &&

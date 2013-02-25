@@ -122,7 +122,8 @@ enum SpellModOp
     // spellmod 25 unused
     SPELLMOD_FREQUENCY_OF_SUCCESS   = 26,                   // Only used with SPELL_AURA_ADD_PCT_MODIFIER and affects used on proc spells
     SPELLMOD_MULTIPLE_VALUE         = 27,
-    SPELLMOD_RESIST_DISPEL_CHANCE   = 28
+    SPELLMOD_RESIST_DISPEL_CHANCE   = 28,
+    SPELLMOD_SPELL_COST_REFUND_ON_FAIL = 30,
 };
 
 #define MAX_SPELLMOD 32
@@ -1904,7 +1905,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
 
         uint32 CalcNotIgnoreAbsorbDamage(uint32 damage, SpellSchoolMask damageSchoolMask, SpellEntry const* spellInfo = NULL);
         uint32 CalcNotIgnoreDamageReduction(uint32 damage, SpellSchoolMask damageSchoolMask);
-        int32 CalculateAuraDuration(SpellEntry const* spellProto, uint32 effectMask, int32 duration, Unit const* caster);
+        int32 CalculateAuraDuration(SpellEntry const* spellProto, uint32 effectMask, int32 duration, Unit const* caster, Spell const* spell = NULL);
 
         float CalculateLevelPenalty(SpellEntry const* spellProto) const;
 
