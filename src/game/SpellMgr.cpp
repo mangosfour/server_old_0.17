@@ -3410,20 +3410,20 @@ void SpellMgr::LoadSpellScriptTarget()
     // Check all spells
     if (!sLog.HasLogFilter(LOG_FILTER_DB_STRICTED_CHECK))
     {
-        for (uint32 i = 1; i < sSpellStore.GetFieldCount(); ++i)
+        for (uint32 i = 1; i < sSpellStore.GetNumRows(); ++i)
         {
             SpellEntry const* spellInfo = sSpellStore.LookupEntry(i);
-            if(!spellInfo)
+            if (!spellInfo)
                 continue;
 
             SpellEffectEntry const* spellEffect = spellInfo->GetSpellEffect(SpellEffectIndex(i));
             if(!spellEffect)
                 continue;
 
-            bool found = false;
             for (int j = 0; j < MAX_EFFECT_INDEX; ++j)
             {
-                if (spellEffect->EffectImplicitTargetA == TARGET_SCRIPT || spellEffect->EffectImplicitTargetA != TARGET_SELF && spellEffect->EffectImplicitTargetB == TARGET_SCRIPT)
+                if (spellEffect && (spellEffect->EffectImplicitTargetA == TARGET_SCRIPT ||
+                                    (spellEffect->EffectImplicitTargetA != TARGET_SELF && spellEffect->EffectImplicitTargetB == TARGET_SCRIPT)))
                 {
                     SQLMultiStorage::SQLMSIteratorBounds<SpellTargetEntry> bounds = sSpellScriptTargetStorage.getBounds<SpellTargetEntry>(i);
                     if (bounds.first == bounds.second)
