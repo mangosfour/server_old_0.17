@@ -8958,6 +8958,8 @@ void SpellAuraHolder::_AddSpellAuraHolder()
                 switch (m_auras[i]->GetModifier()->m_auraname)
                 {
                     case SPELL_AURA_SCHOOL_ABSORB:
+                    case SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS:
+                    case SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_2:
                         flags |= AFLAG_EFFECT_AMOUNT_SEND;
                         break;
                     default:
