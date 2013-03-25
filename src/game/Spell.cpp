@@ -2003,7 +2003,7 @@ void Spell::SetTargetMap(SpellEffectIndex effIndex, uint32 targetMode, UnitList&
                 float dest_z = m_caster->GetPositionZ();
                 if (!MapManager::IsValidMapCoord(m_caster->GetMapId(), dest_x, dest_y, dest_z))
                 {
-                    sLog.outError("Spell::SetTargetMap: invalid map coordinates for spell %u eff_idx %u target mode %u: mapid %u x %f y %f z %f\n" 
+                    sLog.outError("Spell::SetTargetMap: invalid map coordinates for spell %u eff_idx %u target mode %u: mapid %u x %f y %f z %f\n"
                         "spell radius: %f caster position: x %f y %f z %f\n"
                         "base dest position: x %f y %f z %f",
                         m_spellInfo->Id, effIndex, targetMode, m_caster->GetMapId(), dest_x, dest_y, dest_z,
@@ -4212,7 +4212,7 @@ void Spell::SendCastResult(Player* caster, SpellEntry const* spellInfo, uint8 ca
         case SPELL_FAILED_EQUIPPED_ITEM_CLASS:
             {
                 SpellEquippedItemsEntry const* eqItems = spellInfo->GetSpellEquippedItems();
-                data << uint32(eqItems ? eqItems->EquippedItemClass : 0);
+                data << uint32(eqItems ? eqItems->EquippedItemClass : -1);
                 data << uint32(eqItems ? eqItems->EquippedItemSubClassMask : 0);
                 //data << uint32(eqItems ? eqItems->EquippedItemInventoryTypeMask : 0);
             }
@@ -4221,7 +4221,7 @@ void Spell::SendCastResult(Player* caster, SpellEntry const* spellInfo, uint8 ca
         case SPELL_FAILED_EQUIPPED_ITEM_CLASS_OFFHAND:
         {
             SpellEquippedItemsEntry const* eqItems = spellInfo->GetSpellEquippedItems();
-            data << uint32(eqItems ? eqItems->EquippedItemClass : 0);
+            data << uint32(eqItems ? eqItems->EquippedItemClass : -1);
             data << uint32(eqItems ? eqItems->EquippedItemSubClassMask : 0);
             break;
         }
