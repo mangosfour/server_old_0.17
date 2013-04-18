@@ -835,29 +835,29 @@ struct CurrencyTypesEntry
 struct DestructibleModelDataEntry
 {
     uint32 m_ID;                                            // 0        m_ID
-    uint32 damagedDisplayId;                                // 1
-    // uint32 unk1;                                         // 2
-    // uint32 unk2;                                         // 3
-    // uint32 unk3;                                         // 4
-    uint32 destroyedDisplayId;                              // 5
-    // uint32 unk4;                                         // 6
-    // uint32 unk5;                                         // 7
-    // uint32 unk6;                                         // 8
-    // uint32 unk7;                                         // 9
-    uint32 rebuildingDisplayId;                             // 10       // Maybe rebuildingDisplayIdWhileDestroyed
-    // uint32 unk8;                                         // 11
-    // uint32 unk9;                                         // 12
-    // uint32 unk10;                                        // 13
-    // uint32 unk11;                                        // 14
-    // uint32 smokeDisplayId;                               // 15
-    // uint32 unk12;                                        // 16
-    // uint32 unk13;                                        // 17
-    // uint32 unk14;                                        // 18
-    // uint32 unk15;                                        // 19
-    // uint32 unk16;                                        // 20
-    // uint32 unk17;                                        // 21
-    // uint32 unk18;                                        // 22
-    // uint32 unk19;                                        // 23
+    uint32 intactDisplayId;                                 // 1
+    // uint32 unk2;                                         // 2
+    // uint32 unk3;                                         // 3
+    // uint32 unk4;                                         // 4
+    uint32 damagedDisplayId;                                // 5
+    // uint32 unk6;                                         // 6
+    // uint32 unk7;                                         // 7
+    // uint32 unk8;                                         // 8
+    // uint32 unk9;                                         // 9
+    uint32 destroyedDisplayId;                              // 10
+    // uint32 unk11;                                        // 11
+    // uint32 unk12;                                        // 12
+    // uint32 unk13;                                        // 13
+    // uint32 unk14;                                        // 14
+    uint32 rebuildingDisplayId;                             // 15
+    // uint32 unk16;                                        // 16
+    // uint32 unk17;                                        // 17
+    // uint32 unk18;                                        // 18
+    // uint32 unk19;                                        // 19
+    //uint32 smokeDisplayId;                                // 20
+    // uint32 unk21;                                        // 21
+    // uint32 unk22;                                        // 22
+    // uint32 unk23;                                        // 23
 };
 
 struct DungeonEncounterEntry
