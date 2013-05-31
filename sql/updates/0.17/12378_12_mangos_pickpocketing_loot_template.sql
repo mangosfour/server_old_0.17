@@ -1,4 +1,0 @@
-ALTER TABLE db_version CHANGE COLUMN required_12378_11_mangos_mail_loot_template required_12378_12_mangos_pickpocketing_loot_template bit;
-
-
-ALTER TABLE mail_loot_template DROP COLUMN lootcondition, DROP COLUMN condition_value1, DROP COLUMN condition_value2;
