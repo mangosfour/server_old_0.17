@@ -803,7 +803,7 @@ void LoadDBCStores(const std::string& dataPath)
 
             // fix DK node at Ebon Hold
             if (i == 315)
-                ((TaxiNodesEntry*)node)->MountCreatureID[1] = 32981;
+                (const_cast<TaxiNodesEntry*>(node))->MountCreatureID[1] = node->MountCreatureID[0];
         }
     }
 
