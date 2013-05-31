@@ -237,11 +237,16 @@ inline bool IsExplicitDiscoverySpell(SpellEntry const* spellInfo)
 inline bool IsLootCraftingSpell(SpellEntry const* spellInfo)
 {
     SpellEffectEntry const* spellEffect0 = spellInfo->GetSpellEffect(EFFECT_INDEX_0);
+    if (!spellEffect0)
+        return false;
+
     SpellTotemsEntry const* totems = spellInfo->GetSpellTotems();
-    return (spellEffect0 && (spellEffect0->Effect == SPELL_EFFECT_CREATE_RANDOM_ITEM ||
-        // different random cards from Inscription (121==Virtuoso Inking Set category) r without explicit item
-        (spellEffect0->Effect == SPELL_EFFECT_CREATE_ITEM_2 &&
-        ((totems && totems->TotemCategory[0] != 0) || spellEffect0->EffectItemType==0))));
+
+    return spellEffect0->Effect == SPELL_EFFECT_CREATE_RANDOM_ITEM ||
+        // different random cards from Inscription (121==Virtuoso Inking Set category) or without explicit item or explicit spells
+        spellEffect0->Effect == SPELL_EFFECT_CREATE_ITEM_2 &&
+        (totems && totems->TotemCategory[0] != 0 || spellEffect0->EffectItemType == 0) ||
+        spellInfo->Id == 62941;
 }
 
 int32 CompareAuraRanks(uint32 spellId_1, uint32 spellId_2);
