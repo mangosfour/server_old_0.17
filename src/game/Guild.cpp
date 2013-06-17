@@ -1844,6 +1844,7 @@ void Guild::AppendDisplayGuildBankSlot(WorldPacket& data, ByteBuffer& buffer, Gu
         }
     }
 
+    data.WriteBit(0);                                                   // unk
     data.WriteBits(enchCount, 23);                                      // number of enchantments
 
     buffer << uint32(0);
