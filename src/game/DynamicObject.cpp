@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -83,6 +83,17 @@ bool DynamicObject::Create(uint32 guidlow, Unit* caster, uint32 spellId, SpellEf
 
     SetGuidValue(DYNAMICOBJECT_CASTER, caster->GetObjectGuid());
 
+    /* Bytes field, so it's really 4 bit fields. These flags are unknown, but we do know that 0x00000001 is set for most.
+       Farsight for example, does not have this flag, instead it has 0x80000002.
+       Flags are set dynamically with some conditions, so one spell may have different flags set, depending on those conditions.
+       The size of the visual may be controlled to some degree with these flags.
+
+    uint32 bytes = 0x00000000;
+    bytes |= 0x01;
+    bytes |= 0x00 << 8;
+    bytes |= 0x00 << 16;
+    bytes |= 0x00 << 24;
+    */
     SetUInt32Value(DYNAMICOBJECT_BYTES, spellProto->SpellVisual[0] | (type << 28));
 
     SetUInt32Value(DYNAMICOBJECT_SPELLID, spellId);

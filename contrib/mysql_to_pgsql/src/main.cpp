@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -334,4 +334,5 @@ int main(int argc, char* argv[])
 
     printf("end\n");
     return 0;
+
 }

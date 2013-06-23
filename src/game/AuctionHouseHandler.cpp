@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -233,7 +233,7 @@ AuctionHouseEntry const* WorldSession::GetCheckedAuctionHouseForAuctioneer(Objec
 // this void creates new auction and adds auction to some auctionhouse
 void WorldSession::HandleAuctionSellItem(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_SELL_ITEM");
+    DEBUG_LOG("WORLD: HandleAuctionSellItem");
 
     ObjectGuid auctioneerGuid;
     uint32 etime, itemCount;
@@ -374,7 +374,7 @@ void WorldSession::HandleAuctionSellItem(WorldPacket& recv_data)
 // this function is called when client bids or buys out auction
 void WorldSession::HandleAuctionPlaceBid(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_PLACE_BID");
+    DEBUG_LOG("WORLD: HandleAuctionPlaceBid");
 
     ObjectGuid auctioneerGuid;
     uint32 auctionId;
@@ -456,7 +456,7 @@ void WorldSession::HandleAuctionPlaceBid(WorldPacket& recv_data)
 // this void is called when auction_owner cancels his auction
 void WorldSession::HandleAuctionRemoveItem(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_REMOVE_ITEM");
+    DEBUG_LOG("WORLD: HandleAuctionRemoveItem");
 
     ObjectGuid auctioneerGuid;
     uint32 auctionId;
@@ -528,7 +528,7 @@ void WorldSession::HandleAuctionRemoveItem(WorldPacket& recv_data)
 // called when player lists his bids
 void WorldSession::HandleAuctionListBidderItems(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_LIST_BIDDER_ITEMS");
+    DEBUG_LOG("WORLD: HandleAuctionListBidderItems");
 
     ObjectGuid auctioneerGuid;                              // NPC guid
     uint32 listfrom;                                        // page of auctions
@@ -583,7 +583,7 @@ void WorldSession::HandleAuctionListBidderItems(WorldPacket& recv_data)
 // this void sends player info about his auctions
 void WorldSession::HandleAuctionListOwnerItems(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_LIST_OWNER_ITEMS");
+    DEBUG_LOG("WORLD: HandleAuctionListOwnerItems");
 
     ObjectGuid auctioneerGuid;
     uint32 listfrom;
@@ -619,7 +619,7 @@ void WorldSession::HandleAuctionListOwnerItems(WorldPacket& recv_data)
 // this void is called when player clicks on search button
 void WorldSession::HandleAuctionListItems(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_LIST_ITEMS");
+    DEBUG_LOG("WORLD: HandleAuctionListItems");
 
     ObjectGuid auctioneerGuid;
     std::string searchedname;
@@ -702,7 +702,7 @@ void WorldSession::HandleAuctionListItems(WorldPacket& recv_data)
 
 void WorldSession::HandleAuctionListPendingSales(WorldPacket& recv_data)
 {
-    DEBUG_LOG("WORLD: CMSG_AUCTION_LIST_PENDING_SALES");
+    DEBUG_LOG("CMSG_AUCTION_LIST_PENDING_SALES");
 
     ObjectGuid auctioneerGuid;
 
