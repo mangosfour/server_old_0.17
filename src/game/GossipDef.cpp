@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -855,15 +855,15 @@ void PlayerMenu::SendQuestGiverOfferReward(Quest const* pQuest, ObjectGuid npcGU
     data << uint32(0);                          // unk, unused bonus arena points?
     data << uint32(0);                          // rep reward show mask?
 
-    for(int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)        // reward factions ids
+    for (int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)       // reward factions ids
         data << uint32(pQuest->RewRepFaction[i]);
 
-    for(int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)        // columnid in QuestFactionReward.dbc (if negative, from second row)
+    for (int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)       // columnid in QuestFactionReward.dbc (if negative, from second row)
         data << int32(pQuest->RewRepValueId[i]);
 
-    for(int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)        // reward reputation override. No diplomacy bonus is expected given, reward also does not display in chat window
+    for (int i = 0; i < QUEST_REPUTATIONS_COUNT; ++i)       // reward reputation override. No diplomacy bonus is expected given, reward also does not display in chat window
         data << int32(0);
-        //data << int32(pQuest->RewRepValue[i]);
+    // data << int32(pQuest->RewRepValue[i]);
 
     data << uint32(pQuest->GetRewSpell());                  // reward spell, this spell will display (icon) (casted if RewSpellCast==0)
     data << uint32(pQuest->GetRewSpellCast());              // casted spell

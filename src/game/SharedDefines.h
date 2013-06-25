@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -166,6 +166,7 @@ enum Powers
 
 enum SpellSchools
 {
+    /// Physical, Armor
     SPELL_SCHOOL_NORMAL                 = 0,
     SPELL_SCHOOL_HOLY                   = 1,
     SPELL_SCHOOL_FIRE                   = 2,
@@ -177,10 +178,15 @@ enum SpellSchools
 
 #define MAX_SPELL_SCHOOL                  7
 
+/**
+ * A bitmask of the available SpellSchools. Used for convenience
+ */
 enum SpellSchoolMask
 {
-    SPELL_SCHOOL_MASK_NONE    = 0x00,                       // not exist
-    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL), // PHYSICAL (Armor)
+    /// not exist
+    SPELL_SCHOOL_MASK_NONE    = 0x00,
+    /// PHYSICAL (Armor)
+    SPELL_SCHOOL_MASK_NORMAL  = (1 << SPELL_SCHOOL_NORMAL), 
     SPELL_SCHOOL_MASK_HOLY    = (1 << SPELL_SCHOOL_HOLY),
     SPELL_SCHOOL_MASK_FIRE    = (1 << SPELL_SCHOOL_FIRE),
     SPELL_SCHOOL_MASK_NATURE  = (1 << SPELL_SCHOOL_NATURE),
@@ -190,14 +196,14 @@ enum SpellSchoolMask
 
     // unions
 
-    // 124, not include normal and holy damage
+    /// 124, not include normal and holy damage
     SPELL_SCHOOL_MASK_SPELL   = (SPELL_SCHOOL_MASK_FIRE   |
                                  SPELL_SCHOOL_MASK_NATURE | SPELL_SCHOOL_MASK_FROST  |
                                  SPELL_SCHOOL_MASK_SHADOW | SPELL_SCHOOL_MASK_ARCANE),
-    // 126
+    /// 126
     SPELL_SCHOOL_MASK_MAGIC   = (SPELL_SCHOOL_MASK_HOLY | SPELL_SCHOOL_MASK_SPELL),
 
-    // 127
+    /// 127
     SPELL_SCHOOL_MASK_ALL     = (SPELL_SCHOOL_MASK_NORMAL | SPELL_SCHOOL_MASK_MAGIC)
 };
 
@@ -301,10 +307,10 @@ enum SpellAttributesEx
     SPELL_ATTR_EX_UNK19                        = 0x00080000,// 19
     SPELL_ATTR_EX_REQ_TARGET_COMBO_POINTS      = 0x00100000,// 20 Req combo points on target
     SPELL_ATTR_EX_UNK21                        = 0x00200000,// 21
-    SPELL_ATTR_EX_REQ_COMBO_POINTS             = 0x00400000,// 22 Use combo points
+    SPELL_ATTR_EX_REQ_COMBO_POINTS             = 0x00400000,// 22 Use combo points (in 4.x not required combo point target selected)
     SPELL_ATTR_EX_UNK23                        = 0x00800000,// 23
     SPELL_ATTR_EX_UNK24                        = 0x01000000,// 24 Req fishing pole??
-    SPELL_ATTR_EX_UNK25                        = 0x02000000,// 25
+    SPELL_ATTR_EX_UNK25                        = 0x02000000,// 25 not set in 2.4.2
     SPELL_ATTR_EX_UNK26                        = 0x04000000,// 26
     SPELL_ATTR_EX_UNK27                        = 0x08000000,// 27
     SPELL_ATTR_EX_UNK28                        = 0x10000000,// 28
@@ -323,18 +329,18 @@ enum SpellAttributesEx2
     SPELL_ATTR_EX2_AUTOREPEAT_FLAG             = 0x00000020,// 5
     SPELL_ATTR_EX2_UNK6                        = 0x00000040,// 6 only usable on tabbed by yourself
     SPELL_ATTR_EX2_UNK7                        = 0x00000080,// 7
-    SPELL_ATTR_EX2_UNK8                        = 0x00000100,// 8 not set in 3.0.3
+    SPELL_ATTR_EX2_UNK8                        = 0x00000100,// 8 not set in 2.4.2 or 3.0.3
     SPELL_ATTR_EX2_UNK9                        = 0x00000200,// 9
     SPELL_ATTR_EX2_UNK10                       = 0x00000400,// 10
     SPELL_ATTR_EX2_HEALTH_FUNNEL               = 0x00000800,// 11
     SPELL_ATTR_EX2_UNK12                       = 0x00001000,// 12
     SPELL_ATTR_EX2_UNK13                       = 0x00002000,// 13
     SPELL_ATTR_EX2_UNK14                       = 0x00004000,// 14
-    SPELL_ATTR_EX2_UNK15                       = 0x00008000,// 15 not set in 3.0.3
+    SPELL_ATTR_EX2_UNK15                       = 0x00008000,// 15 not set in 2.4.2 or 3.0.3
     SPELL_ATTR_EX2_UNK16                       = 0x00010000,// 16
     SPELL_ATTR_EX2_UNK17                       = 0x00020000,// 17 suspend weapon timer instead of resetting it, (?Hunters Shot and Stings only have this flag?)
     SPELL_ATTR_EX2_UNK18                       = 0x00040000,// 18 Only Revive pet - possible req dead pet
-    SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT         = 0x00080000,// 19 does not necessarly need shapeshift
+    SPELL_ATTR_EX2_NOT_NEED_SHAPESHIFT         = 0x00080000,// 19 does not necessarily need shapeshift (pre-3.x not have passive spells with this attribute)
     SPELL_ATTR_EX2_UNK20                       = 0x00100000,// 20
     SPELL_ATTR_EX2_DAMAGE_REDUCED_SHIELD       = 0x00200000,// 21 for ice blocks, pala immunity buffs, priest absorb shields, but used also for other spells -> not sure!
     SPELL_ATTR_EX2_UNK22                       = 0x00400000,// 22
@@ -1354,11 +1360,18 @@ enum SpellImmunity
 
 #define MAX_SPELL_IMMUNITY           6
 
+/**
+ * The different types of attacks you can do with 
+ * weapons
+ */
 enum WeaponAttackType
 {
+    ///Main-hand weapon
     BASE_ATTACK   = 0,
+    ///Off-hand weapon
     OFF_ATTACK    = 1,
-    RANGED_ATTACK = 2
+    ///Ranged weapon, bow/wand etc.
+    RANGED_ATTACK = 2  
 };
 
 #define MAX_ATTACK  3
@@ -1461,7 +1474,7 @@ enum Targets
     TARGET_VEHICLE_PASSENGER_6         = 102,
     TARGET_VEHICLE_PASSENGER_7         = 103,
     TARGET_IN_FRONT_OF_CASTER_30       = 104,
-    TARGET_105                         = 105,
+    TARGET_105                         = 105,               // 1 spell
     TARGET_106                         = 106,
     TARGET_107                         = 107,               // possible TARGET_WMO(GO?)_IN_FRONT_OF_CASTER(_30 ?) TODO: Verify the angle!
     TARGET_GO_IN_FRONT_OF_CASTER_90    = 108,
@@ -1512,11 +1525,19 @@ enum SpellHitType
     SPELL_HIT_TYPE_UNK6 = 0x00020
 };
 
+/**
+ * TODO: Find out where these are used except for Unit::CalculateSpellDamage
+ * and dox it properly
+ */
 enum SpellDmgClass
 {
+    /// Counted as a spell damage
     SPELL_DAMAGE_CLASS_NONE     = 0,
+    /// Counted as a spell damage
     SPELL_DAMAGE_CLASS_MAGIC    = 1,
+    /// Melee damage
     SPELL_DAMAGE_CLASS_MELEE    = 2,
+    /// Ranged damage
     SPELL_DAMAGE_CLASS_RANGED   = 3
 };
 
@@ -1527,21 +1548,27 @@ enum SpellPreventionType
     SPELL_PREVENTION_TYPE_PACIFY    = 2
 };
 
-// indexes from SpellRange.dbc, listed only special and used in code
+/// indexes from SpellRange.dbc, listed only special and used in code
 enum SpellRangeIndex
 {
-    SPELL_RANGE_IDX_SELF_ONLY = 1,                          // 0.0
-    SPELL_RANGE_IDX_COMBAT    = 2,                          // 5.5 (but dynamic)
-    SPELL_RANGE_IDX_ANYWHERE  = 13,                         // 500000 (anywhere)
+    /// 0.0
+    SPELL_RANGE_IDX_SELF_ONLY = 1,
+    /// 5.5 (but dynamic), seems to indicate melee range
+    SPELL_RANGE_IDX_COMBAT    = 2,
+    /// 500000 (anywhere)
+    SPELL_RANGE_IDX_ANYWHERE  = 13,                         
 };
 
 enum DamageEffectType
 {
-    DIRECT_DAMAGE           = 0,                            // used for normal weapon damage (not for class abilities or spells)
-    SPELL_DIRECT_DAMAGE     = 1,                            // spell/class abilities damage
+    /// Used for normal weapon damage (not for class abilities or spells)
+    DIRECT_DAMAGE           = 0,
+    /// spell/class abilities damage
+    SPELL_DIRECT_DAMAGE     = 1,                            
     DOT                     = 2,
     HEAL                    = 3,
-    NODAMAGE                = 4,                            // used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
+    /// used also in case when damage applied to health but not applied to spell channelInterruptFlags/etc
+    NODAMAGE                = 4,                            
     SELF_DAMAGE             = 5
 };
 

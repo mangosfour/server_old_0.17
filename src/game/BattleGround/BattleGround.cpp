@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -127,6 +127,7 @@ namespace MaNGOS
             Creature const* i_source;
             va_list* i_args;
     };
+
 
     class BattleGround2ChatBuilder
     {
@@ -444,7 +445,6 @@ void BattleGround::Update(uint32 diff)
             }
             else
             {
-
                 PlaySoundToAll(SOUND_BG_START);
 
                 for (BattleGroundPlayerMap::const_iterator itr = m_Players.begin(); itr != m_Players.end(); ++itr)
@@ -803,6 +803,9 @@ void BattleGround::EndBattleGround(Team winner)
 
     if (isArena() && isRated() && winner_arena_team && loser_arena_team)
     {
+        // update arena points only after increasing the player's match count!
+        // obsolete: winner_arena_team->UpdateArenaPointsHelper();
+        // obsolete: loser_arena_team->UpdateArenaPointsHelper();
         // save the stat changes
         winner_arena_team->SaveToDB();
         loser_arena_team->SaveToDB();
@@ -1357,7 +1360,7 @@ void BattleGround::UpdatePlayerScore(Player* Source, uint32 type, uint32 value)
                     itr->second->BonusHonor += value;
             }
             break;
-            // used only in EY, but in SMSG_PVP_LOG_DATA opcode
+            // used only in EY, but in MSG_PVP_LOG_DATA opcode
         case SCORE_DAMAGE_DONE:                             // Damage Done
             itr->second->DamageDone += value;
             break;

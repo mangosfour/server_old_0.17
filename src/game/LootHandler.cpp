@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -187,7 +187,7 @@ void WorldSession::HandleAutostoreLootItemOpcode(WorldPacket& recv_data)
         player->SendEquipError(msg, NULL, NULL, item->itemid);
 }
 
-void WorldSession::HandleLootMoneyOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandleLootMoneyOpcode(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: CMSG_LOOT_MONEY");
 
@@ -272,7 +272,8 @@ void WorldSession::HandleLootMoneyOpcode(WorldPacket& /*recv_data*/)
 
                 WorldPacket data(SMSG_LOOT_MONEY_NOTIFY, 4 + 1);
                 data << uint32(money_per_player);
-                data << uint8(playersNear.size() > 1 ? 0 : 1);  // 0 is "you share of loot..."
+                data << uint8(playersNear.size() > 1 ? 0 : 1);// 0 is "you share of loot..."
+
                 (*i)->GetSession()->SendPacket(&data);
             }
         }

@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -173,7 +173,7 @@ void BattleGroundAB::AddPlayer(Player* plr)
     m_PlayerScores[plr->GetObjectGuid()] = sc;
 }
 
-void BattleGroundAB::RemovePlayer(Player* /*plr*/, ObjectGuid /*guid*/)
+void BattleGroundAB::RemovePlayer(Player * /*plr*/, ObjectGuid /*guid*/)
 {
 }
 

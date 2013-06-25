@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -975,6 +975,7 @@ bool ChatHandler::HandleGameObjectTurnCommand(char* args)
     obj->SetWorldRotationAngles(z_rot, y_rot, x_rot);
     obj->SaveToDB();
     PSendSysMessage(LANG_COMMAND_TURNOBJMESSAGE, obj->GetGUIDLow(), obj->GetGOInfo()->name, obj->GetGUIDLow());
+
     return true;
 }
 
@@ -1359,7 +1360,6 @@ bool ChatHandler::HandleCharacterAchievementsCommand(char* args)
 void ChatHandler::ShowFactionListHelper(FactionEntry const* factionEntry, LocaleConstant loc, FactionState const* repState /*= NULL*/, Player* target /*= NULL */)
 {
     std::string name = factionEntry->name[loc];
-
     // send faction in "id - [faction] rank reputation [visible] [at war] [own team] [unknown] [invisible] [inactive]" format
     // or              "id - [faction] [no reputation]" format
     std::ostringstream ss;
@@ -2284,7 +2284,7 @@ bool ChatHandler::HandleNpcUnFollowCommand(char* /*args*/)
     }
 
     FollowMovementGenerator<Creature> const* mgen
-        = static_cast<FollowMovementGenerator<Creature> const*>((creature->GetMotionMaster()->top()));
+    = static_cast<FollowMovementGenerator<Creature> const*>((creature->GetMotionMaster()->top()));
 
     if (mgen->GetTarget() != player)
     {
@@ -2440,7 +2440,6 @@ bool ChatHandler::HandleNpcSubNameCommand(char* /*args*/)
 
     if (strlen((char*)args)>75)
     {
-
         PSendSysMessage(LANG_TOO_LONG_SUBNAME, strlen((char*)args)-75);
         return true;
     }
@@ -2519,6 +2518,7 @@ bool ChatHandler::HandleDeMorphCommand(char* /*args*/)
     Unit* target = getSelectedUnit();
     if (!target)
         target = m_session->GetPlayer();
+
 
     // check online security
     else if (target->GetTypeId() == TYPEID_PLAYER && HasLowerSecurity((Player*)target))
@@ -2916,7 +2916,7 @@ bool ChatHandler::HandleDelTicketCommand(char* args)
     return true;
 }
 
-/*
+/**
  * Add a waypoint to a creature.
  *
  * The user can either select an npc or provide its GUID.
@@ -3082,7 +3082,7 @@ bool ChatHandler::HandleWpAddCommand(char* args)
     return true;
 }                                                           // HandleWpAddCommand
 
-/*
+/**
  * .wp modify emote | spell | text | del | move | add
  *
  * add -> add a WP after the selected visual waypoint
@@ -3476,7 +3476,7 @@ bool ChatHandler::HandleWpModifyCommand(char* args)
     return true;
 }
 
-/*
+/**
  * .wp show info | on | off
  *
  * info -> User has selected a visual waypoint before

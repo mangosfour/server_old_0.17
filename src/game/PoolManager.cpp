@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -191,6 +191,7 @@ void PoolGroup<T>::SetExcludeObject(uint32 guid, bool state)
         }
     }
 }
+
 
 template <class T>
 PoolObject* PoolGroup<T>::RollOne(SpawnedPoolData& spawns, uint32 triggerFrom)
@@ -505,6 +506,7 @@ void PoolGroup<Pool>::ReSpawn1Object(MapPersistentState& /*mapState*/, PoolObjec
 {
 }
 
+
 ////////////////////////////////////////////////////////////
 // Methods of class PoolManager
 
@@ -630,7 +632,6 @@ void PoolManager::LoadFromDB()
     }
     else
     {
-
         BarGoLink bar2(result->GetRowCount());
         do
         {
@@ -769,7 +770,6 @@ void PoolManager::LoadFromDB()
     }
     else
     {
-
         BarGoLink bar2(result->GetRowCount());
         do
         {
@@ -841,7 +841,6 @@ void PoolManager::LoadFromDB()
     }
     else
     {
-
         BarGoLink bar2(result->GetRowCount());
         do
         {
@@ -926,7 +925,6 @@ void PoolManager::LoadFromDB()
     }
     else
     {
-
         BarGoLink bar2(result->GetRowCount());
         do
         {

@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -876,7 +876,8 @@ ByteBuffer& operator<<(ByteBuffer& b, LootView const& lv)
     uint8 itemsShown = 0;
     uint8 currenciesShown = 0;
 
-    b << uint32(l.gold);                                    // gold
+    // gold
+    b << uint32(l.gold);
 
     size_t count_pos = b.wpos();                            // pos of item count byte
     b << uint8(0);                                          // item count placeholder

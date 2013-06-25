@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -100,6 +100,7 @@ class DBCFileLoader
         static uint32 GetFormatStringsFields(const char * format);
 
     private:
+
         uint32 recordSize;
         uint32 recordCount;
         uint32 fieldCount;

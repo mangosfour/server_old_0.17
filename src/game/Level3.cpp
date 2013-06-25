@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -850,7 +850,6 @@ bool ChatHandler::HandleReloadBattleEventCommand(char* /*args*/)
 
 bool ChatHandler::HandleReloadEventAITextsCommand(char* /*args*/)
 {
-
     sLog.outString("Re-Loading Texts from `creature_ai_texts`...");
     sEventAIMgr.LoadCreatureEventAI_Texts(true);
     SendGlobalSysMessage("DB table `creature_ai_texts` reloaded.");
@@ -3104,6 +3103,7 @@ bool ChatHandler::HandleListCreatureCommand(char* args)
     return true;
 }
 
+
 void ChatHandler::ShowItemListHelper(uint32 itemId, int loc_idx, Player* target /*=NULL*/)
 {
     ItemPrototype const* itemProto = sItemStorage.LookupEntry<ItemPrototype >(itemId);
@@ -4117,9 +4117,8 @@ bool ChatHandler::HandleAuraCommand(char* args)
             continue;
 
         uint8 eff = spellEffect->Effect;
-        if (eff>=TOTAL_SPELL_EFFECTS)
+        if (eff >= TOTAL_SPELL_EFFECTS)
             continue;
-
         if (IsAreaAuraEffect(eff)           ||
                 eff == SPELL_EFFECT_APPLY_AURA  ||
                 eff == SPELL_EFFECT_PERSISTENT_AREA_AURA)
@@ -6796,6 +6795,7 @@ bool ChatHandler::ShowPlayerListHelper(QueryResult* result, uint32* limit, bool 
     return true;
 }
 
+
 /// Output list of character for account
 bool ChatHandler::HandleAccountCharactersCommand(char* args)
 {
@@ -6883,6 +6883,8 @@ bool ChatHandler::HandleSendMassMailCommand(char* args)
     PSendSysMessage(LANG_MAIL_SENT, name);
     return true;
 }
+
+
 
 bool ChatHandler::HandleSendItemsHelper(MailDraft& draft, char* args)
 {
@@ -7000,6 +7002,7 @@ bool ChatHandler::HandleSendMassItemsCommand(char* args)
 
     // need dynamic object because it trasfered to mass mailer
     MailDraft* draft = new MailDraft;
+
 
     // fill mail
     if (!HandleSendItemsHelper(*draft, args))

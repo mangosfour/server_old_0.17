@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -32,6 +32,7 @@
 // only arena event
 // cause this buff apears 90sec after start in every bg i implement it here
 #define ARENA_BUFF_EVENT 253
+
 
 class Creature;
 class GameObject;
@@ -171,7 +172,6 @@ enum BattleGroundQueueTypeId
     BATTLEGROUND_QUEUE_3v3      = 10,
     BATTLEGROUND_QUEUE_5v5      = 11,
 };
-
 #define MAX_BATTLEGROUND_QUEUE_TYPES 12
 
 enum ScoreType
@@ -180,7 +180,7 @@ enum ScoreType
     SCORE_DEATHS                = 2,
     SCORE_HONORABLE_KILLS       = 3,
     SCORE_BONUS_HONOR           = 4,
-    // EY, but in SMSG_PVP_LOG_DATA opcode!
+    // EY, but in MSG_PVP_LOG_DATA opcode!
     SCORE_DAMAGE_DONE           = 5,
     SCORE_HEALING_DONE          = 6,
     // WS
@@ -231,6 +231,7 @@ enum BattleGroundStartingEventsIds
 
 enum GroupJoinBattlegroundResult
 {
+    // positive values are indexes in BattlemasterList.dbc
     ERR_BATTLEGROUND_NONE                           = 0,
     ERR_GROUP_JOIN_BATTLEGROUND_DESERTERS           = 2,    // You cannot join the battleground yet because you or one of your party members is flagged as a Deserter.
     ERR_ARENA_TEAM_PARTY_SIZE                       = 3,    // Incorrect party size for this arena.

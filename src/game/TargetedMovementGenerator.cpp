@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -238,7 +238,7 @@ bool FollowMovementGenerator<Player>::EnableWalking() const
 }
 
 template<>
-void FollowMovementGenerator<Player>::_updateSpeed(Player& /*u*/)
+void FollowMovementGenerator<Player>::_updateSpeed(Player &/*u*/)
 {
     // nothing to do for Player
 }

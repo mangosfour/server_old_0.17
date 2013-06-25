@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@ void WorldSession::SendTradeStatus(TradeStatus status)
     data.WriteBit(false);
     data.WriteBits(status, 5);
 
-    switch(status)
+    switch (status)
     {
         case TRADE_STATUS_OPEN_WINDOW:
         {

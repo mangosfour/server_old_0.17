@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -262,7 +262,7 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recv_data)
     DEBUG_LOG("WORLD: Send SMSG_WHO Message");
 }
 
-void WorldSession::HandleLogoutRequestOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandleLogoutRequestOpcode(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: Received opcode CMSG_LOGOUT_REQUEST, security %u", GetSecurity());
 
@@ -309,12 +309,12 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket& /*recv_data*/)
     LogoutRequest(time(NULL));
 }
 
-void WorldSession::HandlePlayerLogoutOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandlePlayerLogoutOpcode(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: Received opcode CMSG_PLAYER_LOGOUT Message");
 }
 
-void WorldSession::HandleLogoutCancelOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandleLogoutCancelOpcode(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: Received opcode CMSG_LOGOUT_CANCEL Message");
 
@@ -939,12 +939,12 @@ void WorldSession::HandleSetActionButtonOpcode(WorldPacket& recv_data)
     }
 }
 
-void WorldSession::HandleCompleteCinematic(WorldPacket& /*recv_data*/)
+void WorldSession::HandleCompleteCinematic(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: Received opcode CMSG_COMPLETE_CINEMATIC");
 }
 
-void WorldSession::HandleNextCinematicCamera(WorldPacket& /*recv_data*/)
+void WorldSession::HandleNextCinematicCamera(WorldPacket & /*recv_data*/)
 {
     DEBUG_LOG("WORLD: Received opcode CMSG_NEXT_CINEMATIC_CAMERA");
 }
@@ -1085,6 +1085,7 @@ void WorldSession::HandleInspectHonorStatsOpcode(WorldPacket& recv_data)
     recv_data.ReadGuidBytes<4, 7, 0, 5, 1, 6, 2, 3>(guid);
 
     Player* player = sObjectMgr.GetPlayer(guid);
+
     if (!player)
     {
         sLog.outError("InspectHonorStats: WTF, player not found...");
@@ -1463,7 +1464,7 @@ void WorldSession::HandleMoveSetCanFlyAckOpcode(WorldPacket& recv_data)
     _player->GetMover()->m_movementInfo.SetMovementFlags(movementInfo.GetMovementFlags());
 }
 
-void WorldSession::HandleRequestPetInfoOpcode(WorldPacket& /*recv_data */)
+void WorldSession::HandleRequestPetInfoOpcode(WorldPacket & /*recv_data */)
 {
     /*
         DEBUG_LOG("WORLD: Received opcode CMSG_REQUEST_PET_INFO");

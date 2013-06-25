@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,6 +38,7 @@ void WorldSession::SendNameQueryOpcode(Player* p)
 {
     if (!p)
         return;
+
     // guess size
     WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 10));
     data << p->GetPackGUID();                               // player guid
@@ -101,6 +102,7 @@ void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32
         pGender      = fields[3].GetUInt8();
         pClass       = fields[4].GetUInt8();
     }
+
     // guess size
     WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 1 + 10));
     data << ObjectGuid(HIGHGUID_PLAYER, lowguid).WriteAsPacked();
@@ -139,7 +141,7 @@ void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
         SendNameQueryOpcodeFromDB(guid);
 }
 
-void WorldSession::HandleQueryTimeOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandleQueryTimeOpcode(WorldPacket & /*recv_data*/)
 {
     SendQueryTimeResponse();
 }
@@ -263,7 +265,7 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
     }
 }
 
-void WorldSession::HandleCorpseQueryOpcode(WorldPacket& /*recv_data*/)
+void WorldSession::HandleCorpseQueryOpcode(WorldPacket & /*recv_data*/)
 {
     DETAIL_LOG("WORLD: Received opcode MSG_CORPSE_QUERY");
 

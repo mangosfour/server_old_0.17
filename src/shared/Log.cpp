@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -637,7 +637,6 @@ void Log::outDetail(const char* str, ...)
 
     if (m_logLevel >= LOG_LVL_DETAIL)
     {
-
         if (m_colored)
             SetColor(true, m_colors[LogDetails]);
 
@@ -775,7 +774,6 @@ void Log::outCommand(uint32 account, const char* str, ...)
 
 void Log::outChar(const char* str, ...)
 {
-
     if (!str)
         return;
 

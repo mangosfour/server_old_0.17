@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -1037,6 +1037,7 @@ bool Object::PrintEntryError(char const* descr) const
     // always false for continue assert fail
     return false;
 }
+
 
 void Object::BuildUpdateDataForPlayer(Player* pl, UpdateDataMapType& update_players)
 {

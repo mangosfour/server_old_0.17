@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -314,12 +314,12 @@ void WorldSession::HandleTrainerBuySpellOpcode(WorldPacket& recv_data)
         _player->BuildSendPlayVisualPacket(&data, 0x016A, true);
         SendPacket(&data);
 
-        // learn explicitly or cast explicitly
-        // TODO - Are these spells really cast correctly this way?
-        if (trainer_spell->IsCastable())
-            _player->CastSpell(_player, trainer_spell->spell, true);
-        else
-            _player->learnSpell(spellId, false);
+    // learn explicitly or cast explicitly
+    // TODO - Are these spells really cast correctly this way?
+    if (trainer_spell->IsCastable())
+        _player->CastSpell(_player, trainer_spell->spell, true);
+    else
+        _player->learnSpell(spellId, false);
 
         sendData << ObjectGuid(guid);
         sendData << uint32(spellId);                                // should be same as in packet from client
@@ -772,7 +772,7 @@ void WorldSession::HandleBuyStableSlot(WorldPacket& recv_data)
         GetPlayer()->RemoveSpellsCausingAura(SPELL_AURA_FEIGN_DEATH);
 }
 
-void WorldSession::HandleStableRevivePet(WorldPacket& /* recv_data */)
+void WorldSession::HandleStableRevivePet(WorldPacket &/* recv_data */)
 {
     DEBUG_LOG("HandleStableRevivePet: Not implemented");
 }

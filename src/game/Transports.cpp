@@ -1,4 +1,4 @@
-/*
+/**
  * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -508,7 +508,6 @@ void Transport::Update(uint32 update_diff, uint32 /*p_time*/)
     m_timer = WorldTimer::getMSTime() % m_period;
     while (((m_timer - m_curr->first) % m_pathTime) > ((m_next->first - m_curr->first) % m_pathTime))
     {
-
         DoEventIfAny(*m_curr, true);
 
         MoveToNextWayPoint();
