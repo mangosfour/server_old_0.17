@@ -251,7 +251,7 @@ struct GameObjectInfo
             uint32 worldState1;                             //7
         } moTransport;
         // 16 GAMEOBJECT_TYPE_DUELFLAG - empty
-        // 17 GAMEOBJECT_TYPE_FISHINGNODE
+        //17 GAMEOBJECT_TYPE_FISHINGNODE - empty
         // 18 GAMEOBJECT_TYPE_SUMMONING_RITUAL
         struct
         {

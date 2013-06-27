@@ -122,18 +122,18 @@ enum Target
     // Self (m_creature)
     TARGET_T_SELF                           = 0,            // Self cast
 
-    // Hostile targets
+    // Hostile targets (if pet then returns pet owner)
     TARGET_T_HOSTILE,                                       // Our current target (ie: highest aggro)
     TARGET_T_HOSTILE_SECOND_AGGRO,                          // Second highest aggro (generaly used for cleaves and some special attacks)
     TARGET_T_HOSTILE_LAST_AGGRO,                            // Dead last on aggro (no idea what this could be used for)
     TARGET_T_HOSTILE_RANDOM,                                // Just any random target on our threat list
     TARGET_T_HOSTILE_RANDOM_NOT_TOP,                        // Any random target except top threat
 
-    // Invoker targets
+    // Invoker targets (if pet then returns pet owner)
     TARGET_T_ACTION_INVOKER,                                // Unit who caused this Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF)
     TARGET_T_ACTION_INVOKER_OWNER,                          // Unit who is responsible for Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF)
 
-    // Hostile players
+    // Hostile targets (including pets)
     TARGET_T_HOSTILE_RANDOM_PLAYER,                         // Just any random player on our threat list
     TARGET_T_HOSTILE_RANDOM_NOT_TOP_PLAYER,                 // Any random player from threat list except top threat
 
