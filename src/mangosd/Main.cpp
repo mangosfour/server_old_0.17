@@ -196,12 +196,12 @@ extern int main(int argc, char** argv)
                     " ###  #####  ### ###    ### ###    ####  #########   #########   ######### \n"
                     " ###   ###   ### ###    ### ###     ###   #######     #######     #######  \n"
                     "\n"
-                    "                                            ######                         \n"
-                    " Website: http://www.getmangos.co.uk          ##  ## ##  #####   ####  ####\n"
-                    "                                              ##  ## ##  ##  ##  ##    ##  \n"
-                    "    Wiki: http://github.com/mangoswiki/wiki   ##  #####  #####   ####  ####\n"
-                    "                                              ##  ## ##  ## ##   ##    ##  \n"
-                    "   Forum: http://community.getmangos.co.uk    ##  ## ##  ##  ##  ####  ####\n"
+                    "                                                 ######                    \n"
+                    " Website: http://www.getmangos.co.uk             ##     ###   ## ##  ##### \n"
+                    "                                                 ####  ## ##  ## ##  ##  ##\n"
+                    "    Wiki: http://github.com/mangoswiki/wiki      ##    ## ##  ## ##  ##### \n"
+                    "                                                 ##    ## ##  ## ##  ## ## \n"
+                    "   Forum: http://community.getmangos.co.uk       ##     ###    ###   ##  ##\n"
                     "\n\n");
     sLog.outString("Using configuration file %s.", cfg_file);
 

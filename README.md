@@ -1,8 +1,8 @@
-MaNGOS Three [![Build Status](https://travis-ci.org/mangosthree/server.png)](https://travis-ci.org/mangosthree/server)
-============
-*MaNGOS Three* is a full featured server for [World of Warcraft][2], in its Cataclysm
-version supporting clients from the [patch 4.3.4][50] branch, specifically patch
-4.3.4.
+MaNGOS Four [![Build Status](https://travis-ci.org/mangosfour/server.png)](https://travis-ci.org/mangosfour/server)
+===========
+*MaNGOS Four* is a full featured server for [World of Warcraft][2], in its Mists of Pandaria
+version supporting clients from the [patch 5.3.0][50] branch, specifically patch
+5.3.0.
 
 World of Warcraft, and all World of Warcraft or Warcraft art, images, and lore are
 copyrighted by [Blizzard Entertainment, Inc.][1].
@@ -10,8 +10,8 @@ copyrighted by [Blizzard Entertainment, Inc.][1].
 
 Build status
 ------------
-Each update to the *MaNGOS Three* sources is run through build tests using the
-Travis CI build service. The current build status can be viewed on the *MaNGOS Zero*
+Each update to the *MaNGOS Four* sources is run through build tests using the
+Travis CI build service. The current build status can be viewed on the *MaNGOS Four*
 [build status page][114], and for your convenience the build status also is shown
 at the top of this README when viewing the repository on [github][111]. If it's
 green, a successful build has been performed under Linux.
@@ -27,7 +27,7 @@ Please see our compilation and installation guides at our [Wiki][20]
 
 License
 -------
-*MaNGOS Three* is open source, and licensed under the terms of the GNU GPL version 2.
+*MaNGOS Four* is open source, and licensed under the terms of the GNU GPL version 2.
 
   Copyright (C) 2005-2013  MaNGOS <http://getmangos.co.uk>
 
@@ -67,16 +67,16 @@ License
 
 [20]: https://github.com/mangoswiki/Wiki/wiki/MaNGOS%20Installation/ "Wiki"
 
-[50]: http://www.wowpedia.org/Patch_4.3.4 "WoW Cataclysm· Patch 4.3.4 release notes"
+[50]: http://www.wowpedia.org/Patch_5.3.0 "WoW MOP · Patch 5.3.0 release notes"
 
 [100]: http://getmangos.co.uk/ "MaNGOS Community Project Website"
 [101]: http://community.getmangos.co.uk/ "MaNGOS Community Discussion Forums"
 
-[110]: http://github.com/mangosthree "MaNGOS Three · github organization"
-[111]: http://github.com/mangosthree/server "MaNGOS Three · server repository"
-[112]: http://github.com/mangosthree/scripts "MaNGOS Three · script extensions repository"
-[113]: http://github.com/mangosthree/database "MaNGOS Three · content database repository"
-[114]: https://travis-ci.org/mangosthree/server/ "MaNGOS Three · build status"
+[110]: http://github.com/mangosfour "MaNGOS Four · github organization"
+[111]: http://github.com/mangosfour/server "MaNGOS Four · server repository"
+[112]: http://github.com/mangosfour/scripts "MaNGOS Four · script extensions repository"
+[113]: http://github.com/mangosfour/database "MaNGOS Four · content database repository"
+[114]: https://travis-ci.org/mangosfour/server/ "MaNGOS Four · build status"
 
 [201]: http://www.microsoft.com/express/ "Visual Studio Express · free, limited edition"
 [202]: http://gcc.gnu.org/ "GCC"
