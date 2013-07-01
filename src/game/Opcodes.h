@@ -36,9 +36,9 @@
 enum Opcodes
 {
     MSG_WOW_CONNECTION                                    = 0x4F57, // 4.3.4 15595
-    SMSG_AUTH_CHALLENGE                                   = 0xCAF,  // 5.1.0a
-    CMSG_AUTH_SESSION                                     = 0xC07,  // 5.1.0a
-    SMSG_AUTH_RESPONSE                                    = 0xA15,  // 5.1.0a
+    SMSG_AUTH_CHALLENGE                                   = 0x0221, // 5.3.0 17055
+    CMSG_AUTH_SESSION                                     = 0x09F1, // 5.3.0 17055
+    SMSG_AUTH_RESPONSE                                    = 0x0890, // 5.3.0 17055
     MSG_NULL_ACTION                                       = 0x1001,
     CMSG_BOOTME                                           = 0x1002,
     CMSG_DBLOOKUP                                         = 0x1003,
@@ -93,14 +93,14 @@ enum Opcodes
     CMSG_AUTH_SRP6_BEGIN                                  = 0x1034,
     CMSG_AUTH_SRP6_PROOF                                  = 0x1035,
     CMSG_AUTH_SRP6_RECODE                                 = 0x1036,
-    CMSG_CHAR_CREATE                                      = 0x4A36, // 4.3.4 15595
-    CMSG_CHAR_ENUM                                        = 0x0502, // 4.3.4 15595
-    CMSG_CHAR_DELETE                                      = 0x6425, // 4.3.4 15595
+    CMSG_CHAR_CREATE                                      = 0x0404, // 5.3.0 17055
+    CMSG_CHAR_ENUM                                        = 0x0B1D, // 5.3.0 17055
+    CMSG_CHAR_DELETE                                      = 0x010C, // 5.3.0 17055
     SMSG_AUTH_SRP6_RESPONSE                               = 0x103A,
     SMSG_CHAR_CREATE                                      = 0x2D05, // 4.3.4 15595
     SMSG_CHAR_ENUM                                        = 0x10B0, // 4.3.4 15595
     SMSG_CHAR_DELETE                                      = 0x0304, // 4.3.4 15595
-    CMSG_PLAYER_LOGIN                                     = 0x05B1, // 4.3.4 15595
+    CMSG_PLAYER_LOGIN                                     = 0x0A19, // 5.3.0 17055
     SMSG_NEW_WORLD                                        = 0x79B1, // 4.3.4 15595
     SMSG_TRANSFER_PENDING                                 = 0x18A6, // 4.3.4 15595
     SMSG_TRANSFER_ABORTED                                 = 0x0537, // 4.3.4 15595
@@ -534,8 +534,8 @@ enum Opcodes
     SMSG_START_MIRROR_TIMER                               = 0x6824, // 4.3.4 15595
     SMSG_PAUSE_MIRROR_TIMER                               = 0x4015, // 4.3.4 15595
     SMSG_STOP_MIRROR_TIMER                                = 0x0B06, // 4.3.4 15595
-    CMSG_PING                                             = 0x444D, // 4.3.4 15595
-    SMSG_PONG                                             = 0x4D42, // 4.3.4 15595
+    CMSG_PING                                             = 0x08E3, // 5.3.0 17055
+    SMSG_PONG                                             = 0x1121, // 5.3.0 17055
     SMSG_CLEAR_COOLDOWNS                                  = 0x59B4, // 4.3.4 15595
     SMSG_GAMEOBJECT_PAGETEXT                              = 0x2925, // 4.3.4 15595
     CMSG_SETSHEATHED                                      = 0x4326, // 4.3.4 15595
@@ -555,7 +555,7 @@ enum Opcodes
     MSG_SAVE_GUILD_EMBLEM                                 = 0x2404, // 4.3.4 15595
     MSG_TABARDVENDOR_ACTIVATE                             = 0x6926, // 4.3.4 15595
     SMSG_PLAY_SPELL_VISUAL                                = 0x55A5, // 4.3.4 15595
-    CMSG_ZONEUPDATE                                       = 0x4F37, // 4.3.4 15595
+    CMSG_ZONEUPDATE                                       = 0x2000, // 5.3.0 17055 ?
     SMSG_PARTYKILLLOG                                     = 0x4937, // 4.3.4 15595
     SMSG_COMPRESSED_UPDATE_OBJECT                         = 0x11F7,
     SMSG_EXPLORATION_EXPERIENCE                           = 0x6716, // 4.3.4 15595
