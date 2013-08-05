@@ -1220,7 +1220,7 @@ CREATE TABLE `corpse` (
   `position_z` float NOT NULL DEFAULT '0',
   `orientation` float NOT NULL DEFAULT '0',
   `map` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Map Identifier',
-  `phaseMask` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `phaseMask` int(11) unsigned NOT NULL DEFAULT '1',
   `time` bigint(20) unsigned NOT NULL DEFAULT '0',
   `corpse_type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `instance` int(11) unsigned NOT NULL DEFAULT '0',
