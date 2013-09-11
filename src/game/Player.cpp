@@ -1478,6 +1478,7 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
     std::string name = fields[1].GetCppString();
     uint8 gender = fields[4].GetUInt8();
     uint32 playerBytes = fields[5].GetUInt32();
+	uint32 playerBytes2 = fields[6].GetUInt32();
     uint8 level = fields[7].GetUInt8();
     uint32 playerFlags = fields[14].GetUInt32();
     uint32 atLoginFlags = fields[15].GetUInt32();
