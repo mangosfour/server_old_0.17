@@ -49,8 +49,6 @@
 
 #include "vmapexport.h"
 
-#include "vmapexport.h"
-
 //------------------------------------------------------------------------------
 // Defines
 
@@ -61,20 +59,20 @@
 HANDLE WorldMpq = NULL;
 HANDLE LocaleMpq = NULL;
 
-uint32 CONF_TargetBuild = 15595;              // 4.3.4.15595
+uint32 CONF_TargetBuild = 17128;              //  5.3.0 17128
 
 // List MPQ for extract maps from
 char const* CONF_mpq_list[] =
 {
     "world.MPQ",
-    "art.MPQ",
+    "misc.MPQ",
     "expansion1.MPQ",
     "expansion2.MPQ",
     "expansion3.MPQ",
-    "world2.MPQ",
+    "expansion4.MPQ",
 };
 
-uint32 const Builds[] = {13164, 13205, 13287, 13329, 13596, 13623, 13914, 14007, 14333, 14480, 14545, 15005, 15050, 15211, 15354, 15595, 0};
+uint32 const Builds[] = {15005, 15050, 15211, 15354, 15595, 15890, 16016, 16048, 16057, 16309, 16357, 16516, 16650, 16769, 16844, 16965, 0};
 #define LAST_DBC_IN_DATA_BUILD 13623    // after this build mpqs with dbc are back to locale folder
 
 char* const Locales[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU"};
@@ -107,13 +105,13 @@ bool preciseVectorData = false;
 
 //static const char * szWorkDirMaps = ".\\Maps";
 const char* szWorkDirWmo = "./Buildings";
-const char* szRawVMAPMagic = "VMAPc04";
+const char* szRawVMAPMagic = "VMAPp04";
 
 bool LoadLocaleMPQFile(int locale)
 {
     TCHAR buff[512];
     memset(buff, 0, sizeof(buff));
-    _stprintf(buff, _T("%s%s/locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
+    _stprintf(buff, _T("%s/misc.MPQ"), input_path);
     if (!SFileOpenArchive(buff, 0, MPQ_OPEN_READ_ONLY, &LocaleMpq))
     {
         if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -122,19 +120,31 @@ bool LoadLocaleMPQFile(int locale)
     }
 
     char const* prefix = NULL;
+    _stprintf(buff, _T("%s%s/locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
+    prefix = "";
+    if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
+    {
+        if (GetLastError() != ERROR_FILE_NOT_FOUND)
+            _tprintf(_T("Cannot open archive %s\n"), buff);
+        return false;
+    }
+
+
     for (int i = 0; Builds[i] && Builds[i] <= CONF_TargetBuild; ++i)
     {
         memset(buff, 0, sizeof(buff));
-        if (Builds[i] > LAST_DBC_IN_DATA_BUILD)
+
+        prefix = "";
+        _stprintf(buff, _T("%s%s/wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
+
+        if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
         {
-            prefix = "";
-            _stprintf(buff, _T("%s%s/wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
+            if (GetLastError() != ERROR_FILE_NOT_FOUND)
+                _tprintf(_T("Cannot open patch archive %s\n"), buff);
         }
-        else
-        {
-            prefix = Locales[locale];
-            _stprintf(buff, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
-        }
+
+        prefix = Locales[locale];
+        _stprintf(buff, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
 
         if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
         {
@@ -161,7 +171,7 @@ void LoadCommonMPQFiles(uint32 build)
     int count = sizeof(CONF_mpq_list) / sizeof(char*);
     for (int i = 1; i < count; ++i)
     {
-        if (build < 15211 && !strcmp("world2.MPQ", CONF_mpq_list[i]))   // 4.3.2 and higher MPQ
+        if (build < 15211 && !strcmp("misc.MPQ", CONF_mpq_list[i]))   // 4.3.2 and higher MPQ
             continue;
 
         _stprintf(filename, _T("%s%s"), input_path, CONF_mpq_list[i]);
@@ -298,8 +308,6 @@ void ReadLiquidTypeTableDBC()
 bool ExtractWmo()
 {
     bool success = false;
-
-    //const char* ParsArchiveNames[] = {"patch-2.MPQ", "patch.MPQ", "common.MPQ", "expansion.MPQ"};
 
     SFILE_FIND_DATA data;
     HANDLE find = SFileFindFirstFile(WorldMpq, "*.wmo", &data, NULL);
@@ -528,6 +536,7 @@ bool processArgv(int argc, char** argv)
             break;
         }
     }
+
     if (!result)
     {
         printf("Extract for %s.\n", szRawVMAPMagic);

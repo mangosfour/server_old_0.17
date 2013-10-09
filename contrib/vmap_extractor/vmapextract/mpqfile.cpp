@@ -12,7 +12,8 @@ MPQFile::MPQFile(HANDLE mpq, const char* filename):
     HANDLE file;
     if (!SFileOpenFileEx(mpq, filename, SFILE_OPEN_PATCHED_FILE, &file))
     {
-        fprintf(stderr, "Can't open %s, err=%u!\n", filename, GetLastError());
+		//	A lot of files error, even when it's not an issue - hide for now to prevent confusion
+		//        fprintf(stderr, "Can't open %s, err=%u!\n", filename, GetLastError());
         eof = true;
         return;
     }
