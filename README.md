@@ -2,7 +2,7 @@ MaNGOS Four [![Build Status](https://travis-ci.org/mangosfour/server.png)](https
 ===========
 *MaNGOS Four* is a full featured server for [World of Warcraft][2], in its Mists of Pandaria
 version supporting clients from the [patch 5.3.0][50] branch, specifically patch
-5.3.0.
+5.3.0.17128
 
 World of Warcraft, and all World of Warcraft or Warcraft art, images, and lore are
 copyrighted by [Blizzard Entertainment, Inc.][1].
