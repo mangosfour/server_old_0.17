@@ -59,7 +59,7 @@ enum AchievementFlags
 {
     ACHIEVEMENT_FLAG_NONE                   = 0x00000000,
     ACHIEVEMENT_FLAG_COUNTER                = 0x00000001,   // ACHIEVEMENT_FLAG_STATISTIC Just count statistic (never stop and complete)
-    ACHIEVEMENT_FLAG_UNK2                   = 0x00000002,   // ACHIEVEMENT_FLAG_HIDDEN not used
+    ACHIEVEMENT_FLAG_HIDDEN                 = 0x00000002,   // ACHIEVEMENT_FLAG_HIDDEN Not show in client
     ACHIEVEMENT_FLAG_STORE_MAX_VALUE        = 0x00000004,   // ACHIEVEMENT_FLAG_HIDDEN_TILL_AWARDED Store only max value? used only in "Reach level xx"
     ACHIEVEMENT_FLAG_SUMM                   = 0x00000008,   // ACHIEVEMENT_FLAG_CUMULATIVE Use summ criteria value from all requirements (and calculate max value)
     ACHIEVEMENT_FLAG_MAX_USED               = 0x00000010,   // ACHIEVEMENT_FLAG_DISPLAY_HIGHEST Show max criteria (and calculate max value ??)
@@ -312,7 +312,7 @@ enum Difficulty
 
     DUNGEON_DIFFICULTY_NORMAL    = 0,
     DUNGEON_DIFFICULTY_HEROIC    = 1,
-    // DUNGEON_DIFFICULTY_EPIC    = 2,                      // not used, but exists
+    DUNGEON_DIFFICULTY_CHALLENGE = 2,                      // 5.x Challenge mode dungeons
 
     RAID_DIFFICULTY_10MAN_NORMAL = 0,
     RAID_DIFFICULTY_25MAN_NORMAL = 1,
@@ -320,7 +320,7 @@ enum Difficulty
     RAID_DIFFICULTY_25MAN_HEROIC = 3,
 };
 
-#define MAX_DUNGEON_DIFFICULTY     2
+#define MAX_DUNGEON_DIFFICULTY     3
 #define MAX_RAID_DIFFICULTY        4
 #define MAX_DIFFICULTY             4
 
@@ -330,7 +330,8 @@ enum SpawnMask
 
     SPAWNMASK_DUNGEON_NORMAL    = (1 << DUNGEON_DIFFICULTY_NORMAL),
     SPAWNMASK_DUNGEON_HEROIC    = (1 << DUNGEON_DIFFICULTY_HEROIC),
-    SPAWNMASK_DUNGEON_ALL       = (SPAWNMASK_DUNGEON_NORMAL | SPAWNMASK_DUNGEON_HEROIC),
+    SPAWNMASK_DUNGEON_CHALLENGE = (1 << DUNGEON_DIFFICULTY_CHALLENGE),
+    SPAWNMASK_DUNGEON_ALL       = (SPAWNMASK_DUNGEON_NORMAL | SPAWNMASK_DUNGEON_HEROIC | SPAWNMASK_DUNGEON_CHALLENGE),
 
     SPAWNMASK_RAID_10MAN_NORMAL = (1 << RAID_DIFFICULTY_10MAN_NORMAL),
     SPAWNMASK_RAID_25MAN_NORMAL = (1 << RAID_DIFFICULTY_25MAN_NORMAL),
@@ -364,7 +365,22 @@ enum MapTypes                                               // Lua_IsInInstance
     MAP_INSTANCE        = 1,                                // party
     MAP_RAID            = 2,                                // raid
     MAP_BATTLEGROUND    = 3,                                // pvp
-    MAP_ARENA           = 4                                 // arena
+    MAP_ARENA           = 4,                                // arena
+    MAP_SCENARIO        = 5                                 // scenario
+};
+
+enum MapFlags                                               // Map flags (need more research)
+{
+    MAP_FLAG_NONE                = 0x00000000,              // none specific
+    MAP_FLAG_INSTANCEABLE        = 0x00000001,              // or possible splittable for continent maps
+    MAP_FLAG_DEVELOPMENT         = 0x00000002,              // testing or development maps only
+    MAP_FLAG_UNK3                = 0x00000004,              //
+    MAP_FLAG_UNK4                = 0x00000008,              //
+    MAP_FLAG_UNK5                = 0x00000010,              //
+    MAP_FLAG_UNK6                = 0x00000020,              //
+    MAP_FLAG_UNK7                = 0x00000040,              //
+    MAP_FLAG_UNK8                = 0x00000080,              //
+    MAP_FLAG_VARIABLE_DIFFICULTY = 0x00000100,              // maps, where has changeable difficulty
 };
 
 enum AbilytyLearnType
@@ -428,6 +444,12 @@ enum ItemLimitCategory
     ITEM_LIMIT_CATEGORY_MANA_GEM   = 4,
 };
 
+enum MountFlags
+{
+    MOUNT_FLAG_CAN_PITCH            = 0x4,                  // client checks MOVEMENTFLAG2_FULL_SPEED_PITCHING
+    MOUNT_FLAG_CAN_SWIM             = 0x8,                  // client checks MOVEMENTFLAG_SWIMMING
+};
+
 enum TalentTreeRole
 {
     TALENT_ROLE_TANK    = 0x2,
@@ -456,7 +478,8 @@ enum SummonPropGroup
     SUMMON_PROP_GROUP_FRIENDLY          = 1,
     SUMMON_PROP_GROUP_PETS              = 2,
     SUMMON_PROP_GROUP_CONTROLLABLE      = 3,
-    SUMMON_PROP_GROUP_VEHICLE           = 4
+    SUMMON_PROP_GROUP_VEHICLE           = 4,
+    SUMMON_PROP_GROUP_UNCONTROLLABLE_VEHICLE        = 5
 };
 
 // SummonProperties.dbc, col 2          == FactionId        (m_faction)
@@ -595,6 +618,7 @@ enum VehicleFlags
 
 enum VehicleSeatFlags
 {
+    SEAT_FLAG_NONE                  = 0x00000000,           //
     SEAT_FLAG_UNK1                  = 0x00000001,           // "HasLowerAnimForEnter"
     SEAT_FLAG_UNK2                  = 0x00000002,           // "HasLowerAnimForRide"
     SEAT_FLAG_UNK3                  = 0x00000004,
@@ -605,12 +629,12 @@ enum VehicleSeatFlags
     SEAT_FLAG_UNK8                  = 0x00000080,
     SEAT_FLAG_UNK9                  = 0x00000100,
     SEAT_FLAG_HIDE_PASSENGER        = 0x00000200,           // Passenger is hidden
-    SEAT_FLAG_UNK10                 = 0x00000400,           // "AllowsTurning"
+    SEAT_FLAG_FREE_ACTION           = 0x00000400,           // "AllowsTurning"
     SEAT_FLAG_CAN_CONTROL           = 0x00000800,           // Lua_UnitInVehicleControlSeat
     SEAT_FLAG_UNK11                 = 0x00001000,           // "Can Cast Mount Spell"
-    SEAT_FLAG_UNK12                 = 0x00002000,           // "Uncontrolled"
+    SEAT_FLAG_UNCONTROLLED          = 0x00002000,           // Seat uncontrolled for passenger
     SEAT_FLAG_CAN_ATTACK            = 0x00004000,           // Can attack, cast spells and use items from vehicle?
-    SEAT_FLAG_UNK13                 = 0x00008000,           // "ShouldUseVehicleSeatExitAnimationOnForcedExit"
+    SEAT_FLAG_UNATTACKABLE          = 0x00008000,           // "ShouldUseVehicleSeatExitAnimationOnForcedExit"
     SEAT_FLAG_UNK14                 = 0x00010000,
     SEAT_FLAG_UNK15                 = 0x00020000,
     SEAT_FLAG_UNK16                 = 0x00040000,           // "HasVehicleExitAnimForVoluntaryExit"
@@ -627,6 +651,30 @@ enum VehicleSeatFlags
     SEAT_FLAG_CAN_CAST              = 0x20000000,           // Lua_UnitHasVehicleUI
     SEAT_FLAG_UNK25                 = 0x40000000,
     SEAT_FLAG_UNK26                 = 0x80000000,           // "AllowsInteraction"
+};
+
+enum VehicleSeatFlagsB
+{
+    VEHICLE_SEAT_FLAG_B_NONE                     = 0x00000000,
+    VEHICLE_SEAT_FLAG_B_UNK1                     = 0x00000001,
+    VEHICLE_SEAT_FLAG_B_USABLE_FORCED            = 0x00000002,
+    VEHICLE_SEAT_FLAG_B_UNK2                     = 0x00000004,
+    VEHICLE_SEAT_FLAG_B_TARGETS_IN_RAIDUI        = 0x00000008,           // Lua_UnitTargetsVehicleInRaidUI
+    VEHICLE_SEAT_FLAG_B_UNK3                     = 0x00000010,
+    VEHICLE_SEAT_FLAG_B_EJECTABLE                = 0x00000020,           // ejectable
+    VEHICLE_SEAT_FLAG_B_USABLE_FORCED_2          = 0x00000040,
+    VEHICLE_SEAT_FLAG_B_UNK6                     = 0x00000080,
+    VEHICLE_SEAT_FLAG_B_USABLE_FORCED_3          = 0x00000100,
+    VEHICLE_SEAT_FLAG_B_EJECTABLE_FORCED         = 0x00200000,           // seats for forced eject? 27 seats at 3.3.5a
+    VEHICLE_SEAT_FLAG_B_USABLE_FORCED_4          = 0x02000000,
+    VEHICLE_SEAT_FLAG_B_CANSWITCH                = 0x04000000,           // can switch seats
+    VEHICLE_SEAT_FLAG_B_VEHICLE_PLAYERFRAME_UI   = 0x80000000,           // Lua_UnitHasVehiclePlayerFrameUI - actually checked for flagsb &~ 0x80000000
+};
+
+enum MapDifficultyFlags
+{
+    MAP_DIFFICULTY_FLAG_NONE        = 0x00000001,           // Not used in 3.3.5
+    MAP_DIFFICULTY_FLAG_CONDITION   = 0x00000002,           // This map difficulty has condition
 };
 
 #endif
