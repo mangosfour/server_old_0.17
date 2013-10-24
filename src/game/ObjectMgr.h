@@ -128,7 +128,13 @@ static_assert(MAX_DB_SCRIPT_STRING_ID < ACE_INT32_MAX, "Must scope with int32 ra
 
 struct MangosStringLocale
 {
+    MangosStringLocale() : SoundId(0), Type(0), Language(0), Emote(0) { }
+
     std::vector<std::string> Content;                       // 0 -> default, i -> i-1 locale index
+    uint32 SoundId;
+    uint8  Type;
+    uint32 Language;
+    uint32 Emote;                       // 0 -> default, i -> i-1 locale index
 };
 
 typedef UNORDERED_MAP<uint32, CreatureData> CreatureDataMap;
@@ -467,6 +473,15 @@ enum SkillRangeType
 
 SkillRangeType GetSkillRangeType(SkillLineEntry const* pSkill, bool racial);
 
+struct HotfixInfo
+{
+    uint32 Type;
+    uint32 Timestamp;
+    uint32 Entry;
+};
+
+typedef std::vector<HotfixInfo> HotfixData;
+
 #define MAX_PLAYER_NAME          12                         // max allowed by client name length
 #define MAX_INTERNAL_PLAYER_NAME 15                         // max server internal player name length ( > MAX_PLAYER_NAME for support declined names )
 #define MAX_PET_NAME             12                         // max allowed by client name length
@@ -696,8 +711,8 @@ class ObjectMgr
         void LoadCreatureQuestRelations();
         void LoadCreatureInvolvedRelations();
 
-        bool LoadMangosStrings(DatabaseType& db, char const* table, int32 min_value, int32 max_value);
-        bool LoadMangosStrings() { return LoadMangosStrings(WorldDatabase, "mangos_string", MIN_MANGOS_STRING_ID, MAX_MANGOS_STRING_ID); }
+        bool LoadMangosStrings(DatabaseType& db, char const* table, int32 min_value, int32 max_value, bool extra_content);
+        bool LoadMangosStrings() { return LoadMangosStrings(WorldDatabase, "mangos_string", MIN_MANGOS_STRING_ID, MAX_MANGOS_STRING_ID, false); }
         void LoadCreatureLocales();
         void LoadCreatureTemplates();
         void LoadCreatures();
@@ -947,6 +962,14 @@ class ObjectMgr
             return &itr->second;
         }
 
+        uint32 GetLoadedStringsCount(int32 minEntry) const
+        {
+            std::map<int32, uint32>::const_iterator itr = m_loadedStringCount.find(minEntry);
+            if (itr != m_loadedStringCount.end())
+                return itr->second;
+            return 0;
+        }
+
         const char* GetMangosString(int32 entry, int locale_idx) const;
         const char* GetMangosStringForDBCLocale(int32 entry) const { return GetMangosString(entry, DBCLocaleIndex); }
         int32 GetDBCLocaleIndex() const { return DBCLocaleIndex; }
@@ -1116,6 +1139,20 @@ class ObjectMgr
         QuestRelationsMap& GetCreatureQuestRelationsMap() { return m_CreatureQuestRelations; }
 
         uint32 GetModelForRace(uint32 sourceModelId, uint32 racemask);
+
+        void LoadHotfixData();
+        HotfixData const& GetHotfixData() const { return m_hotfixData; }
+        uint32 GetHotfixDate(uint32 entry, uint32 type) const
+        {
+            uint32 ret = 0;
+            for (HotfixData::const_iterator itr = m_hotfixData.begin(); itr != m_hotfixData.end(); ++itr)
+                if (itr->Entry == entry && itr->Type == type)
+                    if (itr->Timestamp > ret)
+                        ret = itr->Timestamp;
+
+            return ret ? ret : uint32(time(NULL));
+        }
+
     protected:
 
         // first free id for selected id type
@@ -1241,6 +1278,7 @@ class ObjectMgr
         NpcTextLocaleMap mNpcTextLocaleMap;
         PageTextLocaleMap mPageTextLocaleMap;
         MangosStringLocaleMap mMangosStringLocaleMap;
+        std::map<int32 /*minEntryOfBracket*/, uint32 /*count*/> m_loadedStringCount;
         GossipMenuItemsLocaleMap mGossipMenuItemsLocaleMap;
         PointOfInterestLocaleMap mPointOfInterestLocaleMap;
         DungeonEncounterMap m_DungeonEncounters;
@@ -1252,13 +1290,19 @@ class ObjectMgr
         CacheVendorItemMap m_mCacheVendorItemMap;
         CacheTrainerSpellMap m_mCacheTrainerTemplateSpellMap;
         CacheTrainerSpellMap m_mCacheTrainerSpellMap;
+
+        HotfixData m_hotfixData; 
 };
 
 #define sObjectMgr MaNGOS::Singleton<ObjectMgr>::Instance()
 
+/// generic text function
+MANGOS_DLL_SPEC bool DoDisplayText(WorldObject* source, int32 entry, Unit const* target = NULL);
+
 // scripting access functions
-MANGOS_DLL_SPEC bool LoadMangosStrings(DatabaseType& db, char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min());
+MANGOS_DLL_SPEC bool LoadMangosStrings(DatabaseType& db, char const* table, int32 start_value = MAX_CREATURE_AI_TEXT_STRING_ID, int32 end_value = std::numeric_limits<int32>::min(), bool extra_content = false);
 MANGOS_DLL_SPEC CreatureInfo const* GetCreatureTemplateStore(uint32 entry);
 MANGOS_DLL_SPEC Quest const* GetQuestTemplateStore(uint32 entry);
+MANGOS_DLL_SPEC MangosStringLocale const* GetMangosStringData(int32 entry);
 
 #endif

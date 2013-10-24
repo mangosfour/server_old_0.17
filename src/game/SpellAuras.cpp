@@ -333,7 +333,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleNoImmediateEffect,                         //273 SPELL_AURA_X_RAY (client side implementation)
     &Aura::HandleNULL,                                      //274 proc free shot?
     &Aura::HandleNoImmediateEffect,                         //275 SPELL_AURA_MOD_IGNORE_SHAPESHIFT Use SpellClassMask for spell select
-    &Aura::HandleNULL,                                      //276 mod damage % mechanic?
+    &Aura::HandleNULL,                                      //276 SPELL_AURA_MOD_DAMAGE_DONE_BY_MECHANIC
     &Aura::HandleUnused,                                    //277 old SPELL_AURA_MOD_MAX_AFFECTED_TARGETS
     &Aura::HandleAuraModDisarm,                             //278 SPELL_AURA_MOD_DISARM_RANGED disarm ranged weapon
     &Aura::HandleNULL,                                      //279 SPELL_AURA_INITIALIZE_IMAGES 9 spells in 4.3.4 visual effects?
@@ -385,30 +385,30 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleUnused,                                    //325 0 spells in 4.3.4
     &Aura::HandlePhase,                                     //326 SPELL_AURA_PHASE_2 24 spells in 4.3.4
     &Aura::HandleUnused,                                    //327 0 spells in 4.3.4
-    &Aura::HandleNULL,                                      //328 3 spells in 4.3.4 Eclipse Mastery Driver Passive
+    &Aura::HandleNULL,                                      //328 SPELL_AURA_PROC_ON_POWER_AMOUNT 3 spells in 4.3.4 Eclipse Mastery Driver Passive
     &Aura::HandleNULL,                                      //329 SPELL_AURA_MOD_RUNIC_POWER_REGEN 3 spells in 4.3.4
     &Aura::HandleNoImmediateEffect,                         //330 SPELL_AURA_ALLOW_CAST_WHILE_MOVING 16 spells in 4.3.4
     &Aura::HandleNULL,                                      //331 SPELL_AURA_MOD_WEATHER 10 spells in 4.3.4
     &Aura::HandleNULL,                                      //332 SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS 16 spells in 4.3.4
     &Aura::HandleNULL,                                      //333 SPELL_AURA_OVERRIDE_ACTIONBAR_SPELLS_2 10 spells in 4.3.4
     &Aura::HandleNULL,                                      //334 SPELL_AURA_BLIND_SIGHT 2 spells in 4.3.4
-    &Aura::HandleNULL,                                      //335 invisibility-related 5 spells in 4.3.4
+    &Aura::HandleNULL,                                      //335 SPELL_AURA_SEE_WHILE_INVISIBLE invisibility-related 5 spells in 4.3.4
     &Aura::HandleNULL,                                      //336 SPELL_AURA_FLIGHT_RESTRICTIONS 8 spells in 4.3.4
     &Aura::HandleNULL,                                      //337 SPELL_AURA_MOD_VENDOR_PRICE 1 spells in 4.3.4
     &Aura::HandleNULL,                                      //338 SPELL_AURA_MOD_DURABILITY_LOSS 3 spells in 4.3.4
     &Aura::HandleNULL,                                      //339 SPELL_AURA_MOD_SKILLCHANCE 1 spells in 4.3.4
     &Aura::HandleNULL,                                      //340 SPELL_AURA_MOD_RESSURECTED_HEALTH_PCT 1 spells in 4.3.4
-    &Aura::HandleNULL,                                      //341 2 spells in 4.3.4 modifies cooldown of hearthstone and cast time of archaeology mining
+    &Aura::HandleNULL,                                      //341 SPELL_AURA_MOD_SPELL_CATEGORY_COOLDOWN 2 spells in 4.3.4 modifies cooldown of hearthstone and cast time of archaeology mining
     &Aura::HandleNULL,                                      //342 SPELL_AURA_MOD_ATTACKSPEED_2 17 spells in 4.3.4
     &Aura::HandleNULL,                                      //343 SPELL_AURA_MOD_ALL_DAMAGE_FROM_CASTER 2 spells in 4.3.4
     &Aura::HandleNoImmediateEffect,                         //344 SPELL_AURA_MOD_AUTOATTACK_DAMAGE 6 spells in 4.3.4
     &Aura::HandleNULL,                                      //345 SPELL_AURA_MOD_IGNORE_ARMOR_PCT 3 spells in 4.3.4
-    &Aura::HandleNULL,                                      //346 32 spells in 4.3.4 shows progressbar-like ui?
+    &Aura::HandleNULL,                                      //346 SPELL_AURA_ALT_POWER_INDICATOR 32 spells in 4.3.4
     &Aura::HandleNULL,                                      //347 SPELL_AURA_MOD_CD_FROM_HASTE 2 spells in 4.3.4
     &Aura::HandleNULL,                                      //348 SPELL_AURA_MOD_MONEY_TO_GUILD_BANK 2 spells in 4.3.4
     &Aura::HandleNoImmediateEffect,                         //349 SPELL_AURA_MOD_CURRENCY_GAIN 16 spells in 4.3.4
-    &Aura::HandleNULL,                                      //350 SPELL_AURA_MOD_MATERIAL_GAIN 1 spells in 4.3.4
-    &Aura::HandleNULL,                                      //351 8 spells in 4.3.4 archaeology-related
+    &Aura::HandleNULL,                                      //350 SPELL_AURA_MOD_ITEM_LOOT 1 spells in 4.3.4
+    &Aura::HandleNULL,                                      //351 SPELL_AURA_MOD_CURRENCY_LOOT 8 spells in 4.3.4
     &Aura::HandleNULL,                                      //352 SPELL_AURA_ALLOW_WORGEN_TRANSFORM 1 spells in 4.3.4 enables worgen<>human form switches
     &Aura::HandleNULL,                                      //353 SPELL_AURA_MOD_CAMOUFLAGE 3 spells in 4.3.4
     &Aura::HandleNoImmediateEffect,                         //354 SPELL_AURA_MOD_HEALING_DONE_FROM_PCT_HEALTH 2 spells in 4.3.4
@@ -418,7 +418,7 @@ pAuraHandler AuraHandler[TOTAL_AURAS] =
     &Aura::HandleNoImmediateEffect,                         //358 SPELL_AURA_WORGEN_TRANSFORM 5 spells in 4.3.4 forces client-side transformation to worgen form
     &Aura::HandleNULL,                                      //359 1 spells in 4.3.4 healing done vs aurastate?
     &Aura::HandleNULL,                                      //360 SPELL_AURA_PROC_DUPLICATE_SPELLS 2 spells in 4.3.4
-    &Aura::HandleNULL,                                      //361 4 spells in 4.3.4 some damage spells
+    &Aura::HandleNULL,                                      //361 SPELL_AURA_PROC_TRIGGER_SPELL_2 4 spells in 4.3.4
     &Aura::HandleUnused,                                    //362 0 spells in 4.3.4
     &Aura::HandleNULL,                                      //363 1 spells in 4.3.4 Throw Totem
     &Aura::HandleUnused,                                    //364 0 spells in 4.3.4
@@ -1793,8 +1793,9 @@ void Aura::TriggerSpell()
 //                    // Shield Level 3
 //                    case 63132: break;
 //                    // Food
-//                    case 64345: break;
-//                    // Remove Player from Phase
+                    case 64345:                             // Remove Player from Phase
+                        target->RemoveSpellsCausingAura(SPELL_AURA_PHASE);
+                        return;
 //                    case 64445: break;
 //                    // Food
 //                    case 65418: break;
@@ -2186,7 +2187,7 @@ void Aura::TriggerSpell()
     {
         if (Unit* caster = GetCaster())
         {
-            if (triggerTarget->GetTypeId() != TYPEID_UNIT || !sScriptMgr.OnEffectDummy(caster, GetId(), GetEffIndex(), (Creature*)triggerTarget))
+            if (triggerTarget->GetTypeId() != TYPEID_UNIT || !sScriptMgr.OnEffectDummy(caster, GetId(), GetEffIndex(), (Creature*)triggerTarget, ObjectGuid()))
                 sLog.outError("Aura::TriggerSpell: Spell %u have 0 in EffectTriggered[%d], not handled custom case?", GetId(), GetEffIndex());
         }
     }
@@ -2323,7 +2324,7 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                         switch (GetId())
                         {
                             case 38224: spellId = (gender == GENDER_MALE ? 38225 : 38227); break;
-                            case 37096: spellId = (gender == GENDER_MALE ? 37092 : 37094); break;
+                            case 37096: spellId = (gender == GENDER_MALE ? 37093 : 37095); break;
                             case 46354: spellId = (gender == GENDER_MALE ? 46355 : 46356); break;
                             default: return;
                         }
@@ -2371,6 +2372,11 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                         return;
                     case 58600:                             // Restricted Flight Area
                         target->MonsterWhisper(LANG_NO_FLY_ZONE, target, true);
+                        return;
+                    case 61187:                             // Twilight Shift (single target)
+                    case 61190:                             // Twilight Shift (many targets)
+                        target->RemoveAurasDueToSpell(57620);
+                        target->CastSpell(target, 61885, true, NULL, this);
                         return;
                     case 62061:                             // Festive Holiday Mount
                         if (target->HasAuraType(SPELL_AURA_MOUNTED))
@@ -2817,6 +2823,11 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
                 target->CastSpell(target, 47287, true, NULL, this);
                 return;
             }
+            case 46637:                                     // Break Ice
+            {
+                target->CastSpell(target, 46638, true);
+                return;
+            }
             case 48385:                                     // Create Spirit Fount Beam
             {
                 target->CastSpell(target, target->GetMap()->IsRegularDifficulty() ? 48380 : 59320, true);
@@ -2900,14 +2911,14 @@ void Aura::HandleAuraDummy(bool apply, bool Real)
             }
             case 58600:                                     // Restricted Flight Area
             {
-                AreaTableEntry const* area = GetAreaEntryByAreaID(target->GetAreaId());
+                /*AreaTableEntry const* area = GetAreaEntryByAreaID(target->GetAreaId());
 
                 // Dalaran restricted flight zone (recheck before apply unmount)
                 if (area && target->GetTypeId() == TYPEID_PLAYER && (area->flags & AREA_FLAG_CANNOT_FLY) &&
                         ((Player*)target)->IsFreeFlying() && !((Player*)target)->isGameMaster())
                 {
                     target->CastSpell(target, 58601, true); // Remove Flight Auras (also triggered Parachute (45472))
-                }
+                }*/
                 return;
             }
             case 61900:                                     // Electrical Charge
@@ -3407,6 +3418,10 @@ void Aura::HandleAuraMounted(bool apply, bool Real)
 
     if (apply)
     {
+        // Running Wild 
+        if (GetId() == 87840)
+            target->Mount(target->getGender() == GENDER_MALE ? 29422 : 29423, GetId());
+
         CreatureInfo const* ci = ObjectMgr::GetCreatureTemplate(m_modifier.m_miscvalue);
         if (!ci)
         {
@@ -3419,8 +3434,6 @@ void Aura::HandleAuraMounted(bool apply, bool Real)
         if (minfo)
             display_id = minfo->modelid;
 
-        target->Mount(display_id, GetId());
-
         if (ci->vehicleId)
         {
             target->SetVehicleId(ci->vehicleId, ci->Entry);
@@ -3428,10 +3441,18 @@ void Aura::HandleAuraMounted(bool apply, bool Real)
             if (target->GetTypeId() == TYPEID_PLAYER)
                 target->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_PLAYER_VEHICLE);
         }
+
+        target->Mount(display_id, GetId());
+		if (MountCapabilityEntry const* mountCapability = target->GetMountCapability(uint32(GetMiscBValue())))
+			target->CastSpell(target, mountCapability->SpeedModSpell, true);
     }
     else
     {
         target->Unmount(true);
+
+		// remove speed aura
+		if (MountCapabilityEntry const* mountCapability = target->GetMountCapability(m_modifier.m_amount))
+			target->RemoveAurasByCasterSpell(mountCapability->SpeedModSpell, target->GetObjectGuid());
 
         CreatureInfo const* ci = ObjectMgr::GetCreatureTemplate(m_modifier.m_miscvalue);
         if (ci && target->IsVehicle() && ci->vehicleId == target->GetVehicleInfo()->GetVehicleEntry()->m_ID)
@@ -6174,9 +6195,20 @@ void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
 {
     Unit* target = GetTarget();
 
-    // Special case with temporary increase max/current health
     switch (GetId())
     {
+    // Special case with temporary increase max/current health
+            // Cases where we need to manually calculate the amount for the spell (by percentage)
+            // recalculate to full amount at apply for proper remove 
+        case 54443:                                         // Demonic Empowerment (Voidwalker)
+        case 55233:                                         // Vampiric Blood
+        case 61254:                                         // Will of Sartharion (Obsidian Sanctum)
+            if (Real && apply)
+                m_modifier.m_amount = target->GetMaxHealth() * m_modifier.m_amount / 100;
+            // no break here
+
+            // Cases where m_amount already has the correct value (spells cast with CastCustomSpell or absolute values)
+        
         case 12976:                                         // Warrior Last Stand triggered spell
         case 28726:                                         // Nightmare Seed ( Nightmare Seed )
         case 31616:                                         // Nature's Guardian
@@ -6184,19 +6216,13 @@ void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
         case 44055: case 55915: case 55917: case 67596:     // Tremendous Fortitude (Battlemaster's Alacrity)
         case 50322:                                         // Survival Instincts
         case 53479:                                         // Hunter pet - Last Stand
-        case 54443:                                         // Demonic Empowerment (Voidwalker)
-        case 55233:                                         // Vampiric Blood
+
         case 59465:                                         // Brood Rage (Ahn'Kahet)
         {
             if (Real)
             {
                 if (apply)
                 {
-                    // Demonic Empowerment (Voidwalker) & Vampiric Blood - special cases, store percent in data
-                    // recalculate to full amount at apply for proper remove
-                    if (GetId() == 54443 || GetId() == 55233)
-                        m_modifier.m_amount = target->GetMaxHealth() * m_modifier.m_amount / 100;
-
                     target->HandleStatModifier(UNIT_MOD_HEALTH, TOTAL_VALUE, float(m_modifier.m_amount), apply);
                     target->ModifyHealth(m_modifier.m_amount);
                 }
@@ -6211,10 +6237,10 @@ void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
             }
             return;
         }
+        // generic case
+        default:
+            target->HandleStatModifier(UNIT_MOD_HEALTH, TOTAL_VALUE, float(m_modifier.m_amount), apply);
     }
-
-    // generic case
-    target->HandleStatModifier(UNIT_MOD_HEALTH, TOTAL_VALUE, float(m_modifier.m_amount), apply);
 }
 
 void  Aura::HandleAuraModIncreaseMaxHealth(bool apply, bool /*Real*/)
@@ -8016,6 +8042,19 @@ void Aura::PeriodicDummyTick()
                     return;
 //              // Panda
 //              case 19230: break;
+                case 30019:                                 // Control Piece
+                {
+                    if (target->GetTypeId() != TYPEID_PLAYER)
+                        return;
+
+                    Unit* chessPiece = target->GetCharm();
+                    if (!chessPiece)
+                    {
+                        target->CastSpell(target, 30529, true);
+                        target->RemoveAurasDueToSpell(30019);
+                    }
+                    return;
+                }
 //              // Gossip NPC Periodic - Talk
 //              case 33208: break;
 //              // Gossip NPC Periodic - Despawn
@@ -8149,8 +8188,9 @@ void Aura::PeriodicDummyTick()
 //              case 46205: break;
 //              // Find Opening Beam End
 //              case 46333: break;
-//              // Ice Spear Control Aura
-//              case 46371: break;
+                case 46371:                                 // Ice Spear Control Aura
+                    target->CastSpell(target, 46372, true, NULL, this);
+                    return; 
 //              // Hailstone Chill
 //              case 46458: break;
 //              // Hailstone Chill, Internal
@@ -8260,9 +8300,39 @@ void Aura::PeriodicDummyTick()
                         case 2: target->CastSpell(target, 55739, true); break;
                     }
                     return;
+                case 61968:                                 // Flash Freeze
+                {
+                    if (GetAuraTicks() == 1 && !target->HasAura(62464))
+                        target->CastSpell(target, 61970, true, NULL, this);
+                    return;
+                }
+                case 62018:                                 // Collapse
+                {
+                    // lose 1% of health every second
+                    target->DealDamage(target, target->GetMaxHealth() * .01, NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NONE, NULL, false);
+                    return;
+                }
                 case 62019:                                 // Rune of Summoning
                 {
                     target->CastSpell(target, 62020, true, NULL, this);
+                    return;
+                }
+                case 62038:                                 // Biting Cold
+                {
+                    if (target->GetTypeId() != TYPEID_PLAYER)
+                        return;
+
+                    // if player is moving remove one aura stack
+                    if (((Player*)target)->isMoving())
+                        target->RemoveAuraHolderFromStack(62039);
+                    // otherwise add one aura stack each 3 seconds
+                    else if (GetAuraTicks() % 3 && !target->HasAura(62821))
+                        target->CastSpell(target, 62039, true, NULL, this);
+                    return;
+                }
+                case 62039:                                 // Biting Cold
+                {
+                    target->CastSpell(target, 62188, true);
                     return;
                 }
                 case 62566:                                 // Healthy Spore Summon Periodic
@@ -8273,6 +8343,15 @@ void Aura::PeriodicDummyTick()
                     target->CastSpell(target, 62593, true);
                     return;
                 }
+                case 62717:                                 // Slag Pot
+                {
+                    target->CastSpell(target, target->GetMap()->IsRegularDifficulty() ? 65722 : 65723, true, NULL, this);
+
+                    // cast Slag Imbued if the target survives up to the last tick
+                    if (GetAuraTicks() == 10)
+                        target->CastSpell(target, 63536, true, NULL, this);
+                    return;
+                }
                 case 64217:                                 // Overcharged
                 {
                     if (GetHolder()->GetStackAmount() >= 10)
@@ -8280,6 +8359,39 @@ void Aura::PeriodicDummyTick()
                         target->CastSpell(target, 64219, true);
                         target->DealDamage(target, target->GetHealth(), NULL, DIRECT_DAMAGE, SPELL_SCHOOL_MASK_NORMAL, NULL, false);
                     }
+                    return;
+                }
+                case 64412:                                 // Phase Punch
+                {
+                    if (SpellAuraHolder* phaseAura = target->GetSpellAuraHolder(64412))
+                    {
+                        uint32 uiAuraId = 0;
+                        switch (phaseAura->GetStackAmount())
+                        {
+                            case 1: uiAuraId = 64435; break;
+                            case 2: uiAuraId = 64434; break;
+                            case 3: uiAuraId = 64428; break;
+                            case 4: uiAuraId = 64421; break;
+                            case 5: uiAuraId = 64417; break;
+                        }
+
+                        if (uiAuraId && !target->HasAura(uiAuraId))
+                        {
+                            target->CastSpell(target, uiAuraId, true, NULL, this);
+
+                            // remove original aura if phased
+                            if (uiAuraId == 64417)
+                            {
+                                target->RemoveAurasDueToSpell(64412);
+                                target->CastSpell(target, 62169, true, NULL, this);
+                            }
+                        }
+                    }
+                    return;
+                }
+                case 65272:                                 // Shatter Chest
+                {
+                    target->CastSpell(target, 62501, true, NULL, this);
                     return;
                 }
                 case 66118:                                 // Leeching Swarm
@@ -8538,7 +8650,7 @@ void Aura::PeriodicDummyTick()
     if (Unit* caster = GetCaster())
     {
         if (target && target->GetTypeId() == TYPEID_UNIT)
-            sScriptMgr.OnEffectDummy(caster, GetId(), GetEffIndex(), (Creature*)target);
+            sScriptMgr.OnEffectDummy(caster, GetId(), GetEffIndex(), (Creature*)target, ObjectGuid());
     }
 }
 

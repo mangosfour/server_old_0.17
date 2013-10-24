@@ -499,7 +499,9 @@ enum UnitState
 
     UNIT_STAT_RUNNING_STATE   = UNIT_STAT_CHASE_MOVE | UNIT_STAT_FLEEING_MOVE | UNIT_STAT_RUNNING,
 
-    UNIT_STAT_ALL_STATE       = 0xFFFFFFFF
+    UNIT_STAT_ALL_STATE       = 0xFFFFFFFF,
+    UNIT_STAT_ALL_DYN_STATES  = UNIT_STAT_ALL_STATE & ~(UNIT_STAT_NO_COMBAT_MOVEMENT | UNIT_STAT_RUNNING | UNIT_STAT_WAYPOINT_PAUSED | UNIT_STAT_IGNORE_PATHFINDING),
+
 };
 
 enum UnitMoveType
@@ -516,8 +518,6 @@ enum UnitMoveType
 };
 
 #define MAX_MOVE_TYPE     9
-
-extern float baseMoveSpeed[MAX_MOVE_TYPE];
 
 enum CombatRating
 {
@@ -1228,6 +1228,8 @@ enum IgnoreUnitState
 
 struct SpellProcEventEntry;                                 // used only privately
 
+#define MAX_OBJECT_SLOT 5
+
 class MANGOS_DLL_SPEC Unit : public WorldObject
 {
     public:
@@ -1933,6 +1935,10 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
          */
         void Unmount(bool from_aura = false);
 
+        MountCapabilityEntry const* GetMountCapability(uint32 mountType) const;
+
+        void PlayOneShotAnimKit(uint32 id);
+
         VehicleInfo* GetVehicleInfo() { return m_vehicleInfo; }
         bool IsVehicle() const { return m_vehicleInfo != NULL; }
         void SetVehicleId(uint32 entry, uint32 overwriteNpcEntry);
@@ -2407,7 +2413,7 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         bool CheckAndIncreaseCastCounter();
         void DecreaseCastCounter() { if (m_castCounter) --m_castCounter; }
 
-        ObjectGuid m_ObjectSlotGuid[4];
+        ObjectGuid m_ObjectSlotGuid[MAX_OBJECT_SLOT];
         uint32 m_detectInvisibilityMask;
         uint32 m_invisibilityMask;
 
@@ -2670,7 +2676,8 @@ class MANGOS_DLL_SPEC Unit : public WorldObject
         MotionMaster* GetMotionMaster() { return &i_motionMaster; }
 
         bool IsStopped() const { return !(hasUnitState(UNIT_STAT_MOVING)); }
-        void StopMoving();
+        void StopMoving(bool forceSendStop = false);
+        void InterruptMoving(bool forceSendStop = false);
 
         void SetFeared(bool apply, ObjectGuid casterGuid = ObjectGuid(), uint32 spellID = 0, uint32 time = 0);
         void SetConfused(bool apply, ObjectGuid casterGuid = ObjectGuid(), uint32 spellID = 0);

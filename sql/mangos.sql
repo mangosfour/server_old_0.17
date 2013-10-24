@@ -276,7 +276,7 @@ LOCK TABLES `command` WRITE;
 INSERT INTO `command` (`name`, `security`, `help`) VALUES
 ('account',0,'Syntax: .account\r\n\r\nDisplay the access level of your account.'),
 ('account characters',3,'Syntax: .account characters [#accountId|$accountName]\r\n\r\nShow list all characters for account selected by provided #accountId or $accountName, or for selected player in game.'),
-('account create',4,'Syntax: .account create $account $password\r\n\r\nCreate account and set password to it.'),
+('account create',4,'Syntax: .account create $account $password [$expansion]\r\n\r\nCreate account and set password to it. Optionally, you may also set another expansion for this account than the defined default value.'),
 ('account delete',4,'Syntax: .account delete $account\r\n\r\nDelete account with all characters.'),
 ('account lock',0,'Syntax: .account lock [on|off]\r\n\r\nAllow login from account only from current used IP or remove this requirement.'),
 ('account onlinelist',4,'Syntax: .account onlinelist\r\n\r\nShow list of online accounts.'),
@@ -393,7 +393,7 @@ INSERT INTO `command` (`name`, `security`, `help`) VALUES
 ('gobject setphase',2,'Syntax: .gobject setphase #guid #phasemask\r\n\r\nGameobject with DB guid #guid phasemask changed to #phasemask with related world vision update for players. Gameobject state saved to DB and persistent.'),
 ('gobject target',2,'Syntax: .gobject target [#go_id|#go_name_part]\r\n\r\nLocate and show position nearest gameobject. If #go_id or #go_name_part provide then locate and show position of nearest gameobject with gameobject template id #go_id or name included #go_name_part as part.'),
 ('gobject turn',2,'Syntax: .gobject turn #goguid [#z_angle]\r\n\r\nChanges gameobject #goguid orientation (rotates gameobject around z axis). Optional parameters are (#y_angle,#x_angle) values that represents rotation angles around y and x axes.'),
-('goname',1,'Syntax: .goname [$charactername]\r\n\r\nTeleport to the given character. Either specify the character name or click on the character\'s portrait, e.g. when you are in a group. Character can be offline.'),
+('appear',1,'Syntax: .appear [$charactername]\r\n\r\nTeleport to the given character. Either specify the character name or click on the character\'s portrait, e.g. when you are in a group. Character can be offline.'),
 ('gps',1,'Syntax: .gps [$name|$shift-link]\r\n\r\nDisplay the position information for a selected character or creature (also if player name $name provided then for named player, or if creature/gameobject shift-link provided then pointed creature/gameobject if it loaded). Position information includes X, Y, Z, and orientation, map Id and zone Id'),
 ('groupgo',1,'Syntax: .groupgo [$charactername]\r\n\r\nTeleport the given character and his group to you. Teleported only online characters but original selected group member can be offline.'),
 ('guid',2,'Syntax: .guid\r\n\r\nDisplay the GUID for the selected character.'),
@@ -479,7 +479,7 @@ INSERT INTO `command` (`name`, `security`, `help`) VALUES
 ('modify tp',1,'Syntax: .modify tp #amount\r\n\r\nSet free talent pointes for selected character or character\'s pet. It will be reset to default expected at next levelup/login/quest reward.'),
 ('movegens',3,'Syntax: .movegens\r\n  Show movement generators stack for selected creature or player.'),
 ('mute',1,'Syntax: .mute [$playerName] $timeInMinutes\r\n\r\nDisible chat messaging for any character from account of character $playerName (or currently selected) at $timeInMinutes minutes. Player can be offline.'),
-('namego',1,'Syntax: .namego [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
+('summon',1,'Syntax: .summon [$charactername]\r\n\r\nTeleport the given character to you. Character can be offline.'),
 ('neargrave',3,'Syntax: .neargrave [alliance|horde]\r\n\r\nFind nearest graveyard linked to zone (or only nearest from accepts alliance or horde faction ghosts).'),
 ('notify',1,'Syntax: .notify $MessageToBroadcast\r\n\r\nSend a global message to all players online in screen.'),
 ('npc add',2,'Syntax: .npc add #creatureid\r\n\r\nSpawn a creature by the given template id of #creatureid.'),
@@ -645,7 +645,7 @@ CREATE TABLE `creature` (
   `id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT 'Creature Identifier',
   `map` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Map Identifier',
   `spawnMask` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `phaseMask` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `phaseMask` int(11) unsigned NOT NULL DEFAULT '1',
   `modelid` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `equipment_id` mediumint(9) NOT NULL DEFAULT '0',
   `position_x` float NOT NULL DEFAULT '0',
@@ -1002,13 +1002,13 @@ INSERT INTO `creature_model_info` (`modelid`, `bounding_radius`, `combat_reach`,
 (1479,0.306,1.5,1,1478,0),
 (1563,0.3519,1.5,0,1564,0),
 (1564,0.3519,1.5,1,1563,0),
+(6894,0.389,1.5,0,6895,0),
+(6895,0.389,1.5,1,6894,0),
 (10045,1,1.5,2,0,0),
 (15475,0.383,1.5,1,15476,0),
 (15476,0.383,1.5,0,15475,0),
 (16125,1,1.5,0,16126,0),
 (16126,1,1.5,1,16125,0),
-(6894,0.389,1.5,0,6895,0),
-(6895,0.389,1.5,1,6894,0),
 (29422,0.389,1.5,0,29423,0),
 (29423,0.389,1.5,1,29422,0);
 /*!40000 ALTER TABLE `creature_model_info` ENABLE KEYS */;
@@ -1355,6 +1355,11 @@ CREATE TABLE `db_script_string` (
   `content_loc6` text,
   `content_loc7` text,
   `content_loc8` text,
+  `sound` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `language` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `emote` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `comment` text,
   PRIMARY KEY (`entry`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1425,7 +1430,7 @@ CREATE TABLE `db_version` (
   `version` varchar(120) DEFAULT NULL,
   `creature_ai_version` varchar(120) DEFAULT NULL,
   `cache_id` int(10) DEFAULT '0',
-  `required_c12602_01_mangos_npc_spellclick_spells` bit(1) default NULL
+  `required_12662_01_mangos_hotfix_data` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1435,7 +1440,7 @@ CREATE TABLE `db_version` (
 
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
-INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_c12602_01_mangos_npc_spellclick_spells`) VALUES
+INSERT INTO `db_version` (`version`, `creature_ai_version`, `cache_id`, `required_12662_01_mangos_hotfix_data`) VALUES
 ('Mangos default database.','Creature EventAI not provided.',0,NULL);
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -2140,7 +2145,62 @@ INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`,
 /*!40000 ALTER TABLE `gossip_menu_option` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+ --
+-- Table structure for table `hotfix_data`
 --
+
+DROP TABLE IF EXISTS `hotfix_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hotfix_data` (
+  `entry` int(10) unsigned NOT NULL,
+  `type` int(10) unsigned NOT NULL DEFAULT '0',
+  `hotfixDate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`entry`,`type`,`hotfixDate`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hotfix_data`
+--
+
+LOCK TABLES `hotfix_data` WRITE;
+/*!40000 ALTER TABLE `hotfix_data` DISABLE KEYS */;
+INSERT INTO `hotfix_data` (`entry`, `type`, `hotfixDate`) VALUES
+('6948', '1344507586', '2011-11-23 08:34:13'),
+('44623', '1344507586', '2011-11-23 08:34:04'),
+('44625', '1344507586', '2011-11-23 08:34:04'),
+('44626', '1344507586', '2011-11-23 08:34:04'),
+('44632', '1344507586', '2011-11-23 08:34:04'),
+('44812', '1344507586', '2011-11-23 08:34:00'),
+('44834', '1344507586', '2011-11-23 08:34:00'),
+('44835', '1344507586', '2011-11-23 08:34:00'),
+('44836', '1344507586', '2011-11-23 08:34:00'),
+('44837', '1344507586', '2011-11-23 08:34:00'),
+('44838', '1344507586', '2011-11-23 08:34:00'),
+('44839', '1344507586', '2011-11-23 08:34:00'),
+('44840', '1344507586', '2011-11-23 08:34:00'),
+('44844', '1344507586', '2011-11-23 08:34:00'),
+('44853', '1344507586', '2011-11-23 08:34:00'),
+('44854', '1344507586', '2011-11-23 08:34:00'),
+('44855', '1344507586', '2011-11-23 08:34:00'),
+('44856', '1344507586', '2011-11-23 08:34:00'),
+('46784', '1344507586', '2011-11-23 08:34:00'),
+('46793', '1344507586', '2011-11-23 08:34:00'),
+('46796', '1344507586', '2011-11-23 08:34:00'),
+('46797', '1344507586', '2011-11-23 08:34:00'),
+('46887', '1344507586', '2011-11-23 08:34:00'),
+('46888', '1344507586', '2011-11-23 08:34:00'),
+('64488', '1344507586', '2011-11-23 08:34:13'),
+('69847', '1344507586', '2011-11-23 08:34:03'),
+('69847', '1344507586', '2011-11-23 08:34:06'),
+('72068', '1344507586', '2011-11-23 08:34:03'),
+('72068', '1344507586', '2011-11-23 08:34:06');
+/*!40000 ALTER TABLE `hotfix_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+-- 
 -- Table structure for table `instance_encounters`
 --
 
@@ -21266,6 +21326,18 @@ CREATE TABLE `spell_proc_event` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `spell_proc_event`
+--
+
+LOCK TABLES `spell_proc_event` WRITE;
+/*!40000 ALTER TABLE `spell_proc_event` DISABLE KEYS */;
+INSERT INTO `spell_proc_event` VALUES
+(67712, 0x7F,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000002, 0.000000, 0.000000, 2),
+(67758, 0x7F,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000002, 0.000000, 0.000000, 2);
+/*!40000 ALTER TABLE `spell_proc_event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `spell_proc_item_enchant`
 --
 
@@ -21286,14 +21358,14 @@ CREATE TABLE `spell_proc_item_enchant` (
 LOCK TABLES `spell_proc_item_enchant` WRITE;
 /*!40000 ALTER TABLE `spell_proc_item_enchant` DISABLE KEYS */;
 INSERT INTO `spell_proc_item_enchant` (`entry`, `ppmRate`) VALUES
-(8034,9),
-(8680,8.5714),
-(13218,21.4286),
-(13897,6),
-(20004,6),
-(20005,1.6),
-(44525,3.4),
-(44578,3.4);
+(8034, 9),        -- Frostbrand Weapon
+(8680, 8.5714),   -- Instant Poison
+(13218, 21.4286), -- Wound Poison
+(13897, 6.0),     -- Enchant Weapon - Fiery Weapon
+(20004, 6.0),     -- Enchant Weapon - Lifestealing
+(20005, 1.6),     -- Enchant Weapon - Icy Chill
+(44525, 3.4),     -- Enchant Weapon - Icebreaker
+(44578, 3.4);     -- Enchant Weapon - Lifeward
 /*!40000 ALTER TABLE `spell_proc_item_enchant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -21359,6 +21431,7 @@ CREATE TABLE `spell_template` (
   `attr` int(11) unsigned NOT NULL DEFAULT '0',
   `attr_ex` int(11) unsigned NOT NULL DEFAULT '0',
   `attr_ex2` int(11) unsigned NOT NULL DEFAULT '0',
+  `attr_ex3` int(11) unsigned NOT NULL DEFAULT '0',
   `proc_flags` int(11) unsigned NOT NULL DEFAULT '0',
   `proc_chance` int(11) unsigned NOT NULL DEFAULT '0',
   `duration_index` int(11) unsigned NOT NULL DEFAULT '0',
@@ -21380,40 +21453,42 @@ CREATE TABLE `spell_template` (
 LOCK TABLES `spell_template` WRITE;
 /*!40000 ALTER TABLE `spell_template` DISABLE KEYS */;
 INSERT INTO `spell_template` VALUES
--- id          attr    attr_ex    attr_ex2  proc_flags chnce dur  ef0 tarA0 tarB0 rad  aur  misc    miscB, trigger
-(21387, 0x00000140, 0x10000000, 0x00000000, 0x00000028,  15,  21,   6,   1,    0,   0,  42, 0,       0,    21388, 'Melt-Weapon trigger aura related used by Ragnaros'),
-(23363, 0x00000100, 0x00000000, 0x00000000, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 179804,  0,    0,     'Summon Drakonid Corpse Trigger'),
-(25192, 0x00000100, 0x00000000, 0x00000004, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 180619,  0,    0,     'Summon Ossirian Crystal'),
-(26133, 0x00000100, 0x00000000, 0x00000000, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 180795,  0,    0,     'Summon Sandworm Base'),
-(34810, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  42,    0,   8,   0, 20083,  64,    0,     'Summon Summoned Bloodwarder Mender behind of the caster'),
-(34817, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  44,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist right of the caster'),
-(34818, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  43,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist left of the caster'),
-(34819, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  41,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist front of the caster'),
-(35153, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  42,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge behind of the caster'),
-(35904, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  44,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge right of the caster'),
-(35905, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  43,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge left of the caster'),
-(35906, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  41,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge front of the caster'),
-(37264, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 101,  21,  28,  18,    0,   7,   0, 21729,  64,    0,     'Power Converters: Summon Electromental (from cata)'),
-(37278, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 101,  21,  28,  18,    0,   1,   0, 21737,  64,    0,     'Power Converters: Summon Mini-Electromental (from cata)'),
-(37365, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 101,  21,  28,  18,    0,   1,   0, 21757,  64,    0,     'Power Converters: Summon Big Flavor Electromental (from cata)'),
-(44920, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24941,   0,    0,     'Model - Shattered Sun Marksman - BE Male Tier 4'),
-(44924, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24945,   0,    0,     'Model - Shattered Sun Marksman - BE Female Tier 4'),
-(44928, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24949,   0,    0,     'Model - Shattered Sun Marksman - Draenei Male Tier 4'),
-(44932, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24953,   0,    0,     'Model - Shattered Sun Marksman - Draenei Female Tier 4'),
-(45158, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25119,   0,    0,     'Model - Shattered Sun Warrior - BE Female Tier 4'),
-(45162, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25123,   0,    0,     'Model - Shattered Sun Warrior - BE Male Tier 4'),
-(45166, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25127,   0,    0,     'Model - Shattered Sun Warrior - Draenei Female Tier 4'),
-(45170, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25131,   0,    0,     'Model - Shattered Sun Warrior - Draenei Male Tier 4'),
-(58630, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Mal\'Ganis'),
-(59046, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Tribunal of Ages'),
-(59450, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - The Four Horsemen'),
-(62388, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,   4, 0,       0,    0,     'Aura required for Demonic Circle 48020'),
-(64899, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Hodir'),
-(64985, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Thorim'),
-(65074, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Freya'),
-(65195, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Assembly of Iron'),
-(68184, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Faction Champions'),
-(72845, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Pit of Saron - Don\'t Look Up');
+-- id   attr        attr_ex     attr_ex2    attr_ex3    proc_flags chnce dur  ef0 tarA0 tarB0 rad  aur  misc    miscB, trigger
+(21387, 0x00000140, 0x10000000, 0x00000000, 0x00000000, 0x00000028,  15,  21,   6,   1,    0,   0,  42, 0,       0,    21388, 'Melt-Weapon trigger aura related used by Ragnaros'),
+(23363, 0x00000100, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 179804,  0,    0,     'Summon Drakonid Corpse Trigger'),
+(23770, 0x24800100, 0x10000088, 0x00000001, 0x00100000, 0x00000000, 101, 367,   6, 25,     0,   0,   4, 0,       0,    0,     'Sayge''s timer - Darkmoon Faire'),
+(25192, 0x00000100, 0x00000000, 0x00000004, 0x00000000, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 180619,  0,    0,     'Summon Ossirian Crystal'),
+(26133, 0x00000100, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  76,  18,    0,   0,   0, 180795,  0,    0,     'Summon Sandworm Base'),
+(34810, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  42,    0,   8,   0, 20083,  64,    0,     'Summon Summoned Bloodwarder Mender behind of the caster'),
+(34817, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  44,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist right of the caster'),
+(34818, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  43,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist left of the caster'),
+(34819, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  41,    0,   8,   0, 20078,  64,    0,     'Summon Summoned Bloodwarder Reservist front of the caster'),
+(35153, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  42,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge behind of the caster'),
+(35904, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  44,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge right of the caster'),
+(35905, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  43,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge left of the caster'),
+(35906, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,  28,  41,    0,   8,   0, 20405,  64,    0,     'Summon Nether Charge front of the caster'),
+(37264, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 0x00000000, 101,  21,  28,  18,    0,   7,   0, 21729,  64,    0,     'Power Converters: Summon Electromental (from cata)'),
+(37278, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 0x00000000, 101,  21,  28,  18,    0,   1,   0, 21737,  64,    0,     'Power Converters: Summon Mini-Electromental (from cata)'),
+(37365, 0x00000180, 0x00000000, 0x00000004, 0x00000000, 0x00000000, 101,  21,  28,  18,    0,   1,   0, 21757,  64,    0,     'Power Converters: Summon Big Flavor Electromental (from cata)'),
+(44920, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24941,   0,    0,     'Model - Shattered Sun Marksman - BE Male Tier 4'),
+(44924, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24945,   0,    0,     'Model - Shattered Sun Marksman - BE Female Tier 4'),
+(44928, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24949,   0,    0,     'Model - Shattered Sun Marksman - Draenei Male Tier 4'),
+(44932, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 24953,   0,    0,     'Model - Shattered Sun Marksman - Draenei Female Tier 4'),
+(45158, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25119,   0,    0,     'Model - Shattered Sun Warrior - BE Female Tier 4'),
+(45162, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25123,   0,    0,     'Model - Shattered Sun Warrior - BE Male Tier 4'),
+(45166, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25127,   0,    0,     'Model - Shattered Sun Warrior - Draenei Female Tier 4'),
+(45170, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,  56, 25131,   0,    0,     'Model - Shattered Sun Warrior - Draenei Male Tier 4'),
+(50574, 0x00000100, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,   0,  90,  25,    0,  11,   0, 28042,   0,    0,     'Captain Brandon Kill Credit'),
+(58630, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Mal\'Ganis'),
+(59046, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Tribunal of Ages'),
+(59450, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - The Four Horsemen'),
+(62388, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 101,  21,   6,   1,    0,   0,   4, 0,       0,    0,     'Aura required for Demonic Circle 48020'),
+(64899, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Hodir'),
+(64985, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Thorim'),
+(65074, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Freya'),
+(65195, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Assembly of Iron'),
+(68184, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Faction Champions'),
+(72845, 0x00800180, 0x00000000, 0x00000005, 0x00000000, 0x00000000, 101,  37,   6,  22,    7,  28,   4, 0,       0,    0,     'Achievement check - Pit of Saron - Don\'t Look Up');
 /*!40000 ALTER TABLE `spell_template` ENABLE KEYS */;
 UNLOCK TABLES;
 

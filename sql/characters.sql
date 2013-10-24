@@ -434,7 +434,7 @@ DROP TABLE IF EXISTS `character_db_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_db_version` (
-  `required_12447_02_characters_calendar_invites` bit(1) default NULL
+  `required_12774_01_characters_characters` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Last applied sql update to DB';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -444,7 +444,7 @@ CREATE TABLE `character_db_version` (
 
 LOCK TABLES `character_db_version` WRITE;
 /*!40000 ALTER TABLE `character_db_version` DISABLE KEYS */;
-INSERT INTO `character_db_version` (`required_12447_02_characters_calendar_invites`) VALUES
+INSERT INTO `character_db_version` (`required_12697_01_characters_characters`) VALUES
 (NULL);
 /*!40000 ALTER TABLE `character_db_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -795,7 +795,6 @@ CREATE TABLE `character_queststatus_daily` (
   `guid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Global Unique Identifier',
   `quest` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Quest Identifier',
   PRIMARY KEY (`guid`,`quest`),
-  KEY `idx_guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Player System';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -819,7 +818,6 @@ CREATE TABLE `character_queststatus_monthly` (
   `guid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Global Unique Identifier',
   `quest` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Quest Identifier',
   PRIMARY KEY (`guid`,`quest`),
-  KEY `idx_guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Player System';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -843,7 +841,6 @@ CREATE TABLE `character_queststatus_weekly` (
   `guid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Global Unique Identifier',
   `quest` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Quest Identifier',
   PRIMARY KEY (`guid`,`quest`),
-  KEY `idx_guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Player System';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -919,8 +916,6 @@ CREATE TABLE `character_social` (
   `flags` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Friend Flags',
   `note` varchar(48) NOT NULL DEFAULT '' COMMENT 'Friend Note',
   PRIMARY KEY (`guid`,`friend`,`flags`),
-  KEY `guid` (`guid`),
-  KEY `friend` (`friend`),
   KEY `guid_flags` (`guid`,`flags`),
   KEY `friend_flags` (`friend`,`flags`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Player System';
@@ -1048,7 +1043,6 @@ CREATE TABLE `character_talent` (
   `current_rank` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `spec` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`guid`,`talent_id`,`spec`),
-  KEY `guid_key` (`guid`),
   KEY `talent_key` (`talent_id`),
   KEY `spec_key` (`spec`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1172,7 +1166,7 @@ CREATE TABLE `characters` (
   `yesterdayKills` smallint(5) unsigned NOT NULL DEFAULT '0',
   `chosenTitle` int(10) unsigned NOT NULL DEFAULT '0',
   `watchedFaction` int(10) unsigned NOT NULL DEFAULT '0',
-  `drunk` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `drunk` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `health` int(10) unsigned NOT NULL DEFAULT '0',
   `power1` int(10) unsigned NOT NULL DEFAULT '0',
   `power2` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1220,7 +1214,7 @@ CREATE TABLE `corpse` (
   `position_z` float NOT NULL DEFAULT '0',
   `orientation` float NOT NULL DEFAULT '0',
   `map` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'Map Identifier',
-  `phaseMask` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `phaseMask` int(11) unsigned NOT NULL DEFAULT '1',
   `time` bigint(20) unsigned NOT NULL DEFAULT '0',
   `corpse_type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `instance` int(11) unsigned NOT NULL DEFAULT '0',
@@ -1455,7 +1449,6 @@ CREATE TABLE `guild_bank_eventlog` (
   `DestTabId` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Destination Tab Id',
   `TimeStamp` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Event UNIX time',
   PRIMARY KEY (`guildid`,`LogGuid`,`TabId`),
-  KEY `guildid_key` (`guildid`),
   KEY `Idx_PlayerGuid` (`PlayerGuid`),
   KEY `Idx_LogGuid` (`LogGuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1484,7 +1477,6 @@ CREATE TABLE `guild_bank_item` (
   `item_guid` int(11) unsigned NOT NULL DEFAULT '0',
   `item_entry` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`guildid`,`TabId`,`SlotId`),
-  KEY `guildid_key` (`guildid`),
   KEY `Idx_item_guid` (`item_guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1511,8 +1503,7 @@ CREATE TABLE `guild_bank_right` (
   `rid` int(11) unsigned NOT NULL DEFAULT '0',
   `gbright` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `SlotPerDay` int(11) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`guildid`,`TabId`,`rid`),
-  KEY `guildid_key` (`guildid`)
+  PRIMARY KEY (`guildid`,`TabId`,`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1538,8 +1529,7 @@ CREATE TABLE `guild_bank_tab` (
   `TabName` varchar(100) NOT NULL DEFAULT '',
   `TabIcon` varchar(100) NOT NULL DEFAULT '',
   `TabText` text,
-  PRIMARY KEY (`guildid`,`TabId`),
-  KEY `guildid_key` (`guildid`)
+  PRIMARY KEY (`guildid`,`TabId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1611,7 +1601,6 @@ CREATE TABLE `guild_member` (
   `BankResetTimeTab5` int(11) unsigned NOT NULL DEFAULT '0',
   `BankRemSlotsTab5` int(11) unsigned NOT NULL DEFAULT '0',
   UNIQUE KEY `guid_key` (`guid`),
-  KEY `guildid_key` (`guildid`),
   KEY `guildid_rank_key` (`guildid`,`rank`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Guild System';
 /*!40101 SET character_set_client = @saved_cs_client */;

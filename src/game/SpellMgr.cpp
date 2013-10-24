@@ -103,7 +103,7 @@ uint32 GetSpellCastTime(SpellEntry const* spellInfo, Spell const* spell)
     if (spell)
     {
         // some triggered spells have data only usable for client
-        if (spell->IsTriggeredSpellWithRedundentData())
+        if (spell->IsTriggeredSpellWithRedundentCastTime())
             return 0;
 
         // spell targeted to non-trading trade slot item instant at trade success apply
@@ -749,9 +749,23 @@ bool IsPositiveEffect(SpellEntry const* spellproto, SpellEffectIndex effIndex)
                     return false;
                 case 10258:                                 // Awaken Vault Warder
                 case 18153:                                 // Kodo Kombobulator
+                case 32312:                                 // Move 1
+                case 37388:                                 // Move 2
                 case 49634:                                 // Sergeant's Flare
                 case 54530:                                 // Opening
                 case 62105:                                 // To'kini's Blowgun
+                    return true;
+                default:
+                    break;
+            }
+            break;
+        case SPELL_EFFECT_SCRIPT_EFFECT:
+            // some explicitly required script effect sets
+            switch (spellproto->Id)
+            {
+                case 46650:                                 // Open Brutallus Back Door
+                case 62488:                                 // Activate Construct
+                case 64503:                                 // Water
                     return true;
                 default:
                     break;
@@ -797,6 +811,7 @@ bool IsPositiveEffect(SpellEntry const* spellproto, SpellEffectIndex effIndex)
                         case 27202:
                         case 27203:
                         case 47669:
+                        case 64996:                         // Reorigination
                             return true;
                         default:
                             break;
@@ -1182,17 +1197,6 @@ void SpellMgr::LoadSpellTargetPositions()
                 continue;
             if (spellEffect->EffectImplicitTargetA==TARGET_TABLE_X_Y_Z_COORDINATES || spellEffect->EffectImplicitTargetB==TARGET_TABLE_X_Y_Z_COORDINATES)
             {
-                // additional requirements
-                if (spellEffect->Effect==SPELL_EFFECT_BIND && spellEffect->EffectMiscValue)
-                {
-                    uint32 zone_id = sTerrainMgr.GetAreaId(st.target_mapId, st.target_X, st.target_Y, st.target_Z);
-                    if (int32(zone_id) != spellEffect->EffectMiscValue)
-                    {
-                        sLog.outErrorDb("Spell (Id: %u) listed in `spell_target_position` expected point to zone %u bit point to zone %u.",Spell_ID, spellEffect->EffectMiscValue, zone_id);
-                        break;
-                    }
-                }
-
                 found = true;
                 break;
             }
@@ -2175,6 +2179,40 @@ bool SpellMgr::IsNoStackSpellDueToSpell(uint32 spellId_1, uint32 spellId_2) cons
                             (spellInfo_2->Id == 57598 && spellInfo_1->Id == 57560))
                         return false;
 
+                    // Shard of Flame and Mote of Flame
+                    if ((spellInfo_1->SpellIconID == 2302 && spellInfo_1->SpellVisual[0] == 0) ||
+                            (spellInfo_2->SpellIconID == 2302 && spellInfo_2->SpellVisual[0] == 0))
+                        return false;
+
+                    // Felblaze Visual and Fog of Corruption
+                    if ((spellInfo_1->Id == 45068 && spellInfo_2->Id == 45582) ||
+                            (spellInfo_2->Id == 45068 && spellInfo_1->Id == 45582))
+                        return false;
+
+                    // Simon Game START timer, (DND) and Simon Game Pre-game timer
+                    if ((spellInfo_1->Id == 39993 && spellInfo_2->Id == 40041) ||
+                            (spellInfo_2->Id == 39993 && spellInfo_1->Id == 40041))
+                        return false;
+
+                    // Karazhan - Chess: Is Square OCCUPIED aura Karazhan - Chess: Create Move Marker
+                    if ((spellInfo_1->Id == 39400 && spellInfo_2->Id == 32261) ||
+                            (spellInfo_2->Id == 39400 && spellInfo_1->Id == 32261))
+                        return false;
+
+                    // Black Hole (damage) and Black Hole (phase)
+                    if ((spellInfo_1->Id == 62169 && spellInfo_2->Id == 62168) ||
+                            (spellInfo_2->Id == 62169 && spellInfo_1->Id == 62168))
+                        return false;
+
+                    // Black Hole (damage) and Worm Hole (phase)
+                    if ((spellInfo_1->Id == 62169 && spellInfo_2->Id == 65250) ||
+                            (spellInfo_2->Id == 62169 && spellInfo_1->Id == 65250))
+                        return false;
+
+                    // Black Hole (damage) and Phase Punch (phase)
+                    if ((spellInfo_1->Id == 62169 && spellInfo_2->Id == 64417) ||
+                            (spellInfo_2->Id == 62169 && spellInfo_1->Id == 64417))
+                        return false;
                     break;
                 }
                 case SPELLFAMILY_MAGE:

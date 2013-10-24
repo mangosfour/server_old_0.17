@@ -177,10 +177,17 @@ enum Powers
 #define INVALID_POWER_INDEX             10000
 #define INVALID_POWER                   MAX_POWERS
 
+/**
+ * The different spell schools that are available, used in both damage calculation
+ * and spell casting to decide what should be affected, the SPELL_SCHOOL_NORMAL
+ * is the armor, others should be self explanatory.
+ *
+ * Note that these are the values to use for changing ie, the armor via a
+ * Modifier, and it is the Modifier::m_miscValue that should be set.
+ */
 enum SpellSchools
 {
-    /// Physical, Armor
-    SPELL_SCHOOL_NORMAL                 = 0,
+    SPELL_SCHOOL_NORMAL                 = 0,                // Physical, Armor
     SPELL_SCHOOL_HOLY                   = 1,
     SPELL_SCHOOL_FIRE                   = 2,
     SPELL_SCHOOL_NATURE                 = 3,
@@ -786,7 +793,7 @@ enum SpellEffects
     SPELL_EFFECT_JUMP2                     = 42,
     SPELL_EFFECT_TELEPORT_UNITS_FACE_CASTER = 43,
     SPELL_EFFECT_SKILL_STEP                = 44,
-    SPELL_EFFECT_ADD_HONOR                 = 45,
+    SPELL_EFFECT_PLAY_MOVIE                = 45,
     SPELL_EFFECT_SPAWN                     = 46,
     SPELL_EFFECT_TRADE_SKILL               = 47,
     SPELL_EFFECT_STEALTH                   = 48,
@@ -845,10 +852,10 @@ enum SpellEffects
     SPELL_EFFECT_FEED_PET                  = 101,
     SPELL_EFFECT_DISMISS_PET               = 102,
     SPELL_EFFECT_REPUTATION                = 103,
-    SPELL_EFFECT_SUMMON_OBJECT_SLOT1       = 104,
-    SPELL_EFFECT_SUMMON_OBJECT_SLOT2       = 105,
-    SPELL_EFFECT_SUMMON_OBJECT_SLOT3       = 106,
-    SPELL_EFFECT_SUMMON_OBJECT_SLOT4       = 107,
+    SPELL_EFFECT_SUMMON_OBJECT_SLOT        = 104,
+    SPELL_EFFECT_SURVEY                    = 105,
+    SPELL_EFFECT_SUMMON_RAID_MARKER        = 106,
+    SPELL_EFFECT_LOOT_CORPSE               = 107,
     SPELL_EFFECT_DISPEL_MECHANIC           = 108,
     SPELL_EFFECT_SUMMON_DEAD_PET           = 109,
     SPELL_EFFECT_DESTROY_ALL_TOTEMS        = 110,
@@ -906,18 +913,18 @@ enum SpellEffects
     SPELL_EFFECT_TALENT_SPEC_SELECT        = 162,
     SPELL_EFFECT_163                       = 163,
     SPELL_EFFECT_CANCEL_AURA               = 164,
-    SPELL_EFFECT_165                       = 165,
-    SPELL_EFFECT_166                       = 166,
+    SPELL_EFFECT_DAMAGE_FROM_MAX_HEALTH_PCT= 165,
+    SPELL_EFFECT_REWARD_CURRENCY           = 166,
     SPELL_EFFECT_167                       = 167,
     SPELL_EFFECT_168                       = 168,
-    SPELL_EFFECT_169                       = 169,
+    SPELL_EFFECT_DESTROY_ITEM              = 169,
     SPELL_EFFECT_170                       = 170,
     SPELL_EFFECT_171                       = 171,
     SPELL_EFFECT_MASS_RESSURECTION         = 172,
     SPELL_EFFECT_BUY_GUILD_BANKSLOT        = 173,
     SPELL_EFFECT_174                       = 174,
     SPELL_EFFECT_175                       = 175,
-    SPELL_EFFECT_176                       = 176,
+    SPELL_EFFECT_SANCTUARY_2               = 176,
     SPELL_EFFECT_177                       = 177,
     SPELL_EFFECT_178                       = 178,
     SPELL_EFFECT_179                       = 179,
@@ -1381,14 +1388,12 @@ enum SpellImmunity
  * The different types of attacks you can do with 
  * weapons
  */
-enum WeaponAttackType
+enum WeaponAttackType                                       // The different weapon attack-types
 {
-    ///Main-hand weapon
-    BASE_ATTACK   = 0,
-    ///Off-hand weapon
-    OFF_ATTACK    = 1,
-    ///Ranged weapon, bow/wand etc.
-    RANGED_ATTACK = 2  
+    
+    BASE_ATTACK   = 0,                                      // Main-hand weapon
+    OFF_ATTACK    = 1,                                      // Off-hand weapon
+    RANGED_ATTACK = 2                                       ///Ranged weapon, bow/wand etc.  
 };
 
 #define MAX_ATTACK  3
@@ -1479,7 +1484,7 @@ enum Targets
     TARGET_DIRECTLY_FORWARD            = 89,
     TARGET_NONCOMBAT_PET               = 90,
     TARGET_91                          = 91,
-    TARGET_92                          = 92,
+    TARGET_SUMMONER                    = 92,
     TARGET_CONTROLLED_VEHICLE          = 94,
     TARGET_95                          = 95,
     TARGET_VEHICLE_PASSENGER_0         = 96,

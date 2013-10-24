@@ -14,6 +14,9 @@ MPQFile::MPQFile(HANDLE mpq, const char* filename):
     {
 		//	A lot of files error, even when it's not an issue - hide for now to prevent confusion
 		//        fprintf(stderr, "Can't open %s, err=%u!\n", filename, GetLastError());
+        int error = GetLastError();
+        if ( error != ERROR_FILE_NOT_FOUND )
+            fprintf(stderr, "Can't open %s, err=%u!\n", filename, GetLastError());
         eof = true;
         return;
     }

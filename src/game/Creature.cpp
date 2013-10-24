@@ -97,34 +97,6 @@ VendorItem const* VendorItemData::FindItemCostPair(uint32 item_id, uint8 type, u
     return NULL;
 }
 
-bool AssistDelayEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
-{
-    if (Unit* victim = m_owner.GetMap()->GetUnit(m_victimGuid))
-    {
-        while (!m_assistantGuids.empty())
-        {
-            Creature* assistant = m_owner.GetMap()->GetAnyTypeCreature(*m_assistantGuids.rbegin());
-            m_assistantGuids.pop_back();
-
-            if (assistant && assistant->CanAssistTo(&m_owner, victim))
-            {
-                assistant->SetNoCallAssistance(true);
-                if (assistant->AI())
-                    assistant->AI()->AttackStart(victim);
-            }
-        }
-    }
-    return true;
-}
-
-AssistDelayEvent::AssistDelayEvent(ObjectGuid victim, Unit& owner, std::list<Creature*> const& assistants) : BasicEvent(), m_victimGuid(victim), m_owner(owner)
-{
-    // Pushing guids because in delay can happen some creature gets despawned => invalid pointer
-    m_assistantGuids.reserve(assistants.size());
-    for (std::list<Creature*>::const_iterator itr = assistants.begin(); itr != assistants.end(); ++itr)
-        m_assistantGuids.push_back((*itr)->GetObjectGuid());
-}
-
 bool ForcedDespawnDelayEvent::Execute(uint64 /*e_time*/, uint32 /*p_time*/)
 {
     m_owner.ForcedDespawn();
@@ -217,8 +189,17 @@ void Creature::RemoveFromWorld()
 
 void Creature::RemoveCorpse()
 {
+    // since pool system can fail to roll unspawned object, this one can remain spawned, so must set respawn nevertheless
+    if (uint16 poolid = sPoolMgr.IsPartOfAPool<Creature>(GetGUIDLow()))
+        sPoolMgr.UpdatePool<Creature>(*GetMap()->GetPersistentState(), poolid, GetGUIDLow());
+
+    if (!IsInWorld())                                       // can be despawned by update pool
+        return;
+
     if ((getDeathState() != CORPSE && !m_isDeadByDefault) || (getDeathState() != ALIVE && m_isDeadByDefault))
         return;
+
+    DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "Removing corpse of %s ", GetGuidStr().c_str());
 
     m_corpseDecayTimer = 0;
     SetDeathState(DEAD);
@@ -544,26 +525,17 @@ void Creature::Update(uint32 update_diff, uint32 diff)
 
             if (m_corpseDecayTimer <= update_diff)
             {
-                // since pool system can fail to roll unspawned object, this one can remain spawned, so must set respawn nevertheless
-                if (uint16 poolid = sPoolMgr.IsPartOfAPool<Creature>(GetGUIDLow()))
-                    sPoolMgr.UpdatePool<Creature>(*GetMap()->GetPersistentState(), poolid, GetGUIDLow());
-
-                if (IsInWorld())                            // can be despawned by update pool
-                {
-                    RemoveCorpse();
-                    DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "Removing corpse... %u ", GetEntry());
-                }
+                RemoveCorpse();
+                break;
             }
             else
-            {
                 m_corpseDecayTimer -= update_diff;
-                if (m_groupLootId)
-                {
-                    if (m_groupLootTimer <= update_diff)
-                        StopGroupLoot();
-                    else
-                        m_groupLootTimer -= update_diff;
-                }
+            if (m_groupLootId)                              // Loot is stopped already if corpse got removed.
+            {
+                if (m_groupLootTimer <= update_diff)
+                    StopGroupLoot();
+                else
+                    m_groupLootTimer -= update_diff;
             }
 
             break;
@@ -574,22 +546,11 @@ void Creature::Update(uint32 update_diff, uint32 diff)
             {
                 if (m_corpseDecayTimer <= update_diff)
                 {
-                    // since pool system can fail to roll unspawned object, this one can remain spawned, so must set respawn nevertheless
-                    if (uint16 poolid = sPoolMgr.IsPartOfAPool<Creature>(GetGUIDLow()))
-                        sPoolMgr.UpdatePool<Creature>(*GetMap()->GetPersistentState(), poolid, GetGUIDLow());
-
-                    if (IsInWorld())                        // can be despawned by update pool
-                    {
-                        RemoveCorpse();
-                        DEBUG_FILTER_LOG(LOG_FILTER_AI_AND_MOVEGENSS, "Removing alive corpse... %u ", GetEntry());
-                    }
-                    else
-                        return;
+                    RemoveCorpse();
+                    break;
                 }
                 else
-                {
                     m_corpseDecayTimer -= update_diff;
-                }
             }
 
             Unit::Update(update_diff, diff);
@@ -1578,6 +1539,9 @@ void Creature::SetDeathState(DeathState s)
 
 void Creature::Respawn()
 {
+    if (!IsInWorld())                                       // Could be removed as part of a pool (in which case respawn-time is handled with pool-system)
+        return;
+
     RemoveCorpse();
 
     if (IsDespawned())
@@ -1597,11 +1561,14 @@ void Creature::ForcedDespawn(uint32 timeMSToDespawn)
         m_Events.AddEvent(pEvent, m_Events.CalculateTime(timeMSToDespawn));
         return;
     }
+    if (IsDespawned())
+        return;
 
     if (isAlive())
         SetDeathState(JUST_DIED);
 
-    m_corpseDecayTimer = 1;                                 // Properly remove corpse on next tick (also pool system requires Creature::Update call with CORPSE state
+    RemoveCorpse();
+    
     SetHealth(0);                                           // just for nice GM-mode view
 }
 
@@ -1801,24 +1768,7 @@ void Creature::CallAssistance()
     if (!m_AlreadyCallAssistance && getVictim() && !isCharmed())
     {
         SetNoCallAssistance(true);
-
-        float radius = sWorld.getConfig(CONFIG_FLOAT_CREATURE_FAMILY_ASSISTANCE_RADIUS);
-        if (radius > 0)
-        {
-            std::list<Creature*> assistList;
-
-            {
-                MaNGOS::AnyAssistCreatureInRangeCheck u_check(this, getVictim(), radius);
-                MaNGOS::CreatureListSearcher<MaNGOS::AnyAssistCreatureInRangeCheck> searcher(assistList, u_check);
-                Cell::VisitGridObjects(this, searcher, radius);
-            }
-
-            if (!assistList.empty())
-            {
-                AssistDelayEvent* e = new AssistDelayEvent(getVictim()->GetObjectGuid(), *this, assistList);
-                m_Events.AddEvent(e, m_Events.CalculateTime(sWorld.getConfig(CONFIG_UINT32_CREATURE_FAMILY_ASSISTANCE_DELAY)));
-            }
-        }
+        AI()->SendAIEventAround(AI_EVENT_CALL_ASSISTANCE, getVictim(), sWorld.getConfig(CONFIG_UINT32_CREATURE_FAMILY_ASSISTANCE_DELAY), sWorld.getConfig(CONFIG_FLOAT_CREATURE_FAMILY_ASSISTANCE_RADIUS));
     }
 }
 
@@ -1847,7 +1797,7 @@ bool Creature::CanAssistTo(const Unit* u, const Unit* enemy, bool checkfaction /
         return false;
 
     // skip fighting creature
-    if (isInCombat())
+    if (enemy && isInCombat())
         return false;
 
     // only free creature
@@ -1867,7 +1817,7 @@ bool Creature::CanAssistTo(const Unit* u, const Unit* enemy, bool checkfaction /
     }
 
     // skip non hostile to caster enemy creatures
-    if (!IsHostileTo(enemy))
+    if (enemy && !IsHostileTo(enemy))
         return false;
 
     return true;

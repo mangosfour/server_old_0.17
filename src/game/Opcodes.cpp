@@ -701,6 +701,7 @@ void InitializeOpcodes()
     OPCODE(MSG_QUEST_PUSH_RESULT,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestPushResult           );
     OPCODE(SMSG_PLAY_MUSIC,                              STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(SMSG_PLAY_OBJECT_SOUND,                       STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_PLAY_ONE_SHOT_ANIM_KIT,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(CMSG_REQUEST_PET_INFO,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleRequestPetInfoOpcode      );
     OPCODE(CMSG_FAR_SIGHT,                               STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleFarSightOpcode            );
     OPCODE(SMSG_SPELLDISPELLOG,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
@@ -1404,4 +1405,6 @@ void InitializeOpcodes()
     OPCODE(SMSG_PVP_REWARDS,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(CMSG_REQUEST_PVP_OPTIONS_ENABLED,             STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleRequestPvPOptionsEnabledOpcode );
     OPCODE(SMSG_PVP_OPTIONS_ENABLED,                     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(CMSG_REQUEST_HOTFIX,                          STATUS_AUTHED,   PROCESS_INPLACE,      &WorldSession::HandleRequestHotfix             );
+    OPCODE(SMSG_DB_REPLY,                                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
 };

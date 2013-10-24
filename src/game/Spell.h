@@ -291,7 +291,6 @@ class Spell
         void EffectJump(SpellEffectEntry const* effect);
         void EffectTeleUnitsFaceCaster(SpellEffectEntry const* effect);
         void EffectLearnSkill(SpellEffectEntry const* effect);
-        void EffectAddHonor(SpellEffectEntry const* effect);
         void EffectTradeSkill(SpellEffectEntry const* effect);
         void EffectEnchantItemPerm(SpellEffectEntry const* effect);
         void EffectEnchantItemTmp(SpellEffectEntry const* effect);
@@ -389,6 +388,7 @@ class Spell
         void cast(bool skipCheck = false);
         void finish(bool ok = true);
         void TakePower();
+        void TakeAmmo();
         void TakeReagents();
         void TakeCastItem();
 
@@ -477,7 +477,7 @@ class Spell
         uint64 GetDelayMoment() const { return m_delayMoment; }
 
         bool IsNeedSendToClient() const;                    // use for hide spell cast for client in case when cast not have client side affect (animation or log entries)
-        bool IsTriggeredSpellWithRedundentData() const;     // use for ignore some spell data for triggered spells like cast time, some triggered spells have redundant copy data from main spell for client use purpose
+        bool IsTriggeredSpellWithRedundentCastTime() const; // use for ignore some spell data for triggered spells like cast time, some triggered spells have redundent copy data from main spell for client use purpose
 
         CurrentSpellTypes GetCurrentContainer();
 

@@ -559,6 +559,7 @@ enum Opcodes
 	CMSG_REPOP_REQUEST                                    = 0x6235, // 4.3.4 15595
 	CMSG_REPORT_PVP_AFK                                   = 0x6734, // 4.3.4 15595
 	CMSG_REQUEST_ACCOUNT_DATA							  = 0x0A82, // 5.3.0 17128
+    CMSG_REQUEST_HOTFIX                                   = 0x2401, // 4.3.4 15595
 	CMSG_REQUEST_PARTY_MEMBER_STATS                       = 0x0C04, // 4.3.4 15595
 	CMSG_REQUEST_PET_INFO                                 = 0x4924, // 4.3.4 15595
 	CMSG_REQUEST_PVP_OPTIONS_ENABLED                      = 0x24A1, // 4.3.4 15595
@@ -927,6 +928,7 @@ enum Opcodes
 	SMSG_DAMAGE_CALC_LOG                                  = 0x127D,
 	SMSG_DANCE_QUERY_RESPONSE                             = 0x1453,
 	SMSG_DBLOOKUP                                         = 0x1004,
+    SMSG_DB_REPLY                                         = 0x38A4, // 4.3.4 15595 
 	SMSG_DEATH_RELEASE_LOC                                = 0x2F07, // 4.3.4 15595
 	SMSG_DEBUG_AISTATE                                    = 0x1030,
 	SMSG_DEBUG_LIST_TARGETS                               = 0x13DA,
@@ -1181,6 +1183,7 @@ enum Opcodes
 	SMSG_PLAY_DANCE                                       = 0x144D,
 	SMSG_PLAY_MUSIC                                       = 0x4B06, // 4.3.4 15595
 	SMSG_PLAY_OBJECT_SOUND                                = 0x2635, // 4.3.4 15595
+    SMSG_PLAY_ONE_SHOT_ANIM_KIT                           = 0x4A35, // 4.3.4 15595
 	SMSG_PLAY_SOUND                                       = 0x2134, // 4.3.4 15595
 	SMSG_PLAY_SPELL_VISUAL								  = 0x07D0, // 5.3.0 17128
 	SMSG_PLAY_TIME_WARNING                                = 0x12F6,

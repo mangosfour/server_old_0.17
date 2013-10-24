@@ -427,6 +427,7 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleReloadGossipMenuCommand(char* args);
         bool HandleReloadGOQuestRelationsCommand(char* args);
         bool HandleReloadGOQuestInvRelationsCommand(char* args);
+        bool HandleReloadHotfixDataCommand(char* args);
         bool HandleReloadItemConvertCommand(char* args);
         bool HandleReloadItemEnchantementsCommand(char* args);
         bool HandleReloadItemRequiredTragetCommand(char* args);
@@ -544,8 +545,8 @@ class MANGOS_DLL_SPEC ChatHandler
         bool HandleDismountCommand(char* args);
         bool HandleSaveCommand(char* args);
 
-        bool HandleNamegoCommand(char* args);
-        bool HandleGonameCommand(char* args);
+        bool HandleSummonCommand(char* args);
+        bool HandleAppearCommand(char* args);
         bool HandleGroupgoCommand(char* args);
         bool HandleRecallCommand(char* args);
         bool HandleAnnounceCommand(char* args);
