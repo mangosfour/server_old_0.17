@@ -574,6 +574,7 @@ enum Opcodes
 	CMSG_RESET_FACTION_CHEAT                              = 0x1282,
 	CMSG_RESET_INSTANCES                                  = 0x6E14, // 4.3.4 15595
 	CMSG_RESURRECT_RESPONSE                               = 0x6827, // 4.3.4 15595
+    CMSG_RETURN_TO_GRAVEYARD                              = 0x301E, // 4.3.4 15595
 	CMSG_RIDE_VEHICLE_INTERACT                            = 0x14A9,
 	CMSG_RUN_SCRIPT                                       = 0x12B6,
 	CMSG_SAVE_DANCE                                       = 0x144A,
