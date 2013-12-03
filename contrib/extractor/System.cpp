@@ -98,7 +98,7 @@ float CONF_flat_liquid_delta_limit = 0.001f; // If max - min less this value - l
 static char* const langs[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU" };
 #define LANG_COUNT 12
 
-#define MIN_SUPPORTED_BUILD 16357                           // code expect mpq files and mpq content files structure for this build or later
+#define MIN_SUPPORTED_BUILD 17520                           // code expect mpq files and mpq content files structure for this build or later
 #define EXPANSION_COUNT 4
 #define WORLD_COUNT 1
 
@@ -514,6 +514,7 @@ bool ConvertADT(char* filename, char* filename2, int cell_y, int cell_x, uint32 
     map_fileheader map;
     map.mapMagic = *(uint32 const*)MAP_MAGIC;
     map.versionMagic = *(uint32 const*)MAP_VERSION_MAGIC;
+
     map.buildMagic = build;
 
     // Get area flags data
@@ -1041,6 +1042,10 @@ void ExtractMapsFromMpq(uint32 build, const int locale)
     char mpq_map_name[1024];
 
     printf("\nExtracting maps...\n");
+    if (build==17520)
+	{
+		build = 17538;
+	}
 
     uint32 map_count = ReadMapDBC(locale);
 
@@ -1070,7 +1075,7 @@ void ExtractMapsFromMpq(uint32 build, const int locale)
 
                 sprintf(mpq_filename, "World\\Maps\\%s\\%s_%u_%u.adt", map_ids[z].name, map_ids[z].name, x, y);
                 sprintf(output_filename, "%s/maps/%03u%02u%02u.map", output_path, map_ids[z].id, y, x);
-                ConvertADT(mpq_filename, output_filename, y, x, build);
+				ConvertADT(mpq_filename, output_filename, y, x, build);
             }
             // draw progress bar
             printf("Processing........................%d%%\r", (100 * (y + 1)) / WDT_MAP_SIZE);
@@ -1319,6 +1324,10 @@ int main(int argc, char* arg[])
             {
                 FirstLocale = i;
                 build = ReadBuild(FirstLocale);
+                if (build==17520)
+				{
+					build = 17538;
+				}
                 printf("Detected client build: %u\n", build);
                 break;
             }
@@ -1328,6 +1337,10 @@ int main(int argc, char* arg[])
             {
                 FirstLocale = i;
                 build = ReadBuild(FirstLocale);
+                if (build==17520)
+				{
+					build = 17538;
+				}
                 printf("Detected client build: %u\n", build);
                 ExtractDBCFiles(i, true);
             }
