@@ -573,7 +573,7 @@ namespace MMAP
         iv.polyMesh = rcAllocPolyMesh();
         if (!iv.polyMesh)
         {
-            printf("%s alloc iv.polyMesh FIALED!          \r", tileString);
+            printf("%s alloc iv.polyMesh FAILED!          \r", tileString);
             return;
         }
         rcMergePolyMeshes(m_rcContext, pmmerge, nmerge, *iv.polyMesh);
@@ -581,7 +581,7 @@ namespace MMAP
         iv.polyMeshDetail = rcAllocPolyMeshDetail();
         if (!iv.polyMeshDetail)
         {
-            printf("%s alloc m_dmesh FIALED!          \r", tileString);
+            printf("%s alloc m_dmesh FAILED!          \r", tileString);
             return;
         }
         rcMergePolyMeshDetails(m_rcContext, dmmerge, nmerge, *iv.polyMeshDetail);
@@ -889,6 +889,8 @@ namespace MMAP
 			case 1113:  // Transport: DarkmoonCarousel
 			case 1132:	// Transport218599 - The Skybag (Brawl'gar Arena)
 			case 1133:	// Transport218600 - Zandalari Ship (Mogu Island)
+			case 1172:  // Transport: Siege of Orgrimmar (Alliance)
+			case 1173:  // Transport: Siege of Orgrimmar (Horde)
                 return true;
             default:
                 return false;

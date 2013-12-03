@@ -22,7 +22,7 @@
 // Client expected level limitation, like as used in DBC item max levels for "until max player level"
 // use as default max player level, must be fit max level for used client
 // also see MAX_LEVEL and STRONG_MAX_LEVEL define
-#define DEFAULT_MAX_LEVEL 85
+#define DEFAULT_MAX_LEVEL 90
 
 // client supported max level for player/pets/etc. Avoid overflow or client stability affected.
 // also see GT_MAX_LEVEL define
@@ -31,11 +31,6 @@
 // Server side limitation. Base at used code requirements.
 // also see MAX_LEVEL and GT_MAX_LEVEL define
 #define STRONG_MAX_LEVEL 255
-enum MountFlags
-{
-	MOUNT_FLAG_CAN_PITCH                = 0x4,
-	MOUNT_FLAG_CAN_SWIM                 = 0x8
-};
 
 enum BattleGroundBracketId                                  // bracketId for level ranges
 {
@@ -451,6 +446,11 @@ enum ItemLimitCategory
     ITEM_LIMIT_CATEGORY_MANA_GEM   = 4,
 };
 
+enum MountFlags
+{
+    MOUNT_FLAG_CAN_PITCH            = 0x4,                  // client checks MOVEMENTFLAG2_FULL_SPEED_PITCHING
+    MOUNT_FLAG_CAN_SWIM             = 0x8,                  // client checks MOVEMENTFLAG_SWIMMING
+};
 enum TalentTreeRole
 {
     TALENT_ROLE_TANK    = 0x2,

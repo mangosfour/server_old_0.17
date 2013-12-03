@@ -1,5 +1,5 @@
-/**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+/*
+ * This file is part of the CMaNGOS Project. See AUTHORS file for Copyright information
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ ObjectPosSelector::ObjectPosSelector(float x, float y, float dist, float searche
     // undefined behaviour
     if (m_searcherDist == 0.0f)
         m_searcherDist = DEFAULT_WORLD_OBJECT_SIZE;
- 
+
     m_searchedForReqHAngle = atan(OCCUPY_POS_ANGLE_ATAN_FACTOR * searchedForSize / m_searcherDist);
 
     // Really init in InitilizeAngle
@@ -55,11 +55,11 @@ ObjectPosSelector::ObjectPosSelector(float x, float y, float dist, float searche
 void ObjectPosSelector::AddUsedArea(WorldObject const* obj, float angle, float dist)
 {
     MANGOS_ASSERT(obj);
- 
+
     // skip some unexpected results.
     if (dist == 0.0f)
         return;
- 
+
     // (half) angle that obj occupies
     float sr_angle = atan(OCCUPY_POS_ANGLE_ATAN_FACTOR * obj->GetObjectBoundingRadius() / dist);
 
@@ -80,9 +80,9 @@ void ObjectPosSelector::AddUsedArea(WorldObject const* obj, float angle, float d
  */
 bool ObjectPosSelector::CheckAngle(UsedArea const& usedArea, UsedAreaSide side, float angle) const
 {
-    float used_offset = usedArea.second.angleOffset;
     float used_angle = usedArea.first * SignOf(side);
-    // check first left/right used angles if exists
+    float used_offset = usedArea.second.angleOffset;
+
     return fabs(used_angle - angle) > used_offset || (m_searchPosFor && usedArea.second.occupyingObj == m_searchPosFor);
 }
 
@@ -113,6 +113,7 @@ void ObjectPosSelector::InitializeAngle()
 void ObjectPosSelector::InitializeAngle(UsedAreaSide side)
 {
     m_nextUsedAreaItr[side] = m_UsedAreaLists[side].begin();
+
     // if another side not alow use 0.0f angle calculate possible value in 0..m_searchedForReqHAngle range
     if (!m_UsedAreaLists[~side].empty())
     {
@@ -120,7 +121,7 @@ void ObjectPosSelector::InitializeAngle(UsedAreaSide side)
         m_stepAngle[side] = std::max(m_searchedForReqHAngle + otherArea.second.angleOffset - otherArea.first, 0.0f);
     }
     else                                                    // Other side empty. start from 0
-         m_stepAngle[side] = 0.0f;
+        m_stepAngle[side] = 0.0f;
 
     // As m_stepAngle will be incremented first in ::NextSideAngle
     m_stepAngle[side] -= m_searchedForReqHAngle;
@@ -183,7 +184,7 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
         angle = m_stepAngle[side] * SignOf(side);
         return true;
     }
- 
+
     // Already occupied and no better found
     if ((m_searchPosFor && m_nextUsedAreaItr[side]->second.occupyingObj == m_searchPosFor) ||
          // Next occupied is too far away
@@ -192,10 +193,10 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
         angle = m_stepAngle[side] * SignOf(side);
         return true;
     }
- 
+
     // angle set at first possible pos after passed m_nextUsedAreaItr
     m_stepAngle[side] = m_nextUsedAreaItr[side]->first + m_nextUsedAreaItr[side]->second.angleOffset;
- 
+
     ++m_nextUsedAreaItr[side];
 
     return false;

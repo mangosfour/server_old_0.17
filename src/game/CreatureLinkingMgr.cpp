@@ -68,10 +68,10 @@ void CreatureLinkingMgr::LoadFromDB()
     m_eventTriggers.clear();                              // master
     m_eventGuidTriggers.clear();
 
-    QueryResult* result = WorldDatabase.Query("SELECT entry, map, master_entry, flag, search_range FROM creature_linking_template");
+    // Load `creature_linking_template`
 
     uint32 count = 0;
-
+    QueryResult* result = WorldDatabase.Query("SELECT entry, map, master_entry, flag, search_range FROM creature_linking_template");
     if (!result)
     {
         BarGoLink bar(1);
