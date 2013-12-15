@@ -82,6 +82,7 @@ const char ItemDamagefmt[]="nfffffffi";
 const char ItemLimitCategoryEntryfmt[]="nxii";	// 5.3.0 Checked
 const char ItemRandomPropertiesfmt[]="nxiiiiis";	// 5.3.0 Checked
 const char ItemRandomSuffixfmt[]="nsxiiiiiiiiii";	// 5.3.0 Checked
+const char ItemReforgefmt[]="nifif";
 const char ItemSetEntryfmt[]="dsxxxxxxxxxxxxxxxxxiiiiiiiiiiiiiiiiii";	// 5.3.0 Checked
 const char LiquidTypefmt[] = "nxxixixxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";	// 5.3.0 Checked
 const char LockEntryfmt[] = "niiiiiiiiiiiiiiiiiiiiiiiixxxxxxxx";	// 5.3.0 Checked

@@ -679,10 +679,37 @@ void WorldSession::HandleResurrectResponseOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleReturnToGraveyard(WorldPacket& /*recvPacket*/)
 {
-    if (GetPlayer()->isAlive() || !GetPlayer()->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
+    Player* pPlayer = GetPlayer();
+    if (pPlayer->isAlive() || !pPlayer->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
         return;
 
-    GetPlayer()->RepopAtGraveyard();
+    WorldSafeLocsEntry const* ClosestGrave = NULL;
+
+    // Special handle for battleground maps
+    if (BattleGround* bg = pPlayer->GetBattleGround())
+        ClosestGrave = bg->GetClosestGraveYard(pPlayer);
+    else
+        ClosestGrave = sObjectMgr.GetClosestGraveYard(pPlayer->GetCorpse()->GetPositionX(), pPlayer->GetCorpse()->GetPositionY(), pPlayer->GetCorpse()->GetPositionZ(), pPlayer->GetCorpse()->GetMapId(), pPlayer->GetTeam());
+
+    // if no grave found, stay at the current location
+    // and don't show spirit healer location
+    if (ClosestGrave)
+    {
+        bool updateVisibility = pPlayer->IsInWorld() && pPlayer->GetCorpse()->GetMapId() == ClosestGrave->map_id;
+        pPlayer->TeleportTo(ClosestGrave->map_id, ClosestGrave->x, ClosestGrave->y, ClosestGrave->z, pPlayer->GetOrientation());
+        if (pPlayer->isDead())                                       // not send if alive, because it used in TeleportTo()
+        {
+            WorldPacket data(SMSG_DEATH_RELEASE_LOC, 4 * 4);// show spirit healer position on minimap
+            data << ClosestGrave->map_id;
+            data << ClosestGrave->x;
+            data << ClosestGrave->y;
+            data << ClosestGrave->z;
+            pPlayer->GetSession()->SendPacket(&data);
+        }
+
+        if (updateVisibility && pPlayer->IsInWorld())
+            pPlayer->UpdateVisibilityAndView();
+    }
 }
 
 void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
@@ -1536,7 +1563,7 @@ void WorldSession::HandleHearthandResurrect(WorldPacket& /*recv_data*/)
 
 void WorldSession::HandleRequestHotfix(WorldPacket& recv_data)
 {
-    uint32 type, count;
+    uint32 type = 0, count = 0;
     recv_data >> type;
 
     count = recv_data.ReadBits(23);
@@ -1547,7 +1574,7 @@ void WorldSession::HandleRequestHotfix(WorldPacket& recv_data)
     for (uint32 i = 0; i < count; ++i)
         recv_data.ReadGuidMask<0, 4, 7, 2, 5, 3, 6, 1>(guids[i]);
 
-    uint32 entry;
+    uint32 entry = 0;
     for (uint32 i = 0; i < count; ++i)
     {
         recv_data.ReadGuidBytes<5, 6, 7, 0, 1, 3, 4>(guids[i]);
@@ -1569,3 +1596,20 @@ void WorldSession::HandleRequestHotfix(WorldPacket& recv_data)
         }
     }
 }
+
+void WorldSession::HandleObjectUpdateFailedOpcode(WorldPacket& recv_data)
+{
+    ObjectGuid guid;
+    recv_data.ReadGuidMask<6, 7, 4, 0, 1, 5, 3, 2>(guid);
+    recv_data.ReadGuidBytes<6, 7, 2, 3, 1, 4, 0, 5>(guid);
+
+    DEBUG_LOG("WORLD: Received CMSG_OBJECT_UPDATE_FAILED from %s (%u) guid: %s", GetPlayerName(), GetAccountId(), guid.GetString().c_str());
+    if (_player->IsInWorld())
+    {
+        if (WorldObject* obj = _player->GetMap()->GetWorldObject(guid))
+            obj->SendCreateUpdateToPlayer(_player);
+    }
+    else
+        sLog.outError("WorldSession::HandleObjectUpdateFailedOpcode: received from player not in map");
+}
+

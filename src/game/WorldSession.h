@@ -872,6 +872,8 @@ class MANGOS_DLL_SPEC WorldSession
         void SendItemDb2Reply(uint32 entry);
         void SendItemSparseDb2Reply(uint32 entry); 
 
+        void HandleObjectUpdateFailedOpcode(WorldPacket& recv_data);
+
         void HandleSpellClick(WorldPacket& recv_data);
         void HandleGetMirrorimageData(WorldPacket& recv_data);
         void HandleAlterAppearanceOpcode(WorldPacket& recv_data);
@@ -886,6 +888,11 @@ class MANGOS_DLL_SPEC WorldSession
         void HandleQueryQuestsCompletedOpcode(WorldPacket& recv_data);
         void HandleQuestPOIQueryOpcode(WorldPacket& recv_data);
         void HandleSetCurrencyFlagsOpcode(WorldPacket& recv_data);
+
+        // Reforge
+        void HandleReforgeItemOpcode(WorldPacket& recvData);
+        void SendReforgeResult(bool success);
+
     private:
         // private trade methods
         void moveItems(Item* myItems[], Item* hisItems[]);
