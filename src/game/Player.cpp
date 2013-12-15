@@ -667,6 +667,9 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
     SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_REGENERATE_POWER);
     SetFloatValue(UNIT_MOD_CAST_SPEED, 1.0f);               // fix cast time showed in spell tooltip on client
     SetFloatValue(UNIT_FIELD_HOVERHEIGHT, 1.0f);            // default for players in 3.0.3
+    SetUInt32Value(PLAYER_FIELD_HOME_PLAYER_REALM, 1);
+    SetFloatValue(PLAYER_FIELD_UI_SPELL_HIT_MODIFIER, 1.0f);
+    SetFloatValue(PLAYER_FIELD_HOME_REALM_TIME_OFFSET, 1);
 
     SetInt32Value(PLAYER_FIELD_WATCHED_FACTION_INDEX, -1);  // -1 is default value
 
@@ -1123,6 +1126,7 @@ void Player::HandleDrowning(uint32 time_diff)
 // The player sobers by 1% every 9 seconds
 void Player::HandleSobering()
 {
+    m_drunkTimer = 0;
     uint8 currentDrunkValue = GetDrunkValue();
     if (currentDrunkValue)
     {
@@ -1494,19 +1498,6 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
     uint32 petFamily  = 0;
     uint32 char_flags = 0;
 
-    data->WriteGuidMask<1>(guid);
-    data->WriteGuidMask<5, 6, 7>(guildGuid);
-    data->WriteGuidMask<5>(guid);
-    data->WriteGuidMask<3>(guildGuid);
-    data->WriteGuidMask<2>(guid);
-    data->WriteGuidMask<4>(guildGuid);
-    data->WriteGuidMask<7>(guid);
-    data->WriteBits(name.length(), 6);
-    data->WriteBit(atLoginFlags & AT_LOGIN_FIRST);
-    data->WriteGuidMask<1>(guildGuid);
-    data->WriteGuidMask<4>(guid);
-    data->WriteGuidMask<2, 0>(guildGuid);
-    data->WriteGuidMask<6, 3, 0>(guid);
 
     // show pet at selection character in character list only for non-ghost character
     if (result && !(playerFlags & PLAYER_FLAGS_GHOST) && (pClass == CLASS_WARLOCK || pClass == CLASS_HUNTER || pClass == CLASS_DEATH_KNIGHT))
@@ -1537,6 +1528,24 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
     else
         char_flags |= CHARACTER_FLAG_DECLINED;
 
+    data->WriteGuidMask<3>(guildGuid);
+    data->WriteBit(atLoginFlags & AT_LOGIN_FIRST);
+    data->WriteGuidMask<6>(guid);
+    data->WriteGuidMask<1>(guildGuid);
+    data->WriteGuidMask<1, 5>(guid);
+    data->WriteGuidMask<6>(guildGuid);
+    data->WriteGuidMask<7, 0>(guid);
+    data->WriteGuidMask<5>(guildGuid);
+    data->WriteGuidMask<2>(guid);
+    data->WriteBits(name.length(), 6);
+    data->WriteGuidMask<4>(guid);
+    data->WriteGuidMask<4, 2>(guildGuid);
+    data->WriteGuidMask<3>(guid);
+    data->WriteGuidMask<0, 7>(guildGuid);
+    *buffer << uint8(playerBytes & 0xFF);                   // skin
+    buffer->WriteGuidBytes<2, 7>(guid);
+    *buffer << uint32(petDisplayId);                        // Pet DisplayID
+    buffer->WriteStringData(name);
     Tokens tdata = StrSplit(fields[19].GetCppString(), " ");
     for (uint8 slot = 0; slot < EQUIPMENT_SLOT_END; ++slot)
     {
@@ -1545,9 +1554,9 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
         const ItemPrototype * proto = ObjectMgr::GetItemPrototype(item_id);
         if(!proto)
         {
+            *buffer << uint32(0);
+            *buffer << uint32(0);
             *buffer << uint8(0);
-            *buffer << uint32(0);
-            *buffer << uint32(0);
             continue;
         }
 
@@ -1565,73 +1574,71 @@ bool Player::BuildEnumData(QueryResult* result, ByteBuffer* data, ByteBuffer* bu
                 break;
         }
 
-        *buffer << uint8(proto->InventoryType);
         *buffer << uint32(proto->DisplayInfoID);
         *buffer << uint32(enchant ? enchant->aura_id : 0);
+        *buffer << uint8(proto->InventoryType);
     }
 
-    for (int32 i = 0; i < 23; i++)
+    for (int32 i = 0; i < 4; i++)
     {
         *buffer << uint32(0);
         *buffer << uint32(0);
         *buffer << uint8(0);
     }
 	
-    buffer->WriteGuidBytes<4>(guid);
-	
-    *buffer << uint8(pRace);                                // Race
-
-    buffer->WriteGuidBytes<6>(guid);
-    buffer->WriteGuidBytes<1>(guildGuid);
-
-    *buffer << uint8(fields[20].GetUInt8());                // char order id
-    *buffer << uint8((playerBytes >> 16) & 0xFF);           // Hair style
-	
-    buffer->WriteGuidBytes<6>(guildGuid);
-    buffer->WriteGuidBytes<3>(guid);
-
-    *buffer << fields[10].GetFloat();                       // x
-    *buffer << uint32(char_flags);                          // character flags
-
-    buffer->WriteGuidBytes< 0>(guildGuid);
-
-    *buffer << uint32(petLevel);                            // pet level
-    *buffer << uint32(fields[9].GetUInt32());               // map
-	
-    buffer->WriteGuidBytes<7>(guildGuid);
-    // character customize flags
-    *buffer << uint32(atLoginFlags & AT_LOGIN_CUSTOMIZE ? CHAR_CUSTOMIZE_FLAG_CUSTOMIZE : CHAR_CUSTOMIZE_FLAG_NONE);
-	
-    buffer->WriteGuidBytes<4>(guildGuid);
-    buffer->WriteGuidBytes<2, 5>(guid);
-	
-    *buffer << fields[11].GetFloat();                       // y
-    *buffer << uint32(petFamily);                           // Pet DisplayID
-    buffer->append(name.c_str(), name.length());
-    *buffer << uint32(petDisplayId);                        // Pet DisplayID
-
-    buffer->WriteGuidBytes<3>(guildGuid);
-    buffer->WriteGuidBytes<7>(guid);
+    buffer->WriteGuidBytes<4, 6>(guid);
 	
     *buffer << uint8(level);                                // Level
-	
-	buffer->WriteGuidBytes<1>(guid);
-	buffer->WriteGuidBytes<2>(guildGuid);
-	 
-    *buffer << fields[12].GetFloat();                       // z
-    *buffer << uint32(zone);                                // Zone id
-    *buffer << uint8(playerBytes2 & 0xFF);                  // facial hair
-	*buffer << uint8(pClass);                               // class
-	
-    buffer->WriteGuidBytes<5>(guildGuid);
-
-    *buffer << uint8(playerBytes & 0xFF);                   // skin
-    *buffer << uint8(gender);                               // Gender
+    *buffer << fields[11].GetFloat();                       // y
+    *buffer << fields[10].GetFloat();                       // x
     *buffer << uint8((playerBytes >> 8) & 0xFF);            // face
+    buffer->WriteGuidBytes<0>(guildGuid);
+
+    *buffer << uint8(fields[20].GetUInt8());                // char order id
+    *buffer << uint32(zone);                                // Zone id
+	
+    buffer->WriteGuidBytes<7>(guildGuid);
+
+    *buffer << uint32(char_flags);                          // character flags
+
+
+    *buffer << uint32(fields[9].GetUInt32());               // map
+    *buffer << uint8(pRace);                                // Race
+    *buffer << fields[12].GetFloat();                       // z
+	
+    buffer->WriteGuidBytes<1>(guildGuid);
+    // character customize flags
+	
+    *buffer << uint8(gender);                               // Gender
+    buffer->WriteGuidBytes<3>(guid);
+	
+    *buffer << uint8((playerBytes >> 24) & 0xFF);           // Hair color
+
+    buffer->WriteGuidBytes<5>(guildGuid);
+	
+    *buffer << uint8(pClass);                               // class
+	
+    buffer->WriteGuidBytes<2>(guildGuid);
+	buffer->WriteGuidBytes<1>(guid);
+	 
+    // character customize change flags
+    if (atLoginFlags & AT_LOGIN_CUSTOMIZE)
+        *buffer << uint32(CHAR_CUSTOMIZE_FLAG_CUSTOMIZE);
+    else
+        *buffer << uint32(CHAR_CUSTOMIZE_FLAG_NONE);
+    *buffer << uint8(playerBytes2 & 0xFF);                  // facial hair
+	
+    buffer->WriteGuidBytes<6>(guildGuid);
+
 
     buffer->WriteGuidBytes<0>(guid);
 	
-    *buffer << uint8((playerBytes >> 24) & 0xFF);           // Hair color
+    *buffer << uint8((playerBytes >> 16) & 0xFF);           // Hair style
+    buffer->WriteGuidBytes<5>(guid);
+    *buffer << uint32(petFamily);                           // Pet Family
+    buffer->WriteGuidBytes<2>(guildGuid);
+    *buffer << uint32(petLevel);                            // pet level
+    buffer->WriteGuidBytes<4>(guildGuid);
 
     return true;
 }
@@ -2765,6 +2772,9 @@ void Player::InitStatsForLevel(bool reapplyMods)
     // set default cast time multiplier
     SetFloatValue(UNIT_MOD_CAST_SPEED, 1.0f);
 
+    SetFloatValue(UNIT_MOD_CAST_HASTE, 1.0f);           // spell haste
+    SetFloatValue(UNIT_MOD_HASTE, 1.0f);        // melee haste
+    SetFloatValue(PLAYER_FIELD_MOD_RANGED_HASTE, 1.0f); // ranged haste
     // save base values (bonuses already included in stored stats
     for (int i = STAT_STRENGTH; i < MAX_STATS; ++i)
         SetCreateStat(Stats(i), info.stats[i]);
@@ -2888,7 +2898,7 @@ void Player::InitStatsForLevel(bool reapplyMods)
     RemoveByteFlag(UNIT_FIELD_BYTES_2, 1, UNIT_BYTE2_FLAG_FFA_PVP | UNIT_BYTE2_FLAG_SANCTUARY);
 
     // restore if need some important flags
-    SetUInt32Value(PLAYER_FIELD_BYTES2, 0);                 // flags empty by default
+    //SetUInt32Value(PLAYER_FIELD_BYTES2, 0 );                // flags empty by default
 
     if (reapplyMods)                                        // reapply stats values only on .reset stats (level) command
         _ApplyAllStatBonuses();
@@ -2909,16 +2919,12 @@ void Player::InitStatsForLevel(bool reapplyMods)
 
 void Player::SendInitialSpells()
 {
-    time_t curTime = time(NULL);
-    time_t infTime = curTime + infinityCooldownDelayCheck;
 
     uint16 spellCount = 0;
 
-    WorldPacket data(SMSG_INITIAL_SPELLS, (1 + 2 + 4 * m_spells.size() + 2 + m_spellCooldowns.size() * (2 + 2 + 2 + 4 + 4)));
-    data << uint8(0);
+    WorldPacket data(SMSG_INITIAL_SPELLS, m_spells.size() * 4 + 3);
+    ByteBuffer buffer;
 
-    size_t countPos = data.wpos();
-    data << uint16(spellCount);                             // spell count placeholder
 
     for (PlayerSpellMap::const_iterator itr = m_spells.begin(); itr != m_spells.end(); ++itr)
     {
@@ -2928,47 +2934,23 @@ void Player::SendInitialSpells()
         if (!itr->second.active || itr->second.disabled)
             continue;
 
-        data << uint32(itr->first);
-        data << uint16(0);                                  // it's not slot id
+        buffer << uint32(itr->first);
 
-        spellCount += 1;
+        ++spellCount;
     }
 
-    data.put<uint16>(countPos, spellCount);                 // write real count value
+    data.WriteBits(spellCount, 24);
 
-    uint16 spellCooldowns = m_spellCooldowns.size();
-    data << uint16(spellCooldowns);
-    for (SpellCooldowns::const_iterator itr = m_spellCooldowns.begin(); itr != m_spellCooldowns.end(); ++itr)
-    {
-        SpellEntry const* sEntry = sSpellStore.LookupEntry(itr->first);
-        if (!sEntry)
-            continue;
 
-        data << uint32(itr->first);
-
-        data << uint32(itr->second.itemid);                 // cast item id
-        data << uint16(sEntry->GetCategory());              // spell category
+    data.WriteBit(false);
+    if (!buffer.empty())
 
         // send infinity cooldown in special format
-        if (itr->second.end >= infTime)
         {
-            data << uint32(1);                              // cooldown
-            data << uint32(0x80000000);                     // category cooldown
-            continue;
-        }
+        data.FlushBits();
 
-        time_t cooldown = itr->second.end > curTime ? (itr->second.end - curTime) * IN_MILLISECONDS : 0;
 
-        if(sEntry->GetCategory())                           // may be wrong, but anyway better than nothing...
-        {
-            data << uint32(0);                              // cooldown
-            data << uint32(cooldown);                       // category cooldown
-        }
-        else
-        {
-            data << uint32(cooldown);                       // cooldown
-            data << uint32(0);                              // category cooldown
-        }
+        data.append(buffer);
     }
 
     GetSession()->SendPacket(&data);
@@ -14642,15 +14624,15 @@ bool Player::SatisfyQuestDay(Quest const* qInfo, bool msg) const
         return true;
 
     bool have_slot = false;
-    for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
-    {
-        uint32 id = GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx);
-        if (qInfo->GetQuestId() == id)
-            return false;
+    //for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
+    //{
+    //    uint32 id = GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1+quest_daily_idx);
+    //    if (qInfo->GetQuestId() == id)
+    //        return false;
 
-        if (!id)
-            have_slot = true;
-    }
+    //    if (!id)
+    //        have_slot = true;
+    //}
 
     if (!have_slot)
     {
@@ -15743,6 +15725,9 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
     InitDisplayIds();                                       // model, scale and model data
 
     SetFloatValue(UNIT_FIELD_HOVERHEIGHT, 1.0f);
+    SetUInt32Value(PLAYER_FIELD_HOME_PLAYER_REALM, 1);
+    SetFloatValue(PLAYER_FIELD_UI_SPELL_HIT_MODIFIER, 1);
+    SetFloatValue(PLAYER_FIELD_HOME_REALM_TIME_OFFSET, 1);
 
     // just load criteria/achievement data, safe call before any load, and need, because some spell/item/quest loading
     // can triggering achievement criteria update that will be lost if this call will later
@@ -16380,12 +16365,12 @@ void Player::_LoadAuras(QueryResult* result, uint32 timediff)
             for (int32 i = 0; i < MAX_EFFECT_INDEX; ++i)
             {
                 damage[i] = fields[i + 5].GetInt32();
-                periodicTime[i] = fields[i + 8].GetUInt32();
+                periodicTime[i] = fields[i + 26].GetUInt32();
             }
 
-            int32 maxduration = fields[11].GetInt32();
-            int32 remaintime = fields[12].GetInt32();
-            uint32 effIndexMask = fields[13].GetUInt32();
+            int32 maxduration = fields[47].GetInt32();
+            int32 remaintime = fields[48].GetInt32();
+            uint32 effIndexMask = fields[49].GetUInt32();
 
             SpellEntry const* spellproto = sSpellStore.LookupEntry(spellid);
             if (!spellproto)
@@ -16942,40 +16927,40 @@ void Player::_LoadQuestStatus(QueryResult* result)
 
 void Player::_LoadDailyQuestStatus(QueryResult* result)
 {
-    for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
-        SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx, 0);
+    //for(uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
+    //    SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1+quest_daily_idx,0);
 
     // QueryResult *result = CharacterDatabase.PQuery("SELECT quest FROM character_queststatus_daily WHERE guid = '%u'", GetGUIDLow());
 
-    if (result)
-    {
-        uint32 quest_daily_idx = 0;
+    //if(result)
+    //{
+    //    uint32 quest_daily_idx = 0;
 
-        do
-        {
-            if (quest_daily_idx >= PLAYER_MAX_DAILY_QUESTS) // max amount with exist data in query
-            {
-                sLog.outError("Player (GUID: %u) have more 25 daily quest records in `charcter_queststatus_daily`", GetGUIDLow());
-                break;
-            }
+    //    do
+    //    {
+    //        if(quest_daily_idx >= PLAYER_MAX_DAILY_QUESTS)  // max amount with exist data in query
+    //        {
+    //            ERROR_LOG("Player (GUID: %u) have more 25 daily quest records in `charcter_queststatus_daily`",GetGUIDLow());
+    //            break;
+    //        }
 
-            Field* fields = result->Fetch();
+    //        Field *fields = result->Fetch();
 
-            uint32 quest_id = fields[0].GetUInt32();
+    //        uint32 quest_id = fields[0].GetUInt32();
 
-            Quest const* pQuest = sObjectMgr.GetQuestTemplate(quest_id);
-            if (!pQuest)
-                continue;
+    //        Quest const* pQuest = sObjectMgr.GetQuestTemplate(quest_id);
+    //        if( !pQuest )
+    //            continue;
 
-            SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx, quest_id);
-            ++quest_daily_idx;
+    //        SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1+quest_daily_idx,quest_id);
+    //        ++quest_daily_idx;
 
-            DEBUG_LOG("Daily quest {%u} cooldown for player (GUID: %u)", quest_id, GetGUIDLow());
-        }
-        while (result->NextRow());
+    //        DEBUG_LOG("Daily quest {%u} cooldown for player (GUID: %u)", quest_id, GetGUIDLow());
+    //    }
+    //    while( result->NextRow() );
 
-        delete result;
-    }
+    //    delete result;
+    //}
 
     m_DailyQuestChanged = false;
 }
@@ -17798,8 +17783,13 @@ void Player::_SaveAuras()
         return;
 
     stmt = CharacterDatabase.CreateStatement(insertAuras, "INSERT INTO character_aura (guid, caster_guid, item_guid, spell, stackcount, remaincharges, "
-            "basepoints0, basepoints1, basepoints2, periodictime0, periodictime1, periodictime2, maxduration, remaintime, effIndexMask) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            "basepoints0,basepoints1,basepoints2,basepoints3,basepoints4,basepoints5,basepoints6,basepoints7,basepoints8,basepoints9,basepoints10,basepoints11,basepoints12,basepoints13,basepoints14,basepoints15,basepoints16,basepoints17,basepoints18,basepoints19,basepoints20,"
+            "periodictime0,periodictime1,periodictime2,periodictime3,periodictime4,periodictime5,periodictime6,periodictime7,periodictime8,periodictime9,periodictime10,periodictime11,periodictime12,periodictime13,periodictime14,periodictime15,periodictime16,periodictime17,periodictime18,periodictime19,periodictime20,"
+            "maxduration, remaintime, effIndexMask) "
+            "VALUES (?, ?, ?, ?, ?, ?,"
+            "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+            "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+            "?, ?, ?)");
 
     for (SpellAuraHolderMap::const_iterator itr = auraHolders.begin(); itr != auraHolders.end(); ++itr)
     {
@@ -18131,17 +18121,17 @@ void Player::_SaveDailyQuestStatus()
         return;
 
     // we don't need transactions here.
-    static SqlStatementID delQuestStatus ;
-    static SqlStatementID insQuestStatus ;
+    //static SqlStatementID delQuestStatus ;
+    //static SqlStatementID insQuestStatus ;
 
-    SqlStatement stmtDel = CharacterDatabase.CreateStatement(delQuestStatus, "DELETE FROM character_queststatus_daily WHERE guid = ?");
-    SqlStatement stmtIns = CharacterDatabase.CreateStatement(insQuestStatus, "INSERT INTO character_queststatus_daily (guid,quest) VALUES (?, ?)");
+    //SqlStatement stmtDel = CharacterDatabase.CreateStatement(delQuestStatus, "DELETE FROM character_queststatus_daily WHERE guid = ?");
+    //SqlStatement stmtIns = CharacterDatabase.CreateStatement(insQuestStatus, "INSERT INTO character_queststatus_daily (guid,quest) VALUES (?, ?)");
 
-    stmtDel.PExecute(GetGUIDLow());
+    //stmtDel.PExecute(GetGUIDLow());
 
-    for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
-        if (GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx))
-            stmtIns.PExecute(GetGUIDLow(), GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx));
+    //for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
+    //    if (GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx))
+    //        stmtIns.PExecute(GetGUIDLow(), GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx));
 
     m_DailyQuestChanged = false;
 }
@@ -18648,13 +18638,13 @@ void Player::BuildPlayerChat(WorldPacket* data, uint8 msgtype, const std::string
     *data << uint32(language);
     *data << GetObjectGuid();
     *data << uint32(0);                                     // constant unknown time 4.3.4
-    if (addonPrefix)
+    if (language == LANG_ADDON)
         *data << addonPrefix;
     else
         *data << GetObjectGuid();
     *data << uint32(text.length() + 1);
     *data << text;
-    *data << uint8(GetChatTag());
+    *data << uint16(GetChatTag());
 }
 
 void Player::Say(const std::string& text, const uint32 language)
@@ -20640,7 +20630,9 @@ void Player::SendInitialPacketsBeforeAddToMap()
 
     data.Initialize(SMSG_LOGIN_SETTIMESPEED, 4 + 4 + 4);
     data << uint32(secsToTimeBitFields(sWorld.GetGameTime()));
+    data << uint32(secsToTimeBitFields(sWorld.GetGameTime()));
     data << (float)0.01666667f;                             // game speed
+    data << uint32(0);                                      // added in 3.1.2
     data << uint32(0);                                      // added in 3.1.2
     GetSession()->SendPacket(&data);
 
@@ -20998,14 +20990,16 @@ void Player::SendAurasForTarget(Unit* target)
 
 void Player::SetDailyQuestStatus(uint32 quest_id)
 {
-    for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
+    return;
+    uint32 quest_daily_idx;
+    for(quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
     {
-        if (!GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx))
+        /*if(!GetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1+quest_daily_idx))
         {
             SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx, quest_id);
             m_DailyQuestChanged = true;
             break;
-        }
+        }*/
     }
 }
 
@@ -21023,8 +21017,9 @@ void Player::SetMonthlyQuestStatus(uint32 quest_id)
 
 void Player::ResetDailyQuestStatus()
 {
-    for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
-        SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx, 0);
+    return;
+    //for (uint32 quest_daily_idx = 0; quest_daily_idx < PLAYER_MAX_DAILY_QUESTS; ++quest_daily_idx)
+    //    SetUInt32Value(PLAYER_FIELD_DAILY_QUESTS_1 + quest_daily_idx, 0);
 
     // DB data deleted in caller
     m_DailyQuestChanged = false;
@@ -21420,7 +21415,7 @@ uint32 Player::GetResurrectionSpellId()
     for (AuraList::const_iterator itr = dummyAuras.begin(); itr != dummyAuras.end(); ++itr)
     {
         // Soulstone Resurrection                           // prio: 3 (max, non death persistent)
-        if (prio < 2 && (*itr)->GetSpellProto()->SpellVisual[0] == 99 && (*itr)->GetSpellProto()->SpellIconID == 92)
+        if (prio < 2 && (*itr)->GetSpellProto()->GetSpellVisual() == 99 && (*itr)->GetSpellProto()->GetSpellIconID() == 92)
         {
             switch ((*itr)->GetId())
             {

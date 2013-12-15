@@ -261,20 +261,7 @@ World::AddSession_(WorldSession* s)
         return;
     }
 
-    WorldPacket packet(SMSG_AUTH_RESPONSE, 17);
-
-    packet.WriteBit(false);                                 // has queue
-    packet.WriteBit(true);                                  // has account info
-
-    packet << uint32(0);                                    // Unknown - 4.3.2
-    packet << uint8(s->Expansion());                        // 0 - normal, 1 - TBC, 2 - WotLK, 3 - Cata, 4 - MOP. must be set in database manually for each account
-    packet << uint32(0);                                    // BillingTimeRemaining
-    packet << uint8(s->Expansion());                        // 0 - normal, 1 - TBC, 2 - WotLK, 3 - Cata, 4 - MOP. Must be set in database manually for each account.
-    packet << uint32(0);                                    // BillingTimeRested
-    packet << uint8(0);                                     // BillingPlanFlags
-    packet << uint8(AUTH_OK);
-
-    s->SendPacket(&packet);
+    s->SendAuthResponse(AUTH_OK, false);
 
     s->SendAddonsInfo();
 
@@ -319,22 +306,7 @@ void World::AddQueuedSession(WorldSession* sess)
     m_QueuedSessions.push_back (sess);
 
     // The 1st SMSG_AUTH_RESPONSE needs to contain other info too.
-    WorldPacket packet (SMSG_AUTH_RESPONSE, 21);
-
-    packet.WriteBit(true);                                  // has queue
-    packet.WriteBit(false);                                 // unk queue-related
-    packet.WriteBit(true);                                  // has account data
-
-    packet << uint32(0);                                    // Unknown - 4.3.2
-    packet << uint8(sess->Expansion());                     // 0 - normal, 1 - TBC, 2 - WotLK, 3 - CT. must be set in database manually for each account
-    packet << uint32(0);                                    // BillingTimeRemaining
-    packet << uint8(sess->Expansion());                     // 0 - normal, 1 - TBC, 2 - WotLK, 3 - CT. Must be set in database manually for each account.
-    packet << uint32(0);                                    // BillingTimeRested
-    packet << uint8(0);                                     // BillingPlanFlags
-    packet << uint8(AUTH_WAIT_QUEUE);
-    packet << uint32(GetQueuedSessionPos(sess));            // position in queue
-
-    sess->SendPacket(&packet);
+    sess->SendAuthResponse(AUTH_WAIT_QUEUE, true, GetQueuedSessionPos(sess));
 }
 
 bool World::RemoveQueuedSession(WorldSession* sess)
@@ -956,10 +928,12 @@ void World::SetInitialWorldSettings()
             !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f) ||                 // Tauren
             (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_TBC &&
               (!MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||            // BloodElf
-              !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))) ||          // Draenei
-            (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_WOTLK &&
-              !MapManager::ExistMapAndVMap(609, 2355.84f, -5664.77f)))              // Death Knight
-    {
+              !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f)) ||           // Draenei
+        	(m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_WOTLK &&
+              !MapManager::ExistMapAndVMap(609, 2355.84f, -5664.77f))) ||           // Death Knight
+            (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_MOP &&
+              !MapManager::ExistMapAndVMap(870, 500.00f, -500.00f)))                // Pandaren - TODO: Need to find correct start location coords.
+	{
         sLog.outError("Correct *.map files not found in path '%smaps' or *.vmtree/*.vmtile files in '%svmaps'. Please place *.map and vmap files in appropriate directories or correct the DataDir value in the mangosd.conf file.", m_dataPath.c_str(), m_dataPath.c_str());
         Log::WaitBeforeContinueIfNeed();
         exit(1);
@@ -1685,12 +1659,12 @@ namespace MaNGOS
                     data->Initialize(SMSG_MESSAGECHAT, 100);// guess size
                     *data << uint8(CHAT_MSG_SYSTEM);
                     *data << uint32(LANG_UNIVERSAL);
-                    *data << uint64(0);
+                    *data << ObjectGuid();
                     *data << uint32(0);                     // can be chat msg group or something
-                    *data << uint64(0);
+                    *data << ObjectGuid();
                     *data << uint32(lineLength);
                     *data << line;
-                    *data << uint8(0);
+                    *data << uint16(0);
 
                     data_list.push_back(data);
                 }

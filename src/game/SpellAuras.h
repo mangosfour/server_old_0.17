@@ -153,6 +153,8 @@ class MANGOS_DLL_SPEC SpellAuraHolder
         void SetAuraSlot(uint8 slot) { m_auraSlot = slot; }
         uint8 GetAuraFlags() const { return m_auraFlags; }
         void SetAuraFlags(uint8 flags) { m_auraFlags = flags; }
+        uint32 GetEffectMask() const { return m_effectMask; }
+        void SetEffectMask(uint32 effectMask) { m_effectMask = effectMask; }
         uint8 GetAuraLevel() const { return m_auraLevel; }
         void SetAuraLevel(uint8 level) { m_auraLevel = level; }
         uint32 GetAuraCharges() const { return m_procCharges; }
@@ -203,6 +205,7 @@ class MANGOS_DLL_SPEC SpellAuraHolder
 
         uint8 m_auraSlot;                                   // Aura slot on unit (for show in client)
         uint8 m_auraFlags;                                  // Aura info flag (for send data to client)
+        uint32 m_effectMask;
         uint8 m_auraLevel;                                  // Aura level (store caster level for correct show level dep amount)
         uint32 m_procCharges;                               // Aura charges (0 for infinite)
         uint32 m_stackAmount;                               // Aura stack amount

@@ -32,7 +32,7 @@
 #include "WorldSession.h"
 
 /// List of Opcodes
-/// Max Opcode value in 4.3.4.15595 is 65535
+/// Max Opcode value in 5.4.1.17538 is 0x1FFF
 enum Opcodes
 {
 	CMSG_ACCEPT_LEVEL_GRANT                               = 0x0205, // 4.3.4 15595
@@ -1432,7 +1432,7 @@ enum Opcodes
     UMSG_UPDATE_GUILD                                     = 0x1095,
 };
 
-#define MAX_OPCODE_TABLE_SIZE 0xFFFF
+#define MAX_OPCODE_TABLE_SIZE 0x1FFF
 
 extern void InitializeOpcodes();
 
