@@ -34,17 +34,16 @@
 #include "MapManager.h"
 #include "SQLStorages.h"
 
-void WorldSession::SendNameQueryOpcode(Player* p)
+void WorldSession::SendNameQueryOpcode(Player* p, uint32 realmId)
 {
     if (!p)
         return;
-
     // guess size
     WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 10));
     data << p->GetPackGUID();                               // player guid
     data << uint8(0);                                       // added in 3.1; if > 1, then end of packet
     data << p->GetName();                                   // played name
-    data << uint8(0);                                       // realm name for cross realm BG usage
+    data << uint32(realmId);                                // realm id
     data << uint8(p->getRace());
     data << uint8(p->getGender());
     data << uint8(p->getClass());
@@ -60,9 +59,9 @@ void WorldSession::SendNameQueryOpcode(Player* p)
     SendPacket(&data);
 }
 
-void WorldSession::SendNameQueryOpcodeFromDB(ObjectGuid guid)
+void WorldSession::SendNameQueryOpcodeFromDB(ObjectGuid guid, uint32 realmId)
 {
-    CharacterDatabase.AsyncPQuery(&WorldSession::SendNameQueryOpcodeFromDBCallBack, GetAccountId(),
+    CharacterDatabase.AsyncPQuery(&WorldSession::SendNameQueryOpcodeFromDBCallBack, GetAccountId(), realmId,
                                   !sWorld.getConfig(CONFIG_BOOL_DECLINED_NAMES_USED) ?
                                   //   ------- Query Without Declined Names --------
                                   //          0     1     2     3       4
@@ -78,7 +77,7 @@ void WorldSession::SendNameQueryOpcodeFromDB(ObjectGuid guid)
                                   guid.GetCounter());
 }
 
-void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32 accountId)
+void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32 accountId, uint32 realmId)
 {
     if (!result)
         return;
@@ -102,13 +101,12 @@ void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32
         pGender      = fields[3].GetUInt8();
         pClass       = fields[4].GetUInt8();
     }
-
     // guess size
     WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 1 + 10));
     data << ObjectGuid(HIGHGUID_PLAYER, lowguid).WriteAsPacked();
     data << uint8(0);                                       // added in 3.1; if > 1, then end of packet
     data << name;
-    data << uint8(0);                                       // realm name for cross realm BG usage
+    data << uint32(realmId);                                // realm id
     data << uint8(pRace);                                   // race
     data << uint8(pGender);                                 // gender
     data << uint8(pClass);                                  // class
@@ -130,15 +128,57 @@ void WorldSession::SendNameQueryOpcodeFromDBCallBack(QueryResult* result, uint32
 void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
 {
     ObjectGuid guid;
-
     recv_data >> guid;
+    uint32 bytesLeft = recv_data.wpos() - recv_data.rpos();
 
-    Player* pChar = sObjectMgr.GetPlayer(guid);
+    sLog.outDebug("Received CMSG_NAME_QUERY from %s. Guid %s bytesleft %u.",
+        _player->GetGuidStr().c_str(), guid.GetString().c_str(), bytesLeft);
 
-    if (pChar)
-        SendNameQueryOpcode(pChar);
-    else
-        SendNameQueryOpcodeFromDB(guid);
+    switch (bytesLeft)
+    {
+        case 4:
+        {
+            uint32 realmId;
+            recv_data >> realmId;
+            if (!realmId)
+                realmId = realmID;
+
+            // actually will never happen
+            if (realmID != realmId)
+            {
+                sLog.outError("Warning! Quering players from other realms is not supported. Queried realm id: %u This realm id: %u Guid: %s",
+                    realmId, realmID, guid.GetString().c_str());
+
+                WorldPacket data(SMSG_NAME_QUERY_RESPONSE, 9);
+                data << guid.WriteAsPacked();
+                data << uint8(1);
+                SendPacket(&data);
+                return;
+            }
+
+            Player* pChar = sObjectMgr.GetPlayer(guid);
+            if (pChar)
+                SendNameQueryOpcode(pChar, realmId);
+            else
+                SendNameQueryOpcodeFromDB(guid, realmId);
+            break;
+        }
+        case 8:
+        {
+            uint64 unk64;
+            recv_data >> unk64;
+            sLog.outDebug("Received unhandled CMSG_NAME_QUERY with uint64 value " UI64FMTD, unk64);
+            break;
+        }
+        case 12:
+        {
+            uint32 unk32;
+            uint64 unk64;
+            recv_data >> unk32 >> unk64;
+            sLog.outDebug("Received unhandled CMSG_NAME_QUERY with int32 value %u and uint64 value " UI64FMTD, unk32, unk64);
+            break;
+        }
+    }
 }
 
 void WorldSession::HandleQueryTimeOpcode(WorldPacket & /*recv_data*/)
@@ -173,6 +213,7 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recv_data)
             data << uint8(0);            // name2, name3, name4, always empty
 
         data << subName;
+        data << "";                                         // unk 5.x
         data << ci->IconName;                               // "Directions" for guard, string for Icons 2.3.0
         data << uint32(ci->type_flags);                     // flags
         data << uint32(0);                                  // unk

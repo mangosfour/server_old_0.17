@@ -132,6 +132,7 @@ class WorldSocket : protected WorldHandler
 
         /// Called on open ,the void* is the acceptor.
         int HandleWowConnection(WorldPacket& recvPacket);
+        int SendAuthChallenge();
 
         virtual int open(void*) override;
 
@@ -204,6 +205,7 @@ class WorldSocket : protected WorldHandler
 
         /// Fragment of the received header.
         ACE_Message_Block m_Header;
+        ACE_Message_Block m_WorldHeader;
 
         /// Mutex for protecting output related data.
         LockType m_OutBufferLock;

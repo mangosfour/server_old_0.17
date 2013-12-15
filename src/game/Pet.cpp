@@ -27,6 +27,7 @@
 #include "CreatureAI.h"
 #include "Unit.h"
 #include "Util.h"
+#include "DB2Structure.h"
 
 Pet::Pet(PetType type) :
     Creature(CREATURE_SUBTYPE_PET),

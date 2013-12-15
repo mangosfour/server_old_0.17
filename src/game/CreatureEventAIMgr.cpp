@@ -84,73 +84,6 @@ void CreatureEventAIMgr::CheckUnusedAITexts()
         sLog.outErrorEventAI("Entry %i in table `creature_ai_texts` but not used in EventAI scripts.", *itr);
 }
 
-/// Helper function to check if a target-suite is suitable for the event-type
-bool IsValidTargetType(EventAI_Type eventType, EventAI_ActionType actionType, uint32 targetType, uint32 eventId, uint8 action)
-{
-    switch (targetType)
-    {
-        case TARGET_T_SELF:
-            if (actionType == ACTION_T_QUEST_EVENT || actionType == ACTION_T_CAST_EVENT || actionType == ACTION_T_QUEST_EVENT_ALL || actionType == ACTION_T_KILLED_MONSTER)
-            {
-                sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u (must target player)", eventId, action, targetType, eventType);
-                return false;
-            }
-            return true;                                    // Can always be used
-        case TARGET_T_HOSTILE_RANDOM:
-        case TARGET_T_HOSTILE_RANDOM_NOT_TOP:
-            if (actionType == ACTION_T_QUEST_EVENT || actionType == ACTION_T_CAST_EVENT || actionType == ACTION_T_QUEST_EVENT_ALL || actionType == ACTION_T_KILLED_MONSTER)
-                sLog.outErrorEventAI("Event %u Action%u uses LIKELY bad Target type %u for event-type %u (must target player)", eventId, action, targetType, eventType);
-            // no break, check if valid at all
-        case TARGET_T_HOSTILE:
-        case TARGET_T_HOSTILE_SECOND_AGGRO:
-        case TARGET_T_HOSTILE_LAST_AGGRO:
-        case TARGET_T_HOSTILE_RANDOM_PLAYER:
-        case TARGET_T_HOSTILE_RANDOM_NOT_TOP_PLAYER:
-            switch (eventType)
-            {
-                case EVENT_T_TIMER_OOC:
-                case EVENT_T_OOC_LOS:
-                case EVENT_T_REACHED_HOME:
-                    sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u (cannot be used OOC)", eventId, action, targetType, eventType);
-                    return false;
-                case EVENT_T_TIMER_GENERIC:
-                    sLog.outErrorEventAI("Event %u Action%u uses LIKELY incorrect Target type %u for event-type %u (cannot be used OOC)", eventId, action, targetType, eventType);
-                    return true;                            // Does not need to be an error
-                default:
-                    return true;
-            }
-        case TARGET_T_ACTION_INVOKER:                       // Unit who caused this Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF, EVENT_T_RECEIVE_EMOTE, EVENT_T_RECEIVE_AI_EVENT)
-        case TARGET_T_ACTION_INVOKER_OWNER:                 // Unit who is responsible for Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF, EVENT_T_RECEIVE_EMOTE, EVENT_T_RECEIVE_AI_EVENT)
-            switch (eventType)
-            {
-                case EVENT_T_AGGRO:
-                case EVENT_T_KILL:
-                case EVENT_T_DEATH:
-                case EVENT_T_SPELLHIT:
-                case EVENT_T_OOC_LOS:
-                case EVENT_T_FRIENDLY_HP:
-                case EVENT_T_FRIENDLY_IS_CC:
-                case EVENT_T_FRIENDLY_MISSING_BUFF:
-                case EVENT_T_RECEIVE_EMOTE:
-                case EVENT_T_RECEIVE_AI_EVENT:
-                    return true;
-                default:
-                    sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u", eventId, action, targetType, eventType);
-                    return false;
-            }
-        case TARGET_T_EVENT_SENDER:                         // Unit who sent an AIEvent that was received with EVENT_T_RECEIVE_AI_EVENT
-            if (eventType != EVENT_T_RECEIVE_AI_EVENT)
-            {
-                sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u", eventId, action, targetType, eventType);
-                return false;
-            }
-            return true;
-        default:
-            sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type", eventId, action);
-            return false;
-    }
-}
-
 // -------------------
 void CreatureEventAIMgr::LoadCreatureEventAI_Summons(bool check_entry_use)
 {
@@ -241,6 +174,72 @@ void CreatureEventAIMgr::CheckUnusedAISummons()
         sLog.outErrorEventAI("Entry %i in table `creature_ai_summons` but not used in EventAI scripts.", *itr);
 }
 
+/// Helper function to check if a target-suite is suitable for the event-type
+bool IsValidTargetType(EventAI_Type eventType, EventAI_ActionType actionType, uint32 targetType, uint32 eventId, uint8 action)
+{
+    switch (targetType)
+    {
+        case TARGET_T_SELF:
+            if (actionType == ACTION_T_QUEST_EVENT || actionType == ACTION_T_CAST_EVENT || actionType == ACTION_T_QUEST_EVENT_ALL || actionType == ACTION_T_KILLED_MONSTER)
+            {
+                sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u (must target player)", eventId, action, targetType, eventType);
+                return false;
+            }
+            return true;                                    // Can always be used
+        case TARGET_T_HOSTILE_RANDOM:
+        case TARGET_T_HOSTILE_RANDOM_NOT_TOP:
+            if (actionType == ACTION_T_QUEST_EVENT || actionType == ACTION_T_CAST_EVENT || actionType == ACTION_T_QUEST_EVENT_ALL || actionType == ACTION_T_KILLED_MONSTER)
+                sLog.outErrorEventAI("Event %u Action%u uses LIKELY bad Target type %u for event-type %u (must target player)", eventId, action, targetType, eventType);
+            // no break, check if valid at all
+        case TARGET_T_HOSTILE:
+        case TARGET_T_HOSTILE_SECOND_AGGRO:
+        case TARGET_T_HOSTILE_LAST_AGGRO:
+        case TARGET_T_HOSTILE_RANDOM_PLAYER:
+        case TARGET_T_HOSTILE_RANDOM_NOT_TOP_PLAYER:
+            switch (eventType)
+            {
+                case EVENT_T_TIMER_OOC:
+                case EVENT_T_OOC_LOS:
+                case EVENT_T_REACHED_HOME:
+                    sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u (cannot be used OOC)", eventId, action, targetType, eventType);
+                    return false;
+                case EVENT_T_TIMER_GENERIC:
+                    sLog.outErrorEventAI("Event %u Action%u uses LIKELY incorrect Target type %u for event-type %u (cannot be used OOC)", eventId, action, targetType, eventType);
+                    return true;                            // Does not need to be an error
+                default:
+                    return true;
+            }
+        case TARGET_T_ACTION_INVOKER:                       // Unit who caused this Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF, EVENT_T_RECEIVE_EMOTE, EVENT_T_RECEIVE_AI_EVENT)
+        case TARGET_T_ACTION_INVOKER_OWNER:                 // Unit who is responsible for Event to occur (only works for EVENT_T_AGGRO, EVENT_T_KILL, EVENT_T_DEATH, EVENT_T_SPELLHIT, EVENT_T_OOC_LOS, EVENT_T_FRIENDLY_HP, EVENT_T_FRIENDLY_IS_CC, EVENT_T_FRIENDLY_MISSING_BUFF, EVENT_T_RECEIVE_EMOTE, EVENT_T_RECEIVE_AI_EVENT)
+            switch (eventType)
+            {
+                case EVENT_T_AGGRO:
+                case EVENT_T_KILL:
+                case EVENT_T_DEATH:
+                case EVENT_T_SPELLHIT:
+                case EVENT_T_OOC_LOS:
+                case EVENT_T_FRIENDLY_HP:
+                case EVENT_T_FRIENDLY_IS_CC:
+                case EVENT_T_FRIENDLY_MISSING_BUFF:
+                case EVENT_T_RECEIVE_EMOTE:
+                case EVENT_T_RECEIVE_AI_EVENT:
+                    return true;
+                default:
+                    sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u", eventId, action, targetType, eventType);
+                    return false;
+            }
+        case TARGET_T_EVENT_SENDER:                         // Unit who sent an AIEvent that was received with EVENT_T_RECEIVE_AI_EVENT
+            if (eventType != EVENT_T_RECEIVE_AI_EVENT)
+            {
+                sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type %u for event-type %u", eventId, action, targetType, eventType);
+                return false;
+            }
+            return true;
+        default:
+            sLog.outErrorEventAI("Event %u Action%u uses incorrect Target type", eventId, action);
+            return false;
+    }
+}
 // -------------------
 void CreatureEventAIMgr::LoadCreatureEventAI_Scripts()
 {
@@ -343,7 +342,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Scripts()
                             continue;
                         }
 
-                        if ((temp.spell_hit.schoolMask & pSpell->SchoolMask) != pSpell->SchoolMask)
+                        if ((temp.spell_hit.schoolMask & pSpell->GetSchoolMask()) != pSpell->GetSchoolMask())
                             sLog.outErrorEventAI("Creature %u has param1(spellId %u) but param2 is not -1 and not equal to spell's school mask. Event %u can never trigger.", temp.creature_id, temp.spell_hit.schoolMask, i);
                     }
 
@@ -648,7 +647,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Scripts()
                         if (!sLog.HasLogFilter(LOG_FILTER_EVENT_AI_DEV) && spell)
                         {
                             // spell must be cast on self, but is not
-                            if ((IsOnlySelfTargeting(spell) || spell->rangeIndex == SPELL_RANGE_IDX_SELF_ONLY) && action.cast.target != TARGET_T_SELF && !(action.cast.castFlags & CAST_FORCE_TARGET_SELF))
+                            if ((IsOnlySelfTargeting(spell) || spell->GetRangeIndex() == SPELL_RANGE_IDX_SELF_ONLY) && action.cast.target != TARGET_T_SELF && !(action.cast.castFlags & CAST_FORCE_TARGET_SELF))
                                 sLog.outErrorEventAI("Event %u Action %u uses SpellID %u that must be self cast (target is %u)", i, j + 1, action.cast.spellId, action.cast.target);
 
                             // TODO: spell must be cast on enemy, but is not
