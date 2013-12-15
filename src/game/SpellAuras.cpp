@@ -8496,6 +8496,7 @@ void Aura::PeriodicDummyTick()
                     ((Player*)target)->UpdateManaRegen();
                     // Disable continue
                     m_isPeriodic = false;
+                    return;
                 }
                 return;
             }

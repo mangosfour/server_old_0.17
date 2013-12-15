@@ -873,7 +873,6 @@ class MANGOS_DLL_SPEC WorldSession
         void SendItemSparseDb2Reply(uint32 entry); 
 
         void HandleObjectUpdateFailedOpcode(WorldPacket& recv_data);
-
         void HandleSpellClick(WorldPacket& recv_data);
         void HandleGetMirrorimageData(WorldPacket& recv_data);
         void HandleAlterAppearanceOpcode(WorldPacket& recv_data);
