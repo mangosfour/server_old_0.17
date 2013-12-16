@@ -391,7 +391,7 @@ struct TrainerSpell
     uint32 reqSkillValue;
     uint32 reqLevel;
     uint32 learnedSpell;
-    bool isProvidedReqLevel;
+    bool isProvidedReqLevel; //TODO: [MAX_SPELL_EFFECTS]
 
     // helpers
     bool IsCastable() const { return learnedSpell != spell; }
