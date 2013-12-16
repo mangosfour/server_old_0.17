@@ -135,7 +135,7 @@ enum Opcodes
     CMSG_CANCEL_GROWTH_AURA                               = 0x129C,
     CMSG_CANCEL_MOUNT_AURA                                = 0x0635, // 4.3.4 15595
     CMSG_CANCEL_TEMP_ENCHANTMENT                          = 0x6C37, // 4.3.4 15595
-    CMSG_CANCEL_TRADE                                     = 0x731E, // 4.3.4 15595
+    CMSG_CANCEL_TRADE                                     = 0x12CC, // 5.4.1 17538
     CMSG_CAST_SPELL                                       = 0x4C07, // 4.3.4 15595
     CMSG_CHANGE_GDF_ARENA_RATING                          = 0x14AD,
     CMSG_CHANGE_PERSONAL_ARENA_RATING                     = 0x1426,
@@ -757,7 +757,7 @@ enum Opcodes
     MSG_MOVE_UPDATE_CAN_FLY                               = 0x13AE,
     MSG_MOVE_UPDATE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY   = 0x134B,
     MSG_MOVE_WATER_WALK                                   = 0x12B2,
-    MSG_MOVE_WORLDPORT_ACK                                = 0x2411, // 4.3.4 15595
+    MSG_MOVE_WORLDPORT_ACK                                = 0x00e0, // 5.4.1 17538
     MSG_NOTIFY_PARTY_SQUELCH                              = 0x13E0,
     MSG_NULL_ACTION                                       = 0x1001,
     MSG_PARTY_ASSIGNMENT                                  = 0x0424, // 4.3.4 15595
