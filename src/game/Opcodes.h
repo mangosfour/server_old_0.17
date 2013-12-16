@@ -208,6 +208,7 @@ enum Opcodes
 	CMSG_CREATURE_QUERY                                   = 0x050F, // 5.3.0 17128
     CMSG_DANCE_QUERY                                      = 0x4E07, // 4.3.4 15595
     CMSG_DBLOOKUP                                         = 0x1003,
+    CMSG_DB_QUERY_BULK                                    = 0x01E4, // 5.4.1 17538
     CMSG_DEBUG_ACTIONS_START                              = 0x1316,
     CMSG_DEBUG_ACTIONS_STOP                               = 0x1317,
     CMSG_DEBUG_AISTATE                                    = 0x102F,
@@ -224,7 +225,7 @@ enum Opcodes
     CMSG_DELETE_DANCE                                     = 0x1455,
     CMSG_DELETEEQUIPMENT_SET                              = 0x4D07, // 4.3.4 15595
     CMSG_DESTROY_ITEMS                                    = 0x10B3,
-    CMSG_DESTROYITEM                                      = 0x4A27, // 4.3.4 15595
+    CMSG_DESTROY_ITEM                                     = 0x16CF, // 5.4.1 17538
     CMSG_DESTROYMONSTER                                   = 0x1013,
     CMSG_DISABLE_PVP_CHEAT                                = 0x1031,
 	CMSG_DISMISS_CONTROLLED_VEHICLE                       = 0x0A56, // 5.3.0 17128
