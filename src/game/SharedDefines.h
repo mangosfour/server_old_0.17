@@ -3968,9 +3968,11 @@ enum BattleGroundTypeId
     BATTLEGROUND_CTF           = 706,                       // 5.x CTF3
     BATTLEGROUND_SM            = 708,                       // 5.x Silvershard Mines
     BATTLEGROUND_TA            = 719,                       // 5.x Tol'Vir Arena
+	BATTLEGROUND_DG            = 754,                       // 5.x Deepwind Gorge 
+    BATTLEGROUND_TTP           = 757,                       // 5.x The Tiger's Peak 
 };
 
-#define MAX_BATTLEGROUND_TYPE_ID 720
+#define MAX_BATTLEGROUND_TYPE_ID 758
 
 enum ArenaType
 {
