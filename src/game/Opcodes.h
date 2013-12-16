@@ -1061,7 +1061,7 @@ enum Opcodes
 	SMSG_ITEM_TIME_UPDATE								  = 0x0CC0, // 5.3.0 17128
     SMSG_JOINED_BATTLEGROUND_QUEUE                        = 0x138B,
     SMSG_KICK_REASON                                      = 0x13C6,
-    SMSG_LEARNED_DANCE_MOVES                              = 0x0E05, // 4.3.4 15595
+    SMSG_LEARNED_DANCE_MOVES                              = 0x041F, // 5.4.1 17538
 	SMSG_LEARNED_SPELL									  = 0x058C, // 5.3.0 17128
 	SMSG_LEVELUP_INFO									  = 0x00CD, // 5.3.0 17128
     SMSG_LFG_BOOT_PLAYER                                  = 0x136E,
@@ -1110,7 +1110,7 @@ enum Opcodes
     SMSG_MINIGAME_STATE                                   = 0x12F8,
     SMSG_MIRRORIMAGE_DATA                                 = 0x2634, // 4.3.4 15595
     SMSG_MODIFY_COOLDOWN                                  = 0x6016, // 4.3.4 15595
-	SMSG_MONSTER_MOVE									  = 0x114C, // 5.3.0 17128
+	SMSG_MONSTER_MOVE									  = 0x0216, // 5.4.1 17538
     SMSG_MONSTER_MOVE_TRANSPORT                           = 0x2004, // 4.3.4 15595
 	SMSG_MOTD											  = 0x12DC, // 5.3.0 17128
 	SMSG_MOUNTRESULT									  = 0x15D0, // 5.3.0 17128

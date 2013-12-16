@@ -222,7 +222,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_MESSAGECHAT,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_JOIN_CHANNEL,                            STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleJoinChannelOpcode         );
     //OPCODE(CMSG_LEAVE_CHANNEL,                           STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleLeaveChannelOpcode        );
-    //OPCODE(SMSG_CHANNEL_NOTIFY,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_CHANNEL_NOTIFY,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_CHANNEL_LIST,                            STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleChannelListOpcode         );
     //OPCODE(SMSG_CHANNEL_LIST,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_CHANNEL_PASSWORD,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleChannelPasswordOpcode     );
@@ -291,7 +291,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_MOVE_SET_FACING,                         STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     //OPCODE(CMSG_MOVE_SET_PITCH,                          STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     //OPCODE(MSG_MOVE_WORLDPORT_ACK,                       STATUS_TRANSFER, PROCESS_THREADUNSAFE, &WorldSession::HandleMoveWorldportAckOpcode    );
-    //OPCODE(SMSG_MONSTER_MOVE,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_MONSTER_MOVE,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_MOVE_WATER_WALK,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_MOVE_LAND_WALK,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_MOVE_CHARM_PORT_CHEAT,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
