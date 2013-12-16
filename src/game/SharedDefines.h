@@ -170,6 +170,7 @@ enum Powers
     POWER_DEMONIC_FURY                  = 15,
     POWER_ARCANE_CHARGES                = 16,
     MAX_POWERS                          = 17,
+    POWER_ALL                           = 127,
     POWER_HEALTH                        = 0xFFFFFFFE    // (-2 as signed value)
 };
 
