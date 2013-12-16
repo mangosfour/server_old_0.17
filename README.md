@@ -1,8 +1,8 @@
 MaNGOS Four [![Build Status](https://travis-ci.org/mangosfour/server.png)](https://travis-ci.org/mangosfour/server)
 ===========
 *MaNGOS Four* is a full featured server for [World of Warcraft][2], in its Mists of Pandaria
-version supporting clients from the [patch 5.3.0][50] branch, specifically patch
-5.3.0.17128
+version supporting clients from the [patch 5.4.1][50] branch, specifically patch
+5.4.1.17538
 
 World of Warcraft, and all World of Warcraft or Warcraft art, images, and lore are
 copyrighted by [Blizzard Entertainment, Inc.][1].
@@ -67,7 +67,7 @@ License
 
 [20]: https://github.com/mangoswiki/Wiki/wiki/MaNGOS%20Installation/ "Wiki"
 
-[50]: http://www.wowpedia.org/Patch_5.3.0 "WoW MOP · Patch 5.3.0 release notes"
+[50]: http://www.wowpedia.org/Patch_5.4.1 "WoW MOP · Patch 5.4.1 Siege of Orgrimmar release notes"
 
 [100]: http://getmangos.co.uk/ "MaNGOS Community Project Website"
 [101]: http://community.getmangos.co.uk/ "MaNGOS Community Discussion Forums"
