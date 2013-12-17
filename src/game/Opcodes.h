@@ -1409,6 +1409,7 @@ enum Opcodes
     SMSG_WEEKLY_RESET_CURRENCIES                          = 0x3CA1, // 4.3.4 15595
 	SMSG_WHO                                              = 0x11C0, // 5.3.0 17128
 	SMSG_WHOIS                                            = 0x0D89, // 5.3.0 17128
+    SMSG_WORLD_SERVER_INFO                                = 0x0427, // 5.4.1 17538
     SMSG_XPGAIN                                           = 0x14EE,
     SMSG_ZONE_MAP                                         = 0x100C,
 	SMSG_ZONE_UNDER_ATTACK								  = 0x053F, // 5.3.0 17128
