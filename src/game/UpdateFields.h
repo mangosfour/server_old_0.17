@@ -19,16 +19,15 @@
 #ifndef _UPDATEFIELDS_AUTO_H
 #define _UPDATEFIELDS_AUTO_H
 
-// Auto generated for version 4, 3, 4, 15595
-
-enum EObjectFields
+enum EObjectFields	// Auto generated for version 5, 4, 1, 17538
 {
     OBJECT_FIELD_GUID                                = 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
     OBJECT_FIELD_DATA                                = 0x0002, // Size: 2, Type: LONG, Flags: PUBLIC
     OBJECT_FIELD_TYPE                                = 0x0004, // Size: 1, Type: TWO_SHORT, Flags: PUBLIC
     OBJECT_FIELD_ENTRY                               = 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
-    OBJECT_FIELD_SCALE_X                             = 0x0006, // Size: 1, Type: FLOAT, Flags: PUBLIC
-    OBJECT_END                                       = 0x0007
+	OBJECT_FIELD_DYNAMICFLAGS                        = 0x0006, // Size: 1, Type: INT, Flags: PUBLIC
+	OBJECT_FIELD_SCALE_X                             = 0x0007, // Size: 1, Type: FLOAT, Flags: PUBLIC
+    OBJECT_END                                       = 0x0008
 };
 
 enum EUnitFields
@@ -520,7 +519,7 @@ enum EPlayerFields
     PLAYER_END                                       = UNIT_END + 0x071B
 };
 
-enum EContainerFields
+enum EContainerFields	// Auto generated for version 5, 4, 1, 17538
 {
     CONTAINER_FIELD_SLOT_1                           = ITEM_END + 0x0000, // Size: 72, Type: LONG, Flags: PUBLIC
     CONTAINER_FIELD_NUM_SLOTS                        = ITEM_END + 0x0048, // Size: 1, Type: INT, Flags: PUBLIC

@@ -654,7 +654,7 @@ struct BattlemasterListEntry
 struct CharStartOutfitEntry
 {
     // uint32 Id;                                           // 0        m_ID
-    uint32 RaceClassGender;                                 // 1        m_raceID m_classID m_sexID m_outfitID (UNIT_FIELD_BYTES_0 & 0x00FFFFFF) comparable (0 byte = race, 1 byte = class, 2 byte = gender)
+    uint32 RaceClassGender;                                 // 1        m_raceID m_classID m_sexID m_outfitID (UNIT_FIELD_SEX & 0x00FFFFFF) comparable (0 byte = race, 1 byte = class, 2 byte = gender)
     int32 ItemId[MAX_OUTFIT_ITEMS];                         // 2-25     m_ItemID
     // int32 ItemDisplayId[MAX_OUTFIT_ITEMS];               // 26-29    m_DisplayItemID not required at server side
     // int32 ItemInventorySlot[MAX_OUTFIT_ITEMS];           // 50-73    m_InventoryType not required at server side
