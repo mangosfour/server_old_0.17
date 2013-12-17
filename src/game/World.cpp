@@ -932,7 +932,7 @@ void World::SetInitialWorldSettings()
         	(m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_WOTLK &&
               !MapManager::ExistMapAndVMap(609, 2355.84f, -5664.77f))) ||           // Death Knight
             (m_configUint32Values[CONFIG_UINT32_EXPANSION] >= EXPANSION_MOP &&
-              !MapManager::ExistMapAndVMap(870, 500.00f, -500.00f)))                // Pandaren - TODO: Need to find correct start location coords.
+              !MapManager::ExistMapAndVMap(870, 3001.38f, -542.47f)))                // Pandaren
 	{
         sLog.outError("Correct *.map files not found in path '%smaps' or *.vmtree/*.vmtile files in '%svmaps'. Please place *.map and vmap files in appropriate directories or correct the DataDir value in the mangosd.conf file.", m_dataPath.c_str(), m_dataPath.c_str());
         Log::WaitBeforeContinueIfNeed();
