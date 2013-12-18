@@ -173,15 +173,15 @@ bool Transport::Create(uint32 guidlow, uint32 mapid, float x, float y, float z, 
 
     SetObjectScale(goinfo->size);
 
-    SetUInt32Value(GAMEOBJECT_FACTION, goinfo->faction);
-    // SetUInt32Value(GAMEOBJECT_FLAGS, goinfo->flags);
-    SetUInt32Value(GAMEOBJECT_FLAGS, (GO_FLAG_TRANSPORT | GO_FLAG_NODESPAWN));
-    SetUInt32Value(GAMEOBJECT_LEVEL, m_period);
+    SetUInt32Value(GO_FIELD_FACTIONTEMPLATE, goinfo->faction);
+    // SetUInt32Value(GO_FIELD_FLAGS, goinfo->flags);
+    SetUInt32Value(GO_FIELD_FLAGS, (GO_FLAG_TRANSPORT | GO_FLAG_NODESPAWN));
+    SetUInt32Value(GO_FIELD_LEVEL, m_period);
     SetEntry(goinfo->id);
 
     //SetDisplayId(goinfo->displayId);
     // Use SetDisplayId only if we have the GO assigned to a proper map!
-    SetUInt32Value(GAMEOBJECT_DISPLAYID, goinfo->displayId);
+    SetUInt32Value(GO_FIELD_DISPLAYID, goinfo->displayId);
     m_displayInfo = sGameObjectDisplayInfoStore.LookupEntry(goinfo->displayId);
 
     SetGoState(GO_STATE_READY);

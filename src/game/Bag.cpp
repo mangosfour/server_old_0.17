@@ -81,7 +81,7 @@ bool Bag::Create(uint32 guidlow, uint32 itemid, Player const* owner)
     // Cleaning 20 slots
     for (uint8 i = 0; i < MAX_BAG_SIZE; ++i)
     {
-        SetGuidValue(CONTAINER_FIELD_SLOT_1 + (i * 2), ObjectGuid());
+        SetGuidValue(CONTAINER_FIELD_SLOT + (i * 2), ObjectGuid());
         m_bagslot[i] = NULL;
     }
 
@@ -101,7 +101,7 @@ bool Bag::LoadFromDB(uint32 guidLow, Field* fields, ObjectGuid ownerGuid)
     // cleanup bag content related item value fields (its will be filled correctly from `character_inventory`)
     for (int i = 0; i < MAX_BAG_SIZE; ++i)
     {
-        SetGuidValue(CONTAINER_FIELD_SLOT_1 + (i * 2), ObjectGuid());
+        SetGuidValue(CONTAINER_FIELD_SLOT + (i * 2), ObjectGuid());
 
         delete m_bagslot[i];
         m_bagslot[i] = NULL;
@@ -137,7 +137,7 @@ void Bag::RemoveItem(uint8 slot, bool /*update*/)
         m_bagslot[slot]->SetContainer(NULL);
 
     m_bagslot[slot] = NULL;
-    SetGuidValue(CONTAINER_FIELD_SLOT_1 + (slot * 2), ObjectGuid());
+    SetGuidValue(CONTAINER_FIELD_SLOT + (slot * 2), ObjectGuid());
 }
 
 void Bag::StoreItem(uint8 slot, Item* pItem, bool /*update*/)
@@ -147,7 +147,7 @@ void Bag::StoreItem(uint8 slot, Item* pItem, bool /*update*/)
     if (pItem)
     {
         m_bagslot[slot] = pItem;
-        SetGuidValue(CONTAINER_FIELD_SLOT_1 + (slot * 2), pItem->GetObjectGuid());
+        SetGuidValue(CONTAINER_FIELD_SLOT + (slot * 2), pItem->GetObjectGuid());
         pItem->SetGuidValue(ITEM_FIELD_CONTAINED, GetObjectGuid());
         pItem->SetGuidValue(ITEM_FIELD_OWNER, GetOwnerGuid());
         pItem->SetContainer(this);

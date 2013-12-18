@@ -2774,7 +2774,7 @@ void Player::InitStatsForLevel(bool reapplyMods)
 
     SetFloatValue(UNIT_MOD_CAST_HASTE, 1.0f);           // spell haste
     SetFloatValue(UNIT_MOD_HASTE, 1.0f);        // melee haste
-    SetFloatValue(PLAYER_FIELD_MOD_RANGED_HASTE, 1.0f); // ranged haste
+//    SetFloatValue(PLAYER_FIELD_MOD_RANGED_HASTE, 1.0f); // ranged haste
     // save base values (bonuses already included in stored stats
     for (int i = STAT_STRENGTH; i < MAX_STATS; ++i)
         SetCreateStat(Stats(i), info.stats[i]);
@@ -4064,9 +4064,9 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_FIELD_MAXPOWER5);
     updateVisualBits.SetBit(UNIT_FIELD_LEVEL);
     updateVisualBits.SetBit(UNIT_FIELD_FACTIONTEMPLATE);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_ID + 0);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_ID + 1);
-    updateVisualBits.SetBit(UNIT_VIRTUAL_ITEM_SLOT_ID + 2);
+    updateVisualBits.SetBit(UNIT_FIELD_VIRTUAL_ITEM_SLOT_ID + 0);
+    updateVisualBits.SetBit(UNIT_FIELD_VIRTUAL_ITEM_SLOT_ID + 1);
+    updateVisualBits.SetBit(UNIT_FIELD_VIRTUAL_ITEM_SLOT_ID + 2);
     updateVisualBits.SetBit(UNIT_FIELD_FLAGS);
     updateVisualBits.SetBit(UNIT_FIELD_FLAGS_2);
     updateVisualBits.SetBit(UNIT_FIELD_AURASTATE);
@@ -4080,8 +4080,8 @@ void Player::InitVisibleBits()
     updateVisualBits.SetBit(UNIT_FIELD_BYTES_1);
     updateVisualBits.SetBit(UNIT_FIELD_PETNUMBER);
     updateVisualBits.SetBit(UNIT_FIELD_PET_NAME_TIMESTAMP);
-    updateVisualBits.SetBit(UNIT_DYNAMIC_FLAGS);
-    updateVisualBits.SetBit(UNIT_CHANNEL_SPELL);
+    //updateVisualBits.SetBit(UNIT_DYNAMIC_FLAGS);
+    updateVisualBits.SetBit(UNIT_FIELD_CHANNEL_SPELL);
     updateVisualBits.SetBit(UNIT_MOD_CAST_SPEED);
     updateVisualBits.SetBit(UNIT_NPC_FLAGS);
     updateVisualBits.SetBit(UNIT_FIELD_BASE_MANA);
@@ -4679,7 +4679,7 @@ void Player::KillPlayer()
     SetDeathState(CORPSE);
     // SetFlag( UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_IN_PVP );
 
-    SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_NONE);
+    //SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_NONE);
     ApplyModByteFlag(PLAYER_FIELD_BYTES, 0, PLAYER_FIELD_BYTE_RELEASE_TIMER, !sMapStore.LookupEntry(GetMapId())->Instanceable());
 
     // 6 minutes until repop at graveyard
@@ -8355,7 +8355,7 @@ void Player::SendLoot(ObjectGuid guid, LootType loot_type)
 
                         // let reopen skinning loot if will closed.
                         if (!loot->empty())
-                            creature->SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
+                            //creature->SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE);
 
                         permission = OWNER_PERMISSION;
                     }
@@ -16018,7 +16018,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
     // clear channel spell data (if saved at channel spell casting)
     SetChannelObjectGuid(ObjectGuid());
-    SetUInt32Value(UNIT_CHANNEL_SPELL, 0);
+    SetUInt32Value(UNIT_FIELD_CHANNEL_SPELL, 0);
 
     // clear charm/summon related fields
     SetCharm(NULL);
@@ -16285,9 +16285,9 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
 
 bool Player::isAllowedToLoot(Creature* creature)
 {
-    // never tapped by any (mob solo kill)
-    if (!creature->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED))
-        return false;
+    //// never tapped by any (mob solo kill)
+    //if (!creature->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED))
+    //    return false;
 
     if (Player* recipient = creature->GetLootRecipient())
     {

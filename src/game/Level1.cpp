@@ -904,8 +904,8 @@ bool ChatHandler::HandleModifyFactionCommand(char* args)
             uint32 factionid = chr->getFaction();
             uint32 flag      = chr->GetUInt32Value(UNIT_FIELD_FLAGS);
             uint32 npcflag   = chr->GetUInt32Value(UNIT_NPC_FLAGS);
-            uint32 dyflag    = chr->GetUInt32Value(UNIT_DYNAMIC_FLAGS);
-            PSendSysMessage(LANG_CURRENT_FACTION, chr->GetGUIDLow(), factionid, flag, npcflag, dyflag);
+//            uint32 dyflag    = chr->GetUInt32Value(UNIT_DYNAMIC_FLAGS);
+            PSendSysMessage(LANG_CURRENT_FACTION, chr->GetGUIDLow(), factionid, flag, npcflag);
         }
         return true;
     }
@@ -936,16 +936,16 @@ bool ChatHandler::HandleModifyFactionCommand(char* args)
     if (!ExtractOptUInt32(&args, npcflag, chr->GetUInt32Value(UNIT_NPC_FLAGS)))
         return false;
 
-    uint32  dyflag;
-    if (!ExtractOptUInt32(&args, dyflag, chr->GetUInt32Value(UNIT_DYNAMIC_FLAGS)))
-        return false;
+    //uint32  dyflag;
+    //if (!ExtractOptUInt32(&args, dyflag, chr->GetUInt32Value(UNIT_DYNAMIC_FLAGS)))
+    //    return false;
 
-    PSendSysMessage(LANG_YOU_CHANGE_FACTION, chr->GetGUIDLow(), factionid, flag, npcflag, dyflag);
+    PSendSysMessage(LANG_YOU_CHANGE_FACTION, chr->GetGUIDLow(), factionid, flag, npcflag);
 
     chr->setFaction(factionid);
     chr->SetUInt32Value(UNIT_FIELD_FLAGS, flag);
     chr->SetUInt32Value(UNIT_NPC_FLAGS, npcflag);
-    chr->SetUInt32Value(UNIT_DYNAMIC_FLAGS, dyflag);
+    //chr->SetUInt32Value(UNIT_DYNAMIC_FLAGS, dyflag);
 
     return true;
 }

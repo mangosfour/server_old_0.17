@@ -1073,7 +1073,7 @@ void Spell::EffectDummy(SpellEffectEntry const* effect)
 
                     // Expect created without owner, but with level from _template
                     pGameObj->SetRespawnTime(MINUTE / 2);
-                    pGameObj->SetUInt32Value(GAMEOBJECT_LEVEL, pGameObj->GetGOInfo()->trap.level);
+                    pGameObj->SetUInt32Value(GO_FIELD_LEVEL, pGameObj->GetGOInfo()->trap.level);
                     pGameObj->SetSpellId(m_spellInfo->Id);
 
                     map->Add(pGameObj);
@@ -1142,7 +1142,7 @@ void Spell::EffectDummy(SpellEffectEntry const* effect)
 
                     pGameObj->SetRespawnTime(creatureTarget->GetRespawnTime() - time(NULL));
                     pGameObj->SetOwnerGuid(m_caster->GetObjectGuid());
-                    pGameObj->SetUInt32Value(GAMEOBJECT_LEVEL, m_caster->getLevel());
+                    pGameObj->SetUInt32Value(GO_FIELD_LEVEL, m_caster->getLevel());
                     pGameObj->SetSpellId(m_spellInfo->Id);
 
                     creatureTarget->ForcedDespawn();
@@ -9414,8 +9414,8 @@ void Spell::EffectDuel(SpellEffectEntry const* effect)
         return;
     }
 
-    pGameObj->SetUInt32Value(GAMEOBJECT_FACTION, m_caster->getFaction());
-    pGameObj->SetUInt32Value(GAMEOBJECT_LEVEL, m_caster->getLevel() + 1);
+    pGameObj->SetUInt32Value(GO_FIELD_FACTIONTEMPLATE, m_caster->getFaction());
+    pGameObj->SetUInt32Value(GO_FIELD_LEVEL, m_caster->getLevel() + 1);
 
     pGameObj->SetRespawnTime(m_duration > 0 ? m_duration / IN_MILLISECONDS : 0);
     pGameObj->SetSpellId(m_spellInfo->Id);
@@ -9606,7 +9606,7 @@ void Spell::EffectActivateObject(SpellEffectEntry const* effect)
                 case 40494:         // Simon Game, switched ON
                 case 40495:         // Simon Game, switched OFF
                 case 40512:         // Simon Game, switch...disable Off switch
-                    gameObjTarget->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+                    gameObjTarget->SetFlag(GO_FIELD_FLAGS, GO_FLAG_NO_INTERACT);
                     break;
                 case 40632:         // Summon Gezzarak the Huntress
                 case 40640:         // Summon Karrog
@@ -9622,7 +9622,7 @@ void Spell::EffectActivateObject(SpellEffectEntry const* effect)
 
                     // Note: event script is implemented in script library
                     gameObjTarget->SummonCreature(25835, x, y, z, gameObjTarget->GetOrientation(), TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 15000);
-                    gameObjTarget->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_IN_USE);
+                    gameObjTarget->SetFlag(GO_FIELD_FLAGS, GO_FLAG_IN_USE);
                     break;
                 }
                 case 46592:         // Summon Ahune Lieutenant
@@ -9647,7 +9647,7 @@ void Spell::EffectActivateObject(SpellEffectEntry const* effect)
             break;
         }
         case 17:                    // GO unlock - found mostly in Simon Game spells
-            gameObjTarget->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+            gameObjTarget->RemoveFlag(GO_FIELD_FLAGS, GO_FLAG_NO_INTERACT);
             break;
         default:
             sLog.outError("Spell::EffectActivateObject called with unknown misc value. Spell Id %u", m_spellInfo->Id);
@@ -9856,7 +9856,7 @@ void Spell::EffectSummonObject(SpellEffectEntry const* effect)
         return;
     }
 
-    pGameObj->SetUInt32Value(GAMEOBJECT_LEVEL, m_caster->getLevel());
+    pGameObj->SetUInt32Value(GO_FIELD_LEVEL, m_caster->getLevel());
     pGameObj->SetRespawnTime(m_duration > 0 ? m_duration / IN_MILLISECONDS : 0);
     pGameObj->SetSpellId(m_spellInfo->Id);
     m_caster->AddGameObject(pGameObj);
@@ -10190,7 +10190,7 @@ void Spell::EffectSummonDeadPet(SpellEffectEntry const* /*effect*/)
     if (damage < 0)
         return;
 
-    pet->SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_NONE);
+    //pet->SetUInt32Value(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_NONE);
     pet->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_SKINNABLE);
     pet->SetDeathState(ALIVE);
     pet->clearUnitState(UNIT_STAT_ALL_STATE);
@@ -10425,7 +10425,7 @@ void Spell::EffectTransmitted(SpellEffectEntry const* effect)
 
     pGameObj->SetOwnerGuid(m_caster->GetObjectGuid());
 
-    pGameObj->SetUInt32Value(GAMEOBJECT_LEVEL, m_caster->getLevel());
+    pGameObj->SetUInt32Value(GO_FIELD_LEVEL, m_caster->getLevel());
     pGameObj->SetSpellId(m_spellInfo->Id);
 
     DEBUG_LOG("AddObject at SpellEfects.cpp EffectTransmitted");

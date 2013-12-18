@@ -4219,7 +4219,7 @@ void Spell::WriteAmmoToPacket(WorldPacket* data)
     {
         for (uint8 i = 0; i < MAX_VIRTUAL_ITEM_SLOT; ++i)
         {
-            if (uint32 item_id = m_caster->GetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + i))
+            if (uint32 item_id = m_caster->GetUInt32Value(UNIT_FIELD_VIRTUAL_ITEM_SLOT_ID + i))
             {
                 if(ItemPrototype const* itemEntry = sItemStorage.LookupEntry<ItemPrototype>(item_id))
                 //if(ItemEntry const * itemEntry = sItemStore.LookupEntry(item_id))
@@ -4474,11 +4474,11 @@ void Spell::SendChannelUpdate(uint32 time)
                 target->RemoveAurasByCasterSpell(m_spellInfo->Id, m_caster->GetObjectGuid());
 
         // Only finish channeling when latest channeled spell finishes
-        if (m_caster->GetUInt32Value(UNIT_CHANNEL_SPELL) != m_spellInfo->Id)
+        if (m_caster->GetUInt32Value(UNIT_FIELD_CHANNEL_SPELL) != m_spellInfo->Id)
             return;
 
         m_caster->SetChannelObjectGuid(ObjectGuid());
-        m_caster->SetUInt32Value(UNIT_CHANNEL_SPELL, 0);
+        m_caster->SetUInt32Value(UNIT_FIELD_CHANNEL_SPELL, 0);
     }
 
     WorldPacket data(SMSG_CHANNEL_UPDATE, 8 + 4);
@@ -4546,7 +4546,7 @@ void Spell::SendChannelStart(uint32 duration)
     if (target)
         m_caster->SetChannelObjectGuid(target->GetObjectGuid());
 
-    m_caster->SetUInt32Value(UNIT_CHANNEL_SPELL, m_spellInfo->Id);
+    m_caster->SetUInt32Value(UNIT_FIELD_CHANNEL_SPELL, m_spellInfo->Id);
 }
 
 void Spell::SendResurrectRequest(Player* target)

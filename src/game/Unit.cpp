@@ -714,7 +714,7 @@ bool Unit::haveOffhandWeapon() const
         return ((Player*)this)->GetWeaponForAttack(OFF_ATTACK, true, true);
     else
     {
-        uint32 ItemId = GetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1);
+        uint32 ItemId = GetUInt32Value(UNIT_FIELD_VIRTUAL_ITEM_SLOT_ID + 1);
         /*ItemEntry const* itemInfo = sItemStore.LookupEntry(ItemId);
 
         if (itemInfo && itemInfo->Class == ITEM_CLASS_WEAPON)
@@ -10980,7 +10980,7 @@ void Unit::SetFeignDeath(bool apply, ObjectGuid casterGuid, uint32 /*spellID*/)
         // blizz like 2.0.x
         SetFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
         // blizz like 2.0.x
-        SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
+        //SetFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
 
         addUnitState(UNIT_STAT_DIED);
         CombatStop();
@@ -11005,7 +11005,7 @@ void Unit::SetFeignDeath(bool apply, ObjectGuid casterGuid, uint32 /*spellID*/)
         // blizz like 2.0.x
         RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
         // blizz like 2.0.x
-        RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
+        //RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
 
         clearUnitState(UNIT_STAT_DIED);
 

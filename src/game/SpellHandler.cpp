@@ -306,9 +306,9 @@ void WorldSession::HandleGameObjectUseOpcode(WorldPacket& recv_data)
     }
 
     // Never expect this opcode for non intractable GO's
-    if (obj->HasFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT))
+    if (obj->HasFlag(GO_FIELD_FLAGS, GO_FLAG_NO_INTERACT))
     {
-        sLog.outError("HandleGameObjectUseOpcode: CMSG_GAMEOBJ_USE for GameObject (Entry %u) with non intractable flag (Flags %u), didn't expect this to happen.", obj->GetEntry(), obj->GetUInt32Value(GAMEOBJECT_FLAGS));
+        sLog.outError("HandleGameObjectUseOpcode: CMSG_GAMEOBJ_USE for GameObject (Entry %u) with non intractable flag (Flags %u), didn't expect this to happen.", obj->GetEntry(), obj->GetUInt32Value(GO_FIELD_FLAGS));
         return;
     }
 

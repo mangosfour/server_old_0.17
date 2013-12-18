@@ -654,19 +654,19 @@ void Object::BuildValuesUpdate(uint8 updatetype, ByteBuffer* data, UpdateMask* u
                     *data << (m_uint32Values[index] & ~UNIT_FLAG_NOT_SELECTABLE);
                 }
                 // hide lootable animation for unallowed players
-                else if (index == UNIT_DYNAMIC_FLAGS && GetTypeId() == TYPEID_UNIT)
-                {
-                    if (!target->isAllowedToLoot((Creature*)this))
-                        *data << (m_uint32Values[index] & ~(UNIT_DYNFLAG_LOOTABLE | UNIT_DYNFLAG_TAPPED_BY_PLAYER));
-                    else
-                    {
-                        // flag only for original loot recipent
-                        if (target->GetObjectGuid() == ((Creature*)this)->GetLootRecipientGuid())
-                            *data << m_uint32Values[index];
-                        else
-                            *data << (m_uint32Values[index] & ~(UNIT_DYNFLAG_TAPPED | UNIT_DYNFLAG_TAPPED_BY_PLAYER));
-                    }
-                }
+                //else if (index == UNIT_DYNAMIC_FLAGS && GetTypeId() == TYPEID_UNIT)
+                //{
+                //    if (!target->isAllowedToLoot((Creature*)this))
+                //        *data << (m_uint32Values[index] & ~(UNIT_DYNFLAG_LOOTABLE | UNIT_DYNFLAG_TAPPED_BY_PLAYER));
+                //    else
+                //    {
+                //        // flag only for original loot recipent
+                //        if (target->GetObjectGuid() == ((Creature*)this)->GetLootRecipientGuid())
+                //            *data << m_uint32Values[index];
+                //        else
+                //            *data << (m_uint32Values[index] & ~(UNIT_DYNFLAG_TAPPED | UNIT_DYNFLAG_TAPPED_BY_PLAYER));
+                //    }
+                //}
                 else
                 {
                     // send in current format (float as float, uint32 as uint32)

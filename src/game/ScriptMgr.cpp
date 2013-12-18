@@ -1634,14 +1634,14 @@ bool ScriptAction::HandleScriptStep()
 
             // Lock or Unlock
             if (m_script->goLockState.lockState & 0x01)
-                pGo->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED);
+                pGo->SetFlag(GO_FIELD_FLAGS, GO_FLAG_LOCKED);
             else if (m_script->goLockState.lockState & 0x02)
-                pGo->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_LOCKED);
+                pGo->RemoveFlag(GO_FIELD_FLAGS, GO_FLAG_LOCKED);
             // Set Non Interactable or Set Interactable
             if (m_script->goLockState.lockState & 0x04)
-                pGo->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+                pGo->SetFlag(GO_FIELD_FLAGS, GO_FLAG_NO_INTERACT);
             else if (m_script->goLockState.lockState & 0x08)
-                pGo->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NO_INTERACT);
+                pGo->RemoveFlag(GO_FIELD_FLAGS, GO_FLAG_NO_INTERACT);
 
             break;
         }

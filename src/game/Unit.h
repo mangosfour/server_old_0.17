@@ -625,7 +625,7 @@ enum UnitFlags2
 };
 
 /// Non Player Character flags
-enum NPCFlags
+enum NPCFlags			//5.4.1 17538
 {
     UNIT_NPC_FLAG_NONE                  = 0x00000000,
     UNIT_NPC_FLAG_GOSSIP                = 0x00000001,       // 100%
@@ -634,7 +634,7 @@ enum NPCFlags
     UNIT_NPC_FLAG_UNK2                  = 0x00000008,
     UNIT_NPC_FLAG_TRAINER               = 0x00000010,       // 100%
     UNIT_NPC_FLAG_TRAINER_CLASS         = 0x00000020,       // 100%
-    UNIT_NPC_FLAG_TRAINER_PROFESSION    = 0x00000040,       // 100%
+    UNIT_NPC_FLAG_TRAINER_PROFESSION    = 0x00000040,       // 100%, merchant
     UNIT_NPC_FLAG_VENDOR                = 0x00000080,       // 100%
     UNIT_NPC_FLAG_VENDOR_AMMO           = 0x00000100,       // 100%, general goods vendor
     UNIT_NPC_FLAG_VENDOR_FOOD           = 0x00000200,       // 100%
@@ -654,7 +654,11 @@ enum NPCFlags
     UNIT_NPC_FLAG_GUILD_BANKER          = 0x00800000,       // cause client to send 997 opcode
     UNIT_NPC_FLAG_SPELLCLICK            = 0x01000000,       // cause client to send 1015 opcode (spell click), dynamic, set at loading and don't must be set in DB
     UNIT_NPC_FLAG_PLAYER_VEHICLE        = 0x02000000,       // players with mounts that have vehicle data should have it set
-    UNIT_NPC_FLAG_REFORGER              = 0x08000000,       // reforging
+    UNIT_NPC_FLAG_MAILOBJECT            = 0x04000000,       // Not sure what this is, Argent Squire maybe - Allows remote access to mail
+	UNIT_NPC_FLAG_REFORGER              = 0x08000000,       // reforging
+	UNIT_NPC_FLAG_TRANSMOGRIFIER        = 0x10000000,       // Transmogrifier Vendor
+	UNIT_NPC_FLAG_VOIDSTORAGEBANKER     = 0x20000000,		// Void Storage Vendor
+    UNIT_NPC_FLAG_PETBATTLEPVE          = 0x40000000,		// Pet Battle Trainer
 };
 
 // used in most movement packets (send and received), 30 bits in client

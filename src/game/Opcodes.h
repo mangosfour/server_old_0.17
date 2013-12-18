@@ -632,6 +632,7 @@ enum Opcodes
     CMSG_SET_SAVED_INSTANCE_EXTEND                        = 0x1293,
 	CMSG_SET_SELECTION									  = 0x07CD, // 5.4.1 17538
     CMSG_SET_SKILL_CHEAT                                  = 0x11D9,
+	CMSG_SET_SPECIALIZATION                               = 0x17DF, // 5.4.1 17538
     CMSG_SET_STAT_CHEAT                                   = 0x121E,
     CMSG_SET_TAXI_BENCHMARK_MODE                          = 0x4314, // 4.3.4 15595
     CMSG_SET_TITLE                                        = 0x2117, // 4.3.4 15595
@@ -781,7 +782,7 @@ enum Opcodes
     SMSG_ACCOUNT_DATA_TIMES                               = 0x1486, // 5.4.1 17538
     SMSG_ACHIEVEMENT_DELETED                              = 0x6A16, // 4.3.4 15595
 	SMSG_ACHIEVEMENT_EARNED								  = 0x029D, // 5.3.0 17128
-	SMSG_ACTION_BUTTONS									  = 0x019C, // 5.3.0 17128
+	SMSG_ACTION_BUTTONS									  = 0x0406, // 5.4.1 17538
     SMSG_ACTIVATETAXIREPLY                                = 0x6A37, // 4.3.4 15595
     SMSG_ADD_RUNE_POWER                                   = 0x6915, // 4.3.4 15595
     SMSG_ADDON_INFO                                       = 0x1136, // 5.4.1 17538
@@ -1062,7 +1063,7 @@ enum Opcodes
     SMSG_JOINED_BATTLEGROUND_QUEUE                        = 0x138B,
     SMSG_KICK_REASON                                      = 0x13C6,
     SMSG_LEARNED_DANCE_MOVES                              = 0x041F, // 5.4.1 17538
-	SMSG_LEARNED_SPELL									  = 0x058C, // 5.3.0 17128
+	SMSG_LEARNED_SPELL									  = 0x118E, // 5.4.1 17538
 	SMSG_LEVELUP_INFO									  = 0x00CD, // 5.3.0 17128
     SMSG_LFG_BOOT_PLAYER                                  = 0x136E,
 	SMSG_LFG_DISABLED									  = 0x0895, // 5.3.0 17128
@@ -1082,10 +1083,10 @@ enum Opcodes
     SMSG_LIST_INVENTORY                                   = 0x7CB0, // 4.3.4 15595
     SMSG_LOAD_EQUIPMENT_SET                               = 0x2E04, // 4.3.4 15595
 	SMSG_LOG_XPGAIN										  = 0x09CD, // 5.3.0 17128
-	SMSG_LOGIN_SETTIMESPEED                               = 0x0C8D, // 5.3.0 17128
+	SMSG_LOGIN_SETTIMESPEED                               = 0x0D17, // 5.4.1 17538
 	SMSG_LOGIN_VERIFY_WORLD								  = 0x0434, // 5.3.0 17128
 	SMSG_LOGOUT_CANCEL_ACK                                = 0x05D5, // 5.3.0 17128
-	SMSG_LOGOUT_COMPLETE                                  = 0x15C9, // 5.3.0 17128
+	SMSG_LOGOUT_COMPLETE                                  = 0x0D95, // 5.4.1 17538
 	SMSG_LOGOUT_RESPONSE                                  = 0x14D5, // 5.3.0 17128
 	SMSG_LOOT_ALL_PASSED								  = 0x0DC1, // 5.3.0 17128
     SMSG_LOOT_CLEAR_MONEY                                 = 0x2B37, // 4.3.4 15595
@@ -1141,7 +1142,7 @@ enum Opcodes
     SMSG_MOVE_UNSET_HOVER                                 = 0x51B3, // 4.3.4 15595
     SMSG_MOVE_UPDATE_KNOCK_BACK                           = 0x3DB2, // 4.3.4 15595
     SMSG_MOVE_WATER_WALK                                  = 0x75B1, // 4.3.4 15595
-	SMSG_NAME_QUERY_RESPONSE							  = 0x0BD0, // 5.3.0 17128
+	SMSG_NAME_QUERY_RESPONSE							  = 0x1407, // 5.4.1 17538
     SMSG_NEW_TAXI_PATH                                    = 0x4B35, // 4.3.4 15595
 	SMSG_NEW_WORLD                                        = 0x010F, // 5.4.1 17538
     SMSG_NOTIFICATION                                     = 0x14A0, // 4.3.4 15595
