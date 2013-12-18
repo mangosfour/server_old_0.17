@@ -703,7 +703,7 @@ enum Opcodes
 	CMSG_UPDATE_ACCOUNT_DATA							  = 0x0800, // 5.3.0 17128
     CMSG_UPDATE_MISSILE_TRAJECTORY                        = 0x781E, // 4.3.4 15595
     CMSG_USE_EQUIPMENT_SET                                = 0x0417, // 4.3.4 15595
-    CMSG_USE_ITEM                                         = 0x2C06, // 4.3.4 15595
+    CMSG_USE_ITEM                                         = 0x1A66, // 5.4.1 17538
     CMSG_USE_SKILL_CHEAT                                  = 0x102A,
     CMSG_VOICE_SESSION_ENABLE                             = 0x13B0,
     CMSG_VOICE_SET_TALKER_MUTED_REQUEST                   = 0x13A2,
