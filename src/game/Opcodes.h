@@ -107,7 +107,7 @@ enum Opcodes
     CMSG_BUG                                              = 0x4035, // 4.3.4 15595
     CMSG_BUSY_TRADE                                       = 0x331C, // 4.3.4 15595
     CMSG_BUY_BANK_SLOT                                    = 0x0425, // 4.3.4 15595
-    CMSG_BUY_ITEM                                         = 0x0736, // 4.3.4 15595
+    CMSG_BUY_ITEM                                         = 0x0B66, // 5.4.1 17538
     CMSG_BUY_LOTTERY_TICKET_OBSOLETE                      = 0x1337,
     CMSG_BUY_STABLE_SLOT                                  = 0x1273,
     CMSG_BUYBACK_ITEM                                     = 0x6C17, // 4.3.4 15595
@@ -390,7 +390,7 @@ enum Opcodes
     CMSG_LFG_SET_NEEDS                                    = 0x136C,
     CMSG_LFG_SET_ROLES                                    = 0x136B,
     CMSG_LFG_TELEPORT                                     = 0x1371,
-    CMSG_LIST_INVENTORY                                   = 0x2806, // 4.3.4 15595
+    CMSG_LIST_INVENTORY                                   = 0x0346, // 5.4.1 17538
     CMSG_LOAD_DANCES                                      = 0x144E,
     CMSG_LOGOUT_CANCEL                                    = 0x2324, // 4.3.4 15595
 	CMSG_LOGOUT_REQUEST                                   = 0x03EC, // 5.4.1 17538
@@ -584,7 +584,7 @@ enum Opcodes
     CMSG_SAVE_EQUIPMENT_SET                               = 0x4F27, // 4.3.4 15595
     CMSG_SAVE_PLAYER                                      = 0x1154,
     CMSG_SELF_RES                                         = 0x6115, // 4.3.4 15595
-    CMSG_SELL_ITEM                                        = 0x4E15, // 4.3.4 15595
+    CMSG_SELL_ITEM                                        = 0x0B7D, // 5.4.1 17538
     CMSG_SEND_COMBAT_TRIGGER                              = 0x1395,
     CMSG_SEND_EVENT                                       = 0x102E,
     CMSG_SEND_GENERAL_TRIGGER                             = 0x1394,
