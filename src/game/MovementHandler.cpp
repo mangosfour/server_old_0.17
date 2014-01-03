@@ -421,7 +421,9 @@ void WorldSession::HandleSetActiveMoverOpcode(WorldPacket& recv_data)
     recv_data.hexlike();
 
     ObjectGuid guid;
-    recv_data >> guid;
+
+    recv_data.WriteGuidMask<7, 2, 1, 0, 4, 5, 6, 3>(guid);
+    recv_data.WriteGuidBytes<3, 2, 4, 0, 5, 1, 6, 7>(guid);
 
     if (_player->GetMover()->GetObjectGuid() != guid)
     {
@@ -511,8 +513,14 @@ void WorldSession::SendKnockBack(float angle, float horizontalSpeed, float verti
 void WorldSession::HandleMoveHoverAck(WorldPacket& recv_data)
 {
     DEBUG_LOG("CMSG_MOVE_HOVER_ACK");
+    uint64 guid;
+    guid = recv_data.readPackGUID(); // unused
+    recv_data.read_skip<uint32>();
 
-    recv_data.rfinish();
+    MovementInfo movementInfo;
+    recv_data >> movementInfo;
+    recv_data.read_skip<uint32>();
+
     /*
     MovementInfo movementInfo;
     recv_data >> movementInfo;
@@ -609,6 +617,10 @@ void WorldSession::HandleMoverRelocation(MovementInfo& movementInfo)
 
         plMover->SetPosition(movementInfo.GetPos()->x, movementInfo.GetPos()->y, movementInfo.GetPos()->z, movementInfo.GetPos()->o);
         plMover->m_movementInfo = movementInfo;
+
+        /* Movement should cancel looting */
+        if(ObjectGuid lootGUID = plMover->GetLootGuid())
+            plMover->SendLootRelease(lootGUID);
 
         if (movementInfo.GetPos()->z < -500.0f)
         {

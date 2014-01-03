@@ -8,8 +8,6 @@ git:
 branches:
   only:
   - master
-  - scripts_and_cmake
-  - develop
 
 # build with both gcc and clang to ensure compatibility
 compiler:
@@ -24,5 +22,5 @@ script:
   - test -d _build || mkdir _build
   - test -d _install || mkdir _install
   - cd _build
-  - cmake -DCMAKE_INSTALL_PREFIX=../_install -DCMAKE_BUILD_TYPE=Debug -DWITH_MOD_LUA=0 -DWITH_MOD_SCRIPTDEV2=1 ..
+  - cmake -DCMAKE_INSTALL_PREFIX=../_install -DCMAKE_BUILD_TYPE=Debug -DACE_USE_EXTERNAL=1 ..
   - make -j4

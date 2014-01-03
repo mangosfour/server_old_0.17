@@ -111,7 +111,7 @@ bool LoadLocaleMPQFile(int locale)
 {
     TCHAR buff[512];
     memset(buff, 0, sizeof(buff));
-    _stprintf(buff, _T("%s/misc.MPQ"), input_path);
+    _stprintf(buff, _T("%s/Data/%s/locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
     if (!SFileOpenArchive(buff, 0, MPQ_OPEN_READ_ONLY, &LocaleMpq))
     {
         if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -133,14 +133,15 @@ bool LoadLocaleMPQFile(int locale)
     for (int i = 0; Builds[i] && Builds[i] <= CONF_TargetBuild; ++i)
     {
         memset(buff, 0, sizeof(buff));
-
-        prefix = "";
-        _stprintf(buff, _T("%s%s/wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
-
-        if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
+        if (Builds[i] > LAST_DBC_IN_DATA_BUILD)
         {
-            if (GetLastError() != ERROR_FILE_NOT_FOUND)
-                _tprintf(_T("Cannot open patch archive %s\n"), buff);
+            prefix = "";
+            _stprintf(buff, _T("%s/Data/%s/wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
+        }
+        else
+        {
+            prefix = Locales[locale];
+            _stprintf(buff, _T("%s/Data/wow-update-%u.MPQ"), input_path, Builds[i]);
         }
 
         prefix = Locales[locale];
@@ -160,7 +161,7 @@ bool LoadLocaleMPQFile(int locale)
 void LoadCommonMPQFiles(uint32 build)
 {
     TCHAR filename[512];
-    _stprintf(filename, _T("%sworld.MPQ"), input_path);
+    _stprintf(filename, _T("%s/Data/world.MPQ"), input_path);
     if (!SFileOpenArchive(filename, 0, MPQ_OPEN_READ_ONLY, &WorldMpq))
     {
         if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -174,7 +175,7 @@ void LoadCommonMPQFiles(uint32 build)
         if (build < 15211 && !strcmp("misc.MPQ", CONF_mpq_list[i]))   // 4.3.2 and higher MPQ
             continue;
 
-        _stprintf(filename, _T("%s%s"), input_path, CONF_mpq_list[i]);
+        _stprintf(filename, _T("%s/Data/%s"), input_path, CONF_mpq_list[i]);
         if (!SFileOpenPatchArchive(WorldMpq, filename, "", 0))
         {
             if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -215,12 +216,12 @@ void LoadCommonMPQFiles(uint32 build)
         if (Builds[i] > LAST_DBC_IN_DATA_BUILD)
         {
             prefix = "";
-            _stprintf(filename, _T("%swow-update-base-%u.MPQ"), input_path, Builds[i]);
+            _stprintf(filename, _T("%s/Data/wow-update-base-%u.MPQ"), input_path, Builds[i]);
         }
         else
         {
             prefix = "base";
-            _stprintf(filename, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
+            _stprintf(filename, _T("%s/Data/wow-update-%u.MPQ"), input_path, Builds[i]);
         }
 
         if (!SFileOpenPatchArchive(WorldMpq, filename, prefix, 0))
@@ -257,7 +258,6 @@ void LoadCommonMPQFiles(uint32 build)
             printf("Scanned %d files, found patch = %d\n", count, found);
         }
     }
-
 }
 
 
@@ -287,7 +287,7 @@ void ReadLiquidTypeTableDBC()
 {
     printf("Read LiquidType.dbc file...");
 
-    DBCFile dbc(LocaleMpq, "DBFilesClient\\LiquidType.dbc");
+    DBCFile dbc(LocaleMpq, "DBFilesClient/LiquidType.dbc");
     if (!dbc.open())
     {
         printf("Fatal error: Invalid LiquidType.dbc file format!\n");
@@ -419,7 +419,7 @@ void ParsMapFiles()
     for (unsigned int i = 0; i < map_count; ++i)
     {
         sprintf(id, "%03u", map_ids[i].id);
-        sprintf(fn, "World\\Maps\\%s\\%s.wdt", map_ids[i].name, map_ids[i].name);
+        sprintf(fn, "World/Maps/%s/%s.wdt", map_ids[i].name, map_ids[i].name);
         WDTFile WDT(fn, map_ids[i].name);
         if (WDT.init(id, map_ids[i].id))
         {
@@ -547,9 +547,6 @@ bool processArgv(int argc, char** argv)
         printf("   -b : target build (default %u)", CONF_TargetBuild);
         printf("   -? : This message.\n");
     }
-
-    if (!hasInputPathParam)
-        getGamePath();
 
     return result;
 }

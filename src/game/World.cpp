@@ -69,6 +69,7 @@
 #include "CharacterDatabaseCleaner.h"
 #include "CreatureLinkingMgr.h"
 #include "Calendar.h"
+#include "PhaseMgr.h"
 
 INSTANTIATE_SINGLETON_1(World);
 
@@ -760,6 +761,8 @@ void World::LoadConfigSettings(bool reload)
 
     setConfig(CONFIG_BOOL_KICK_PLAYER_ON_BAD_PACKET, "Network.KickOnBadPacket", false);
 
+    setConfig(CONFIG_BOOL_PLAYER_COMMANDS, "PlayerCommands", false);
+
     if (int clientCacheId = sConfig.GetIntDefault("ClientCacheVersion", 0))
     {
         // overwrite DB/old value
@@ -1115,9 +1118,6 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading Quest POI");
     sObjectMgr.LoadQuestPOI();
 
-    sLog.outString("Loading Quest Phase Maps...");
-    sObjectMgr.LoadQuestPhaseMaps();
-
     sLog.outString("Loading Quests Relations...");
     sLog.outString();
     sObjectMgr.LoadQuestRelations();                        // must be after quest load
@@ -1133,6 +1133,12 @@ void World::SetInitialWorldSettings()
     // Load Conditions
     sLog.outString("Loading Conditions...");
     sObjectMgr.LoadConditions();
+
+    sLog.outString("Loading Phase definitions...");
+    sObjectMgr.LoadPhaseDefinitions();
+
+    sLog.outString("Loading Spell Phase Dbc Info...");
+    sObjectMgr.LoadSpellPhaseInfo();
 
     sLog.outString("Creating map persistent states for non-instanceable maps...");     // must be after PackInstances(), LoadCreatures(), sPoolMgr.LoadFromDB(), sGameEventMgr.LoadFromDB();
     sMapPersistentStateMgr.InitWorldMaps();
@@ -2514,4 +2520,14 @@ bool World::configNoReload(bool reload, eConfigBoolValues index, char const* fie
         sLog.outError("%s option can't be changed at mangosd.conf reload, using current value (%s).", fieldname, getConfig(index) ? "'true'" : "'false'");
 
     return false;
+}
+
+void World::UpdatePhaseDefinitions()
+{
+    SessionMap::const_iterator itr;
+    for (itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
+    {
+        if (itr->second && itr->second->GetPlayer() && itr->second->GetPlayer()->IsInWorld())
+            itr->second->GetPlayer()->GetPhaseMgr()->NotifyStoresReloaded();
+    }
 }

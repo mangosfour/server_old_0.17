@@ -67,6 +67,7 @@
 #include "SQLStorages.h"
 #include "Vehicle.h"
 #include "Calendar.h"
+#include "PhaseMgr.h"
 
 #include <cmath>
 
@@ -558,6 +559,8 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), m_camera(this), m_
     m_cachedGS = 0;
 
     m_slot = 255;
+
+    phaseMgr = new PhaseMgr(this);
 }
 
 Player::~Player()
@@ -598,6 +601,8 @@ Player::~Player()
 
     delete m_declinedname;
     delete m_runes;
+
+    delete phaseMgr;
 }
 
 void Player::CleanupsBeforeDelete()
@@ -841,9 +846,6 @@ bool Player::Create(uint32 guidlow, const std::string& name, uint8 race, uint8 c
         }
     }
     // all item positions resolved
-
-    if (info->phaseMap != 0)
-        CharacterDatabase.PExecute("REPLACE INTO `character_phase_data` (`guid`, `map`) VALUES (%u, %u)", guidlow, info->phaseMap);
 
     return true;
 }
@@ -2198,18 +2200,21 @@ void Player::Regenerate(Powers power, uint32 diff)
             if (getClass() != CLASS_DEATH_KNIGHT)
                 break;
 
-            for (uint32 rune = 0; rune < MAX_RUNES; ++rune)
+            for (uint8 rune = 0; rune < MAX_RUNES; rune += 2)
             {
-                if (uint16 cd = GetRuneCooldown(rune))      // if we have cooldown, reduce it...
+                uint32 cd_diff = diff;
+                uint8 runeToRegen = rune;
+                uint32 cd = GetRuneCooldown(rune);
+                uint32 secondRuneCd = GetRuneCooldown(rune + 1);
+                // Regenerate second rune of the same type only after first rune is off the cooldown
+                if (secondRuneCd && (cd > secondRuneCd || !cd))
                 {
-                    uint32 cd_diff = diff;
-                    AuraList const& ModPowerRegenPCTAuras = GetAurasByType(SPELL_AURA_MOD_POWER_REGEN_PERCENT);
-                    for (AuraList::const_iterator i = ModPowerRegenPCTAuras.begin(); i != ModPowerRegenPCTAuras.end(); ++i)
-                        if ((*i)->GetModifier()->m_miscvalue == int32(power) && (*i)->GetMiscBValue() == GetCurrentRune(rune))
-                            cd_diff = cd_diff * ((*i)->GetModifier()->m_amount + 100) / 100;
-
-                    SetRuneCooldown(rune, (cd < cd_diff) ? 0 : cd - cd_diff);
+                    ++runeToRegen;
+                    cd = secondRuneCd;
                 }
+
+                if (cd)
+                    SetRuneCooldown(rune, (cd < cd_diff) ? 0 : cd - cd_diff);
             }
             break;
         }
@@ -2454,15 +2459,7 @@ void Player::SetGameMaster(bool on)
         RemoveFlag(PLAYER_FLAGS, PLAYER_FLAGS_GM);
 
         // restore phase
-        AuraList const& phases = GetAurasByType(SPELL_AURA_PHASE);
-        AuraList const& phases2 = GetAurasByType(SPELL_AURA_PHASE_2);
-
-        if (!phases.empty())
-            SetPhaseMask(phases.front()->GetMiscValue(), false);
-        else if (!phases2.empty())
-            SetPhaseMask(phases2.front()->GetMiscValue(), false);
-        else
-            SetPhaseMask(PHASEMASK_NORMAL, false);
+        SetPhaseMask(phaseMgr->GetCurrentPhasemask(), false);
 
         CallForAllControlledUnits(SetGameMasterOffHelper(getFaction()), CONTROLLED_PET | CONTROLLED_TOTEMS | CONTROLLED_GUARDIANS | CONTROLLED_CHARM);
 
@@ -2474,6 +2471,9 @@ void Player::SetGameMaster(bool on)
         UpdateArea(m_areaUpdateId);
 
         getHostileRefManager().setOnlineOfflineState(true);
+
+        phaseMgr->AddUpdateFlag(PHASE_UPDATE_FLAG_SERVERSIDE_CHANGED);
+        phaseMgr->Update();
     }
 
     m_camera.UpdateVisibilityForOwner();
@@ -2702,6 +2702,11 @@ void Player::GiveLevel(uint32 level)
         MailDraft(mailReward->mailTemplateId).SendMailTo(this, MailSender(MAIL_CREATURE, mailReward->senderEntry));
 
     GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_REACH_LEVEL);
+
+    PhaseUpdateData phaseUdateData;
+    phaseUdateData.AddConditionType(CONDITION_LEVEL);
+
+    phaseMgr->NotifyConditionChanged(phaseUdateData);
 }
 
 void Player::UpdateFreeTalentPoints(bool resetIfNeed)
@@ -4139,23 +4144,7 @@ void Player::BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) c
         }
     }
 
-    SetPhaseAndMap(target);
     Unit::BuildCreateUpdateBlockForPlayer(data, target);
-}
-
-void Player::SetPhaseAndMap(Player* target) const
-{
-    if (QueryResult *result = CharacterDatabase.PQuery("SELECT map, phase FROM character_phase_data WHERE guid = '%u'", target->GetGUIDLow()))
-    {
-        Field *fields = result->Fetch();
-
-        uint16 mapId = fields[0].GetUInt16();
-        uint32 phase = fields[1].GetUInt32();
-
-        target->GetSession()->SendSetPhaseShift(phase, mapId);
-
-        delete result;
-    }
 }
 
 void Player::DestroyForPlayer(Player* target, bool anim) const
@@ -4611,12 +4600,11 @@ void Player::ResurrectPlayer(float restore_percent, bool applySickness)
 
     // remove death flag + set aura
     SetByteValue(UNIT_FIELD_BYTES_1, 3, 0x00);
-
-    SetDeathState(ALIVE);
-
     if (getRace() == RACE_NIGHTELF)
         RemoveAurasDueToSpell(20584);                       // speed bonuses
     RemoveAurasDueToSpell(8326);                            // SPELL_AURA_GHOST
+
+    SetDeathState(ALIVE);	
 
     SetWaterWalk(false);
     SetRoot(false);
@@ -6862,7 +6850,11 @@ void Player::UpdateArea(uint32 newArea)
             SetFFAPvP(false);
     }
 
+    phaseMgr->AddUpdateFlag(PHASE_UPDATE_FLAG_AREA_UPDATE);
+
     UpdateAreaDependentAuras();
+
+    phaseMgr->RemoveUpdateFlag(PHASE_UPDATE_FLAG_AREA_UPDATE);
 }
 
 bool Player::CanUseCapturePoint()
@@ -6881,6 +6873,8 @@ void Player::UpdateZone(uint32 newZone, uint32 newArea)
     AreaTableEntry const* zone = GetAreaEntryByAreaID(newZone);
     if (!zone)
         return;
+
+    phaseMgr->AddUpdateFlag(PHASE_UPDATE_FLAG_ZONE_UPDATE);
 
     if (m_zoneUpdateId != newZone)
     {
@@ -6972,6 +6966,8 @@ void Player::UpdateZone(uint32 newZone, uint32 newArea)
 
     UpdateZoneDependentAuras();
     UpdateZoneDependentPets();
+
+    phaseMgr->RemoveUpdateFlag(PHASE_UPDATE_FLAG_ZONE_UPDATE);
 }
 
 // If players are too far way of duel flag... then player loose the duel
@@ -14246,6 +14242,11 @@ void Player::RewardQuest(Quest const* pQuest, uint32 reward, Object* questGiver,
     saBounds = sSpellMgr.GetSpellAreaForAreaMapBounds(0);
     for (SpellAreaForAreaMap::const_iterator itr = saBounds.first; itr != saBounds.second; ++itr)
         itr->second->ApplyOrRemoveSpellIfCan(this, zone, area, false);
+
+    PhaseUpdateData phaseUdateData;
+    phaseUdateData.AddQuestUpdate(quest_id);
+
+    phaseMgr->NotifyConditionChanged(phaseUdateData);
 }
 
 void Player::FailQuest(uint32 questId)
@@ -14784,6 +14785,11 @@ void Player::SetQuestStatus(uint32 quest_id, QuestStatus status)
         if (q_status.uState != QUEST_NEW)
             q_status.uState = QUEST_CHANGED;
     }
+
+    PhaseUpdateData phaseUdateData;
+    phaseUdateData.AddQuestUpdate(quest_id);
+
+    phaseMgr->NotifyConditionChanged(phaseUdateData);
 
     UpdateForQuestWorldObjects();
 }
@@ -15414,15 +15420,6 @@ void Player::SendQuestReward(Quest const* pQuest, uint32 XP, Object* /*questGive
     data.WriteBit(1);           // unk
 
     GetSession()->SendPacket(&data);
-
-    if (QuestPhaseMapsVector const* QuestPhaseVector = sObjectMgr.GetQuestPhaseMapVector(questid))
-    {
-        for (QuestPhaseMapsVector::const_iterator itr = QuestPhaseVector->begin(); itr != QuestPhaseVector->end(); ++itr)
-        {
-            GetSession()->SendSetPhaseShift(itr->PhaseMask, itr->MapId);
-            CharacterDatabase.PExecute("REPLACE INTO character_phase_data` (`guid`, `map`, `phase`) VALUES (%u, %u, %u)", GetSession()->GetPlayer()->GetGUIDLow(), itr->MapId, itr->PhaseMask);
-        }
-    }
 }
 
 void Player::SendQuestFailed(uint32 quest_id, InventoryResult reason)
@@ -16202,7 +16199,7 @@ bool Player::LoadFromDB(ObjectGuid guid, SqlQueryHolder* holder)
     uint32 savedhealth = fields[46].GetUInt32();
     SetHealth(savedhealth > GetMaxHealth() ? GetMaxHealth() : savedhealth);
 
-    static_assert(MAX_STORED_POWERS == 5, "Query not updated.");
+    COMPILE_ASSERT(MAX_STORED_POWERS == 5, "Query not updated.");
     for (uint32 i = 0; i < MAX_STORED_POWERS; ++i)
     {
         uint32 savedpower = fields[47 + i].GetUInt32();
@@ -17633,7 +17630,7 @@ void Player::SaveToDB()
 
     uberInsert.addUInt32(GetHealth());
 
-    static_assert(MAX_STORED_POWERS == 5, "Query not updated.");
+    COMPILE_ASSERT(MAX_STORED_POWERS == 5, "Query not updated.");
     for (uint32 i = 0; i < MAX_STORED_POWERS; ++i)
         uberInsert.addUInt32(GetPowerByIndex(i));
 
@@ -18319,7 +18316,7 @@ void Player::_SaveStats()
 
     stmt.addUInt32(GetGUIDLow());
     stmt.addUInt32(GetMaxHealth());
-    static_assert(MAX_STORED_POWERS == 5, "Query not updated.");
+    COMPILE_ASSERT(MAX_STORED_POWERS == 5, "Query not updated.");
     for (uint32 i = 0; i < MAX_STORED_POWERS; ++i)
         stmt.addUInt32(GetMaxPowerByIndex(i));
     for (int i = 0; i < MAX_STATS; ++i)
@@ -20487,21 +20484,6 @@ template void Player::UpdateVisibilityOf(WorldObject const* viewPoint, Corpse*  
 template void Player::UpdateVisibilityOf(WorldObject const* viewPoint, GameObject*    target, UpdateData& data, std::set<WorldObject*>& visibleNow);
 template void Player::UpdateVisibilityOf(WorldObject const* viewPoint, DynamicObject* target, UpdateData& data, std::set<WorldObject*>& visibleNow);
 
-void Player::SetPhaseMask(uint32 newPhaseMask, bool update)
-{
-    // GM-mode have mask PHASEMASK_ANYWHERE always
-    if (isGameMaster())
-        newPhaseMask = PHASEMASK_ANYWHERE;
-
-    // phase auras normally not expected at BG but anyway better check
-    if (BattleGround* bg = GetBattleGround())
-        bg->EventPlayerDroppedFlag(this);
-
-    Unit::SetPhaseMask(newPhaseMask, update);
-    if (IsInWorld())
-        GetSession()->SendSetPhaseShift(GetPhaseMask());
-}
-
 void Player::InitPrimaryProfessions()
 {
     uint32 maxProfs = GetSession()->GetSecurity() < AccountTypes(sWorld.getConfig(CONFIG_UINT32_TRADE_SKILL_GMIGNORE_MAX_PRIMARY_COUNT))
@@ -20673,7 +20655,6 @@ void Player::SendInitialPacketsBeforeAddToMap()
     data.WriteBit(0);                                               // HasRestrictedLevel
     data.WriteBit(0);                                               // HasRestrictedMoney
     data.WriteBit(0);                                               // IneligibleForLoot
-    data.FlushBits();
     //if (IneligibleForLoot)
     //    data << uint32(0);                                        // EncounterMask
 
@@ -20683,9 +20664,9 @@ void Player::SendInitialPacketsBeforeAddToMap()
     //if (HasRestrictedLevel)
     //    data << uint32(20);                                       // RestrictedLevel (starter accounts)
 
-    data << uint32(sWorld.GetNextWeeklyQuestsResetTime() - WEEK);  // LastWeeklyReset (not instance reset)
+    data << uint32(sWorld.GetNextWeeklyQuestsResetTime() - WEEK);   // LastWeeklyReset (not instance reset)
     data << uint32(GetMap()->GetDifficulty());
-    GetSession()->SendPacket(&data);
+    GetSession()->SendPacket(&data); 
 
     SendInitialSpells();
 
@@ -22178,7 +22159,7 @@ void Player::ResyncRunes()
     for (uint32 i = 0; i < MAX_RUNES; ++i)
     {
         data << uint8(GetCurrentRune(i));                   // rune type
-        data << uint8(255 - ((GetRuneCooldown(i) / REGEN_TIME_FULL) * 51));     // passed cooldown time (0-255)
+        data << uint8(255 - (GetRuneCooldown(i) * 51));     // passed cooldown time (0-255)
     }
     GetSession()->SendPacket(&data);
 }
@@ -22520,28 +22501,6 @@ void Player::_LoadSkills(QueryResult* result)
         if (GetPureSkillValue(SKILL_UNARMED) < base_skill)
             SetSkill(SKILL_UNARMED, base_skill, base_skill);
     }
-}
-
-uint32 Player::GetPhaseMaskForSpawn() const
-{
-    uint32 phase = PHASEMASK_NORMAL;
-    if (!isGameMaster())
-        phase = GetPhaseMask();
-    else
-    {
-        AuraList const& phases = GetAurasByType(SPELL_AURA_PHASE);
-        AuraList const& phases2 = GetAurasByType(SPELL_AURA_PHASE_2);
-        if (!phases.empty())
-            phase = phases.front()->GetMiscValue();
-        else if (!phases2.empty())
-            phase = phases2.front()->GetMiscValue();
-    }
-
-    // some aura phases include 1 normal map in addition to phase itself
-    if (uint32 n_phase = phase & ~PHASEMASK_NORMAL)
-        return n_phase;
-
-    return PHASEMASK_NORMAL;
 }
 
 InventoryResult Player::CanEquipUniqueItem(Item* pItem, uint8 eslot, uint32 limit_count) const

@@ -55,7 +55,8 @@ enum ContentLevels
     CONTENT_81_85,
     CONTENT_86_90,
 };
-ContentLevels GetContentLevelsForMap(uint32 mapid);
+
+ContentLevels GetContentLevelsForMapAndZone(uint32 mapId, uint32 zoneId);
 
 ChatChannelsEntry const* GetChannelEntryFor(uint32 channel_id);
 

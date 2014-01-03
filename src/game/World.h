@@ -357,6 +357,7 @@ enum eConfigBoolValues
     CONFIG_BOOL_VMAP_INDOOR_CHECK,
     CONFIG_BOOL_PET_UNSUMMON_AT_MOUNT,
     CONFIG_BOOL_MMAP_ENABLED,
+    CONFIG_BOOL_PLAYER_COMMANDS,
     CONFIG_BOOL_GUILD_LEVELING_ENABLED,
     CONFIG_BOOL_VALUE_COUNT
 };
@@ -616,6 +617,8 @@ class World
         void LoadDBVersion();
         char const* GetDBVersion() { return m_DBVersion.c_str(); }
         char const* GetCreatureEventAIVersion() { return m_CreatureEventAIVersion.c_str(); }
+
+        void UpdatePhaseDefinitions();
 
     protected:
         void _UpdateGameTime();

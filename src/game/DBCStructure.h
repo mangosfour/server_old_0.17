@@ -1357,20 +1357,21 @@ struct MapEntry
     uint32  map_type;                                       // 2        m_InstanceType
     uint32      mapFlags;                                       // 3        m_Flags (0x100 - CAN_CHANGE_PLAYER_DIFFICULTY)
     uint32      unk4;                                           // 4        4.0.1
-    DBCString   name;                                           // 5        m_MapName_lang
-    uint32      linked_zone;                                    // 6        m_areaTableID
-    DBCString   hordeIntro;                                     // 7        m_MapDescription0_lang
-    DBCString   allianceIntro;                                  // 8        m_MapDescription1_lang
-    uint32      multimap_id;                                    // 9        m_LoadingScreenID (LoadingScreens.dbc)
-    float       BattlefieldMapIconScale;                        // 10       m_minimapIconScale
-    int32       ghost_entrance_map;                             // 11       m_corpseMapID map_id of entrance map in ghost mode (continent always and in most cases = normal entrance)
-    float       ghost_entrance_x;                               // 12       m_corpseX entrance x coordinate in ghost mode  (in most cases = normal entrance)
-    float       ghost_entrance_y;                               // 13       m_corpseY entrance y coordinate in ghost mode  (in most cases = normal entrance)
-    uint32      timeOfDayOverride;                              // 14       m_timeOfDayOverride
-    uint32      addon;                                          // 15       m_expansionID
-    uint32      unkTime;                                        // 16       m_raidOffset
-    uint32      maxPlayers;                                     // 17       m_maxPlayers
-    uint32      NextPhaseMap;                                   // 18       MapId for next phase.
+    uint32      isPvP;                                          // 5        m_PVP 0 or 1 for battlegrounds (not arenas)
+    DBCString   name;                                           // 6        m_MapName_lang
+    uint32      linked_zone;                                    // 7        m_areaTableID
+    DBCString   hordeIntro;                                     // 8        m_MapDescription0_lang
+    DBCString   allianceIntro;                                  // 9        m_MapDescription1_lang
+    uint32      multimap_id;                                    // 10       m_LoadingScreenID (LoadingScreens.dbc)
+    float       BattlefieldMapIconScale;                        // 11       m_minimapIconScale
+    int32       ghost_entrance_map;                             // 12       m_corpseMapID map_id of entrance map in ghost mode (continent always and in most cases = normal entrance)
+    float       ghost_entrance_x;                               // 13       m_corpseX entrance x coordinate in ghost mode  (in most cases = normal entrance)
+    float       ghost_entrance_y;                               // 14       m_corpseY entrance y coordinate in ghost mode  (in most cases = normal entrance)
+    uint32      timeOfDayOverride;                              // 15       m_timeOfDayOverride
+    uint32      addon;                                          // 16       m_expansionID
+    uint32      unkTime;                                        // 17       m_raidOffset
+    uint32      maxPlayers;                                     // 18       m_maxPlayers
+    int32       rootPhaseMap;                                   // 19       map with base phasing
 
     // Helpers
     uint32 Expansion() const { return addon; }
