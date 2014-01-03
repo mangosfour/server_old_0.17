@@ -131,6 +131,12 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
             case MSEHasUnknownBit:
                 data.ReadBit();
                 break;
+            case MSEHasUnknownBit2:
+                si.unkBit2 = data.ReadBit();
+                break;
+            case MSEHasUnkInt32:
+                si.hasUnkInt32 = !data.ReadBit();
+                break;
             case MSETimestamp:
                 if (si.hasTimeStamp)
                     data >> time;
@@ -250,6 +256,17 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
             case MSEMovementCounter:
                 data.read_skip<uint32>();
                 break;
+            case MSEUnknownCount:
+                unkArray.resize(data.ReadBits(24));
+                break;
+            case MSEUnknownArray:
+                for (std::list<uint32>::iterator itr = unkArray.begin(); itr != unkArray.end(); ++itr)
+                    data >> *itr;
+                break;
+            case MSEUnkInt32:
+                if (si.hasUnkInt32)
+                    data >> unkInt32;
+                break;
             default:
                 MANGOS_ASSERT(false && "Wrong movement status element");
                 break;
@@ -330,6 +347,12 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
                 break;
             case MSEHasUnknownBit:
                 data.WriteBit(false);
+                break;
+            case MSEHasUnknownBit2:
+                data.WriteBit(si.unkBit2);
+                break;
+            case MSEHasUnkInt32:
+                data.WriteBit(!si.hasUnkInt32);
                 break;
             case MSEHasFallData:
                 data.WriteBit(si.hasFallData);
@@ -433,6 +456,17 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
                 break;
             case MSEMovementCounter:
                 data << uint32(0);
+                break;
+            case MSEUnknownCount:
+                data.WriteBits(unkArray.size(), 24);
+                break;
+            case MSEUnknownArray:
+                for (std::list<uint32>::const_iterator itr = unkArray.begin(); itr != unkArray.end(); ++itr)
+                    data << uint32(*itr);
+                break;
+            case MSEUnkInt32:
+                if (si.hasUnkInt32)
+                    data << int32(unkInt32);
                 break;
             default:
                 MANGOS_ASSERT(false && "Wrong movement status element");
@@ -8242,7 +8276,7 @@ MountCapabilityEntry const* Unit::GetMountCapability(uint32 mountType) const
         if (mountCapability->RequiredAura && !HasAura(mountCapability->RequiredAura))
             continue;
 
-        if (mountCapability->RequiredSpell && (GetTypeId() != TYPEID_PLAYER || !(Player*)(this)->HasSpell(mountCapability->RequiredSpell)))
+        if (mountCapability->RequiredSpell && (GetTypeId() != TYPEID_PLAYER || !((Player*)this)->HasSpell(mountCapability->RequiredSpell)))
             continue;
 
         return mountCapability;

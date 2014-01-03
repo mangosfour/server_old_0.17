@@ -1359,7 +1359,7 @@ void WorldSession::HandleSetTitleOpcode(WorldPacket& recv_data)
 void WorldSession::HandleTimeSyncResp(WorldPacket& recv_data)
 {
     uint32 counter, clientTicks;
-    recv_data >> counter >> clientTicks;
+    recv_data >> clientTicks >> counter;
 
     DEBUG_LOG("WORLD: Received opcode CMSG_TIME_SYNC_RESP: counter %u, client ticks %u, time since last sync %u", counter, clientTicks, clientTicks - _player->m_timeSyncClient);
 
@@ -1638,12 +1638,15 @@ void WorldSession::HandleObjectUpdateFailedOpcode(WorldPacket& recvPacket)
 
 
     DEBUG_LOG("WORLD: Received CMSG_OBJECT_UPDATE_FAILED from %s (%u) guid: %s", GetPlayerName(), GetAccountId(), guid.GetString().c_str());
+
     if (_player->IsInWorld())
     {
         if (WorldObject* obj = _player->GetMap()->GetWorldObject(guid))
             obj->SendCreateUpdateToPlayer(_player);
     }
     else
+    {
         sLog.outError("WorldSession::HandleObjectUpdateFailedOpcode: received from player not in map");
+    }
 }
 

@@ -534,8 +534,8 @@ int WorldSocket::handle_input_header(void)
         header.size = size + 4;
         header.cmd = opcode; 
 
-    if ((header.size < 4) || (header.size > 20240))
-    {
+        if ((header.size < 4) || (header.size > 20240) || (header.cmd >= MAX_OPCODE_TABLE_SIZE))
+        {
         sLog.outError("WorldSocket::handle_input_header: client sent malformed packet size = %d , cmd = %d",
                       header.size, header.cmd);
 
@@ -565,7 +565,7 @@ int WorldSocket::handle_input_header(void)
         EndianConvert(header.size);
         EndianConvert(header.cmd);
 
-        if ((header.size < 4) || (header.size > 10240) || (header.cmd != 0x4C524F57))
+        if ((header.size < 4) || (header.size > 10240) || (header.cmd >= MAX_OPCODE_TABLE_SIZE && header.cmd != 0x4C524F57))
         {
             sLog.outError("WorldSocket::handle_input_header: client sent malformed packet size = %d , cmd = %d",
                 header.size, header.cmd);
@@ -801,7 +801,7 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
 
     const ACE_UINT16 opcode = new_pct->GetOpcode();
 
-    if (opcode != MSG_WOW_CONNECTION)
+    if (opcode >= MAX_OPCODE_TABLE_SIZE && opcode != MSG_WOW_CONNECTION)
     {
         sLog.outError("SESSION: received nonexistent opcode 0x%.4X", opcode);
         return -1;

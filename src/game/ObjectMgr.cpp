@@ -9925,86 +9925,6 @@ bool FindCreatureData::operator()(CreatureDataPair const& dataPair)
     return false;
 }
 
-bool DoDisplayText(WorldObject* source, int32 entry, Unit const* target /*=NULL*/)
-{
-    MangosStringLocale const* data = sObjectMgr.GetMangosStringLocale(entry);
-
-    if (!data)
-    {
-        _DoStringError(entry, "DoScriptText with source %s could not find text entry %i.", source->GetGuidStr().c_str(), entry);
-        return false;
-    }
-
-    if (data->SoundId)
-    {
-        if (data->Type == CHAT_TYPE_ZONE_YELL)
-            source->GetMap()->PlayDirectSoundToMap(data->SoundId, source->GetZoneId());
-        else if (data->Type == CHAT_TYPE_WHISPER || data->Type == CHAT_TYPE_BOSS_WHISPER)
-        {
-            // An error will be displayed for the text
-            if (target && target->GetTypeId() == TYPEID_PLAYER)
-                source->PlayDirectSound(data->SoundId, (Player const*)target);
-        }
-        else
-            source->PlayDirectSound(data->SoundId);
-    }
-
-    if (data->Emote)
-    {
-        if (source->GetTypeId() == TYPEID_UNIT || source->GetTypeId() == TYPEID_PLAYER)
-        {
-            ((Unit*)source)->HandleEmote(data->Emote);
-        }
-        else
-        {
-            _DoStringError(entry, "DoDisplayText entry %i tried to process emote for invalid source %s", entry, source->GetGuidStr().c_str());
-            return false;
-        }
-    }
-
-    switch (data->Type)
-    {
-        case CHAT_TYPE_SAY:
-            source->MonsterSay(entry, data->Language, target);
-            break;
-        case CHAT_TYPE_YELL:
-            source->MonsterYell(entry, data->Language, target);
-            break;
-        case CHAT_TYPE_TEXT_EMOTE:
-            source->MonsterTextEmote(entry, target);
-            break;
-        case CHAT_TYPE_BOSS_EMOTE:
-            source->MonsterTextEmote(entry, target, true);
-            break;
-        case CHAT_TYPE_WHISPER:
-        {
-            if (target && target->GetTypeId() == TYPEID_PLAYER)
-                source->MonsterWhisper(entry, target);
-            else
-            {
-                _DoStringError(entry, "DoDisplayText entry %i cannot whisper without target unit (TYPEID_PLAYER).", entry);
-                return false;
-            }
-            break;
-        }
-        case CHAT_TYPE_BOSS_WHISPER:
-        {
-            if (target && target->GetTypeId() == TYPEID_PLAYER)
-                source->MonsterWhisper(entry, target, true);
-            else
-            {
-                _DoStringError(entry, "DoDisplayText entry %i cannot whisper without target unit (TYPEID_PLAYER).", entry);
-                return false;
-            }
-            break;
-        }
-        case CHAT_TYPE_ZONE_YELL:
-            source->MonsterYellToZone(entry, data->Language, target);
-            break;
-    }
-
-    return true;
-}
 
 CreatureDataPair const* FindCreatureData::GetResult() const
 {
@@ -10101,3 +10021,84 @@ void ObjectMgr::LoadHotfixData()
     sLog.outString();
     sLog.outString(">> Loaded %u hotfix info entries.", count);
 } 
+
+bool DoDisplayText(WorldObject* source, int32 entry, Unit const* target /*=NULL*/)
+{
+    MangosStringLocale const* data = sObjectMgr.GetMangosStringLocale(entry);
+
+    if (!data)
+    {
+        _DoStringError(entry, "DoScriptText with source %s could not find text entry %i.", source->GetGuidStr().c_str(), entry);
+        return false;
+    }
+
+    if (data->SoundId)
+    {
+        if (data->Type == CHAT_TYPE_ZONE_YELL)
+            source->GetMap()->PlayDirectSoundToMap(data->SoundId, source->GetZoneId());
+        else if (data->Type == CHAT_TYPE_WHISPER || data->Type == CHAT_TYPE_BOSS_WHISPER)
+        {
+            // An error will be displayed for the text
+            if (target && target->GetTypeId() == TYPEID_PLAYER)
+                source->PlayDirectSound(data->SoundId, (Player const*)target);
+        }
+        else
+            source->PlayDirectSound(data->SoundId);
+    }
+
+    if (data->Emote)
+    {
+        if (source->GetTypeId() == TYPEID_UNIT || source->GetTypeId() == TYPEID_PLAYER)
+        {
+            ((Unit*)source)->HandleEmote(data->Emote);
+        }
+        else
+        {
+            _DoStringError(entry, "DoDisplayText entry %i tried to process emote for invalid source %s", entry, source->GetGuidStr().c_str());
+            return false;
+        }
+    }
+
+    switch (data->Type)
+    {
+        case CHAT_TYPE_SAY:
+            source->MonsterSay(entry, data->Language, target);
+            break;
+        case CHAT_TYPE_YELL:
+            source->MonsterYell(entry, data->Language, target);
+            break;
+        case CHAT_TYPE_TEXT_EMOTE:
+            source->MonsterTextEmote(entry, target);
+            break;
+        case CHAT_TYPE_BOSS_EMOTE:
+            source->MonsterTextEmote(entry, target, true);
+            break;
+        case CHAT_TYPE_WHISPER:
+        {
+            if (target && target->GetTypeId() == TYPEID_PLAYER)
+                source->MonsterWhisper(entry, target);
+            else
+            {
+                _DoStringError(entry, "DoDisplayText entry %i cannot whisper without target unit (TYPEID_PLAYER).", entry);
+                return false;
+            }
+            break;
+        }
+        case CHAT_TYPE_BOSS_WHISPER:
+        {
+            if (target && target->GetTypeId() == TYPEID_PLAYER)
+                source->MonsterWhisper(entry, target, true);
+            else
+            {
+                _DoStringError(entry, "DoDisplayText entry %i cannot whisper without target unit (TYPEID_PLAYER).", entry);
+                return false;
+            }
+            break;
+        }
+        case CHAT_TYPE_ZONE_YELL:
+            source->MonsterYellToZone(entry, data->Language, target);
+            break;
+    }
+
+    return true;
+}

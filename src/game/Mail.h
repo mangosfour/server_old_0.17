@@ -241,7 +241,7 @@ class MailDraft
          *
          * @param COD the amount to which the cod should be set.
          */
-        MailDraft& SetCOD(uint32 COD) { m_COD = COD; return *this; }
+        MailDraft& SetCOD(uint64 COD) { m_COD = COD; return *this; }
 
         void CloneFrom(MailDraft const& draft);
     public:                                                 // finishers

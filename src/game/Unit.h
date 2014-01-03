@@ -38,6 +38,7 @@
 #include "FollowerRefManager.h"
 #include "Utilities/EventProcessor.h"
 #include "MotionMaster.h"
+#include "DB2Structure.h"
 #include "DBCStructure.h"
 #include "Path.h"
 #include "WorldPacket.h"
@@ -709,7 +710,7 @@ MovementFlags const movementOrTurningFlagsMask = MovementFlags(
             movementFlagsMask | MOVEFLAG_TURN_LEFT | MOVEFLAG_TURN_RIGHT
         );
 
-// 12 bits in client
+// 13 bits in client
 enum MovementFlags2
 {
     MOVEFLAG2_NONE              = 0x0000,
@@ -725,6 +726,7 @@ enum MovementFlags2
     MOVEFLAG2_INTERP_MOVEMENT   = 0x0200,
     MOVEFLAG2_INTERP_TURNING    = 0x0400,
     MOVEFLAG2_INTERP_PITCHING   = 0x0800,
+    MOVEFLAG2_UNK_13            = 0x1000,
     MOVEFLAG2_INTERP_MASK       = MOVEFLAG2_INTERP_MOVEMENT | MOVEFLAG2_INTERP_TURNING | MOVEFLAG2_INTERP_PITCHING
 };
 
@@ -732,7 +734,7 @@ class MovementInfo
 {
     public:
         MovementInfo() : moveFlags(MOVEFLAG_NONE), moveFlags2(MOVEFLAG2_NONE), time(0),
-            t_time(0), t_seat(-1), t_time2(0), s_pitch(0.0f), fallTime(0), splineElevation(0.0f) {}
+            t_time(0), t_seat(-1), t_time2(0), s_pitch(0.0f), fallTime(0), splineElevation(0.0f), unkInt32(0) {}
 
         // Read/Write methods
         void Read(ByteBuffer& data, uint16 opcode);
@@ -789,9 +791,11 @@ class MovementInfo
         // used only for SMSG_PLAYER_MOVE currently
         struct StatusInfo
         {
-            StatusInfo() : hasFallData(false), hasFallDirection(false), hasOrientation(false), 
-                hasPitch(false), hasSpline(false), hasSplineElevation(false), 
-                hasTimeStamp(false), hasTransportTime2(false), hasTransportTime3(false) { }
+            StatusInfo() : hasFallData(false), hasFallDirection(false), hasOrientation(false),
+                hasPitch(false), hasSpline(false), hasSplineElevation(false),
+                hasTimeStamp(false), hasTransportTime2(false), hasTransportTime3(false),
+                unkBit2(false), hasUnkInt32(false) { }
+
             bool hasFallData        : 1;
             bool hasFallDirection   : 1;
             bool hasOrientation     : 1;
@@ -801,6 +805,8 @@ class MovementInfo
             bool hasTimeStamp       : 1;
             bool hasTransportTime2  : 1;
             bool hasTransportTime3  : 1;
+            bool unkBit2            : 1;
+            bool hasUnkInt32        : 1;
         };
 
         JumpInfo const& GetJumpInfo() const { return jump; }
@@ -829,6 +835,10 @@ class MovementInfo
         JumpInfo jump;
         // spline
         float    splineElevation;
+        // unknown array
+        std::list<uint32> unkArray;
+        // unknown int32
+        int32 unkInt32;
         // status info
         StatusInfo si;
 };

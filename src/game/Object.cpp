@@ -1640,8 +1640,8 @@ void WorldObject::BuildMonsterChat(WorldPacket* data, ObjectGuid senderGuid, uin
     }
     *data << uint32(strlen(text) + 1);
     *data << text;
-    *data << uint8(0);                                      // ChatTag
-    if (msgtype == CHAT_MSG_RAID_BOSS_EMOTE || msgtype == CHAT_MSG_RAID_BOSS_WHISPER)
+    *data << uint16(0);                                     // ChatTag
+    if (msgtype == CHAT_MSG_QUEST_BOSS_EMOTE || msgtype == CHAT_MSG_RAID_BOSS_EMOTE || msgtype == CHAT_MSG_RAID_BOSS_WHISPER)
     {
         *data << float(0.0f);
         *data << uint8(0);

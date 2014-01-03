@@ -1,5 +1,5 @@
 /*
- * This file is part of the MaNGOS Project. See AUTHORS file for Copyright information
+ * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,9 @@ enum MovementStatusElements
     MSEGuidBit6,
     MSEGuidBit7,
     MSEHasUnknownBit,
+    MSEHasUnknownBit2,
+    MSEUnknownCount,
+    MSEHasUnkInt32,
     MSEHasMovementFlags,
     MSEHasMovementFlags2,
     MSEHasTimestamp,
@@ -89,6 +92,8 @@ enum MovementStatusElements
     MSETransportTime2,
     MSETransportTime3,
     MSEMovementCounter,
+    MSEUnknownArray,
+    MSEUnkInt32,
     MSEEnd,
     MSE_COUNT
 };

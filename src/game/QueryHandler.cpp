@@ -589,3 +589,19 @@ void WorldSession::SendQueryTimeResponse()
     data << uint32(sWorld.GetNextDailyQuestsResetTime() - time(NULL));
     SendPacket(&data);
 }
+
+void WorldSession::HandleRealmQueryOpcode(WorldPacket& recv_data)
+{
+    uint32 realmId;
+    recv_data >> realmId;
+
+    sLog.outDebug("Received CMSG_REALM_QUERY realmId: %u", realmId);
+
+    WorldPacket data(SMSG_REALM_QUERY_RESPONSE, 6);
+    data << uint32(realmId);
+
+        data << uint8(1);
+        SendPacket(&data);
+        return;
+
+}

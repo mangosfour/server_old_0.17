@@ -28,6 +28,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `character_db_version`
+--
+
+DROP TABLE IF EXISTS `character_db_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `character_db_version` (
+  `required_12712_01_characters_characters` bit(1) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Last applied sql update to DB';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `character_db_version`
+--
+
+LOCK TABLES `character_db_version` WRITE;
+/*!40000 ALTER TABLE `character_db_version` DISABLE KEYS */;
+INSERT INTO `character_db_version` (`required_12712_01_characters_characters`) VALUES
+(NULL);
+/*!40000 ALTER TABLE `character_db_version` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `account_data`
 --
 
@@ -424,29 +447,6 @@ CREATE TABLE `character_currencies` (
 LOCK TABLES `character_currencies` WRITE;
 /*!40000 ALTER TABLE `character_currencies` DISABLE KEYS */;
 /*!40000 ALTER TABLE `character_currencies` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `character_db_version`
---
-
-DROP TABLE IF EXISTS `character_db_version`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `character_db_version` (
-  `required_12712_01_characters_characters` bit(1) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Last applied sql update to DB';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `character_db_version`
---
-
-LOCK TABLES `character_db_version` WRITE;
-/*!40000 ALTER TABLE `character_db_version` DISABLE KEYS */;
-INSERT INTO `character_db_version` (`required_12712_01_characters_characters`) VALUES
-(NULL);
-/*!40000 ALTER TABLE `character_db_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

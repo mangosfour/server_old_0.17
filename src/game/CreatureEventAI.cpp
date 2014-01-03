@@ -113,7 +113,7 @@ CreatureEventAI::CreatureEventAI(Creature* c) : CreatureAI(c),
         }
         // EventMap had events but they were not added because they must be for instance
         if (events_count == 0)
-            sLog.outErrorEventAI("Creature %u has events but no events added to list because of instance flags.", m_creature->GetEntry());
+            sLog.outErrorEventAI("Creature %u has events but no events added to list because of instance flags (spawned in map %u, difficulty %u).", m_creature->GetEntry(), m_creature->GetMapId(), m_creature->GetMap()->GetDifficulty());
         else
         {
             m_CreatureEventAIList.reserve(events_count);
@@ -1163,7 +1163,7 @@ void CreatureEventAI::SummonedCreatureDespawn(Creature* pUnit)
     }
 }
 
-void CreatureEventAI::ReceiveAIEvent(AIEventType eventType, Creature* pSender, Unit* pInvoker, uint32 miscValue)
+void CreatureEventAI::ReceiveAIEvent(AIEventType eventType, Creature* pSender, Unit* pInvoker, uint32 /*miscValue*/)
 {
     MANGOS_ASSERT(pSender);
 
@@ -1339,10 +1339,10 @@ void CreatureEventAI::UpdateAI(const uint32 diff)
                     }
                     break;
             }
-
-            m_EventDiff = 0;
-            m_EventUpdateTime = EVENT_UPDATE_TIME;
         }
+
+        m_EventDiff = 0;
+        m_EventUpdateTime = EVENT_UPDATE_TIME;
     }
     else
     {
