@@ -180,7 +180,7 @@ enum ScoreType
     SCORE_DEATHS                = 2,
     SCORE_HONORABLE_KILLS       = 3,
     SCORE_BONUS_HONOR           = 4,
-    // EY, but in SMSG_PVP_LOG_DATA opcode!
+    // EY, but in MSG_PVP_LOG_DATA opcode!
     SCORE_DAMAGE_DONE           = 5,
     SCORE_HEALING_DONE          = 6,
     // WS

@@ -49,6 +49,8 @@
 
 #include "vmapexport.h"
 
+#include "vmapexport.h"
+
 //------------------------------------------------------------------------------
 // Defines
 
@@ -536,7 +538,6 @@ bool processArgv(int argc, char** argv)
             break;
         }
     }
-
     if (!result)
     {
         printf("Extract for %s.\n", szRawVMAPMagic);

@@ -156,7 +156,7 @@ enum Powers
     POWER_RAGE                          = 1,
     POWER_FOCUS                         = 2,
     POWER_ENERGY                        = 3,
-    POWER_LIGHT_FORCE                   = 4,
+    //POWER_HAPPINESS                     = 4,  unused 4.x.x
     POWER_RUNE                          = 5,
     POWER_RUNIC_POWER                   = 6,
     POWER_SOUL_SHARDS                   = 7,
@@ -170,7 +170,6 @@ enum Powers
     POWER_DEMONIC_FURY                  = 15,
     POWER_ARCANE_CHARGES                = 16,
     MAX_POWERS                          = 17,
-    POWER_ALL                           = 127,
     POWER_HEALTH                        = 0xFFFFFFFE    // (-2 as signed value)
 };
 
@@ -186,7 +185,7 @@ enum Powers
  *
  * Note that these are the values to use for changing ie, the armor via a
  * Modifier, and it is the Modifier::m_miscValue that should be set.
- */
+ **/
 enum SpellSchools
 {
     SPELL_SCHOOL_NORMAL                 = 0,                // Physical, Armor

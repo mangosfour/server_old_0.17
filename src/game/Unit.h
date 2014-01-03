@@ -403,8 +403,8 @@ enum UnitMods
     UNIT_MOD_POWER_END = UNIT_MOD_CHI + 1
 };
 
-//static_assert(UNIT_MOD_POWER_END - UNIT_MOD_POWER_START == MAX_POWERS, "Power-related UnitMods are not updated.");
 COMPILE_ASSERT(UNIT_MOD_POWER_END - UNIT_MOD_POWER_START == MAX_POWERS, "Power-related UnitMods are not updated.");
+
 
 enum BaseModGroup
 {
