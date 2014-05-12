@@ -655,20 +655,20 @@ void WorldSession::SendAuthWaitQue(uint32 position)
 {
     if (position == 0)
     {
-        WorldPacket packet(SMSG_AUTH_RESPONSE, 2);
+        WorldPacket packet(SMSG_AUTH_RESPONSE, 1);
         packet.WriteBit(false);     // no account data
-        packet.WriteBit(false);     // not queued
-        packet << uint8( AUTH_OK );
+        packet.WriteBit(false);     // no queue
+        packet << uint8(AUTH_OK);
         SendPacket(&packet);
     }
     else
     {
-        WorldPacket packet( SMSG_AUTH_RESPONSE, 1+4+1 );
+        WorldPacket packet(SMSG_AUTH_RESPONSE, 6);
         packet.WriteBit(false);     // has account data
         packet.WriteBit(true);      // has queue
         packet.WriteBit(false);     // unk queue-related
-        packet << uint32(position);
         packet << uint8(AUTH_WAIT_QUEUE);
+        packet << uint32(position);
         SendPacket(&packet);
     }
 }
