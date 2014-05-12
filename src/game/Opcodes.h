@@ -521,7 +521,7 @@ enum Opcodes
 	CMSG_PLAY_DANCE                                       = 0x144C,
 	CMSG_PLAYED_TIME                                      = 0x0804, // 4.3.4 15595
 	CMSG_PLAYER_AI_CHEAT                                  = 0x126D,
-	CMSG_PLAYER_LOGIN                                     = 0x01E1, // 5.4.1 17538
+	CMSG_PLAYER_LOGIN                                     = 0x17D3, // 5.4.7 18019
 	CMSG_PLAYER_LOGOUT                                    = 0x104B,
 	CMSG_PROFILEDATA_REQUEST                              = 0x14CA,
 	CMSG_PUSHQUESTTOPARTY                                 = 0x4B14, // 4.3.4 15595
@@ -1286,7 +1286,7 @@ enum Opcodes
     SMSG_SET_PCT_SPELL_MODIFIER                           = 0x0224, // 4.3.4 15595
 	SMSG_SET_PHASE_SHIFT								  = 0x0BD4, // 5.3.0 17128
 	SMSG_SET_PLAYER_DECLINED_NAMES_RESULT				  = 0x08CC, // 5.3.0 17128
-	SMSG_SET_PROFICIENCY								  = 0x00C1, // 5.3.0 17128
+	SMSG_SET_PROFICIENCY								  = 0x1E3B, // 5.4.7 18019
     SMSG_SET_VEHICLE_REC_ID                               = 0x14A8,
 	SMSG_SHOW_BANK										  = 0x01C4, // 5.3.0 17128
     SMSG_SHOW_MAILBOX                                     = 0x1298,
