@@ -780,7 +780,7 @@ enum Opcodes
     MSG_TALENT_WIPE_CONFIRM                               = 0x0107, // 4.3.4 15595
     MSG_VIEW_PHASE_SHIFT                                  = 0x14FA,
     MSG_WOW_CONNECTION                                    = 0x4F57, // 4.3.4 15595
-    SMSG_ACCOUNT_DATA_TIMES                               = 0x1486, // 5.4.1 17538
+    SMSG_ACCOUNT_DATA_TIMES                               = 0x0F40, // 5.4.7 18019
     SMSG_ACHIEVEMENT_DELETED                              = 0x6A16, // 4.3.4 15595
 	SMSG_ACHIEVEMENT_EARNED								  = 0x029D, // 5.3.0 17128
 	SMSG_ACTION_BUTTONS									  = 0x0406, // 5.4.1 17538
