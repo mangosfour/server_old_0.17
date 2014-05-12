@@ -521,7 +521,7 @@ enum Opcodes
 	CMSG_PLAY_DANCE                                       = 0x144C,
 	CMSG_PLAYED_TIME                                      = 0x0804, // 4.3.4 15595
 	CMSG_PLAYER_AI_CHEAT                                  = 0x126D,
-	CMSG_PLAYER_LOGIN                                     = 0x01E1, // 5.4.1 17538
+	CMSG_PLAYER_LOGIN                                     = 0x17D3, // 5.4.7 18019
 	CMSG_PLAYER_LOGOUT                                    = 0x104B,
 	CMSG_PROFILEDATA_REQUEST                              = 0x14CA,
 	CMSG_PUSHQUESTTOPARTY                                 = 0x4B14, // 4.3.4 15595
