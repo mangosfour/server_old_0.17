@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 /// \addtogroup mangosd Mangos Daemon
@@ -203,6 +206,7 @@ extern int main(int argc, char** argv)
                     "                                                 ##    ## ##  ## ##  ## ## \n"
                     "   Forum: http://community.getmangos.co.uk       ##     ###    ###   ##  ##\n"
                     "\n\n");
+
     sLog.outString("Using configuration file %s.", cfg_file);
 
     DETAIL_LOG("%s (Library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));

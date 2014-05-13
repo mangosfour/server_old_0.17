@@ -1,5 +1,5 @@
 --
--- Copyright (C) 2005-2012 MaNGOS <http://getmangos.com/>
+-- Copyright (C) 2005-2014 MaNGOS <http://getmangos.eu/>
 --
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20858,6 +20858,9 @@ CREATE TABLE `reputation_spillover_template` (
   `faction4` smallint(6) unsigned NOT NULL DEFAULT '0',
   `rate_4` float NOT NULL DEFAULT '0',
   `rank_4` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `faction5` smallint(6) unsigned DEFAULT '0',
+  `rate_5` float NOT NULL DEFAULT '0',
+  `rank_5` tinyint(3) unsigned DEFAULT '0',
   PRIMARY KEY (`faction`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Reputation spillover reputation gain';
 /*!40101 SET character_set_client = @saved_cs_client */;
