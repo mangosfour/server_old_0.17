@@ -61,8 +61,8 @@ enum Opcodes
 	CMSG_ARENA_TEAM_QUERY                                 = 0x0514, // 4.3.4 15595
 	CMSG_ARENA_TEAM_REMOVE                                = 0x2F05, // 4.3.4 15595
 	CMSG_ARENA_TEAM_ROSTER                                = 0x6F37, // 4.3.4 15595
-	CMSG_ATTACKSTOP                                       = 0x4106, // 4.3.4 15595
-	CMSG_ATTACKSWING                                      = 0x0926, // 4.3.4 15595
+	CMSG_ATTACKSTOP                                       = 0x1E13, // 5.4.7 18019
+	CMSG_ATTACKSWING                                      = 0x1513, // 5.4.7 18019
 	CMSG_AUCTION_LIST_BIDDER_ITEMS                        = 0x6937, // 4.3.4 15595
 	CMSG_AUCTION_LIST_ITEMS                               = 0x0324, // 4.3.4 15595
 	CMSG_AUCTION_LIST_OWNER_ITEMS                         = 0x0206, // 4.3.4 15595
