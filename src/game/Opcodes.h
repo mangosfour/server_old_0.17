@@ -50,7 +50,7 @@ enum Opcodes
 	CMSG_ALTER_APPEARANCE                                 = 0x0914, // 4.3.4 15595
 	CMSG_AREA_SPIRIT_HEALER_QUERY                         = 0x4907, // 4.3.4 15595
 	CMSG_AREA_SPIRIT_HEALER_QUEUE                         = 0x4815, // 4.3.4 15595
-	CMSG_AREATRIGGER                                      = 0x0937, // 4.3.4 15595
+	CMSG_AREATRIGGER                                      = 0x155A, // 5.4.7 18019
 	CMSG_ARENA_TEAM_ACCEPT                                = 0x2A25, // 4.3.4 15595
 	CMSG_ARENA_TEAM_CREATE                                = 0x04A1, // 4.3.4 15595
 	CMSG_ARENA_TEAM_DECLINE                               = 0x6925, // 4.3.4 15595
@@ -61,8 +61,8 @@ enum Opcodes
 	CMSG_ARENA_TEAM_QUERY                                 = 0x0514, // 4.3.4 15595
 	CMSG_ARENA_TEAM_REMOVE                                = 0x2F05, // 4.3.4 15595
 	CMSG_ARENA_TEAM_ROSTER                                = 0x6F37, // 4.3.4 15595
-	CMSG_ATTACKSTOP                                       = 0x4106, // 4.3.4 15595
-	CMSG_ATTACKSWING                                      = 0x0926, // 4.3.4 15595
+	CMSG_ATTACKSTOP                                       = 0x1E13, // 5.4.7 18019
+	CMSG_ATTACKSWING                                      = 0x1513, // 5.4.7 18019
 	CMSG_AUCTION_LIST_BIDDER_ITEMS                        = 0x6937, // 4.3.4 15595
 	CMSG_AUCTION_LIST_ITEMS                               = 0x0324, // 4.3.4 15595
 	CMSG_AUCTION_LIST_OWNER_ITEMS                         = 0x0206, // 4.3.4 15595
@@ -106,11 +106,11 @@ enum Opcodes
     CMSG_BOT_DETECTED2                                    = 0x1018,
     CMSG_BUG                                              = 0x4035, // 4.3.4 15595
     CMSG_BUSY_TRADE                                       = 0x331C, // 4.3.4 15595
-    CMSG_BUY_BANK_SLOT                                    = 0x0425, // 4.3.4 15595
-    CMSG_BUY_ITEM                                         = 0x0B66, // 5.4.1 17538
+    CMSG_BUY_BANK_SLOT                                    = 0x00FE, // 5.4.7 18019
+    CMSG_BUY_ITEM                                         = 0x1077, // 5.4.7 18019
     CMSG_BUY_LOTTERY_TICKET_OBSOLETE                      = 0x1337,
     CMSG_BUY_STABLE_SLOT                                  = 0x1273,
-    CMSG_BUYBACK_ITEM                                     = 0x6C17, // 4.3.4 15595
+    CMSG_BUYBACK_ITEM                                     = 0x07D7, // 5.4.7 18019
     CMSG_CALENDAR_ADD_EVENT                               = 0x142E,
     CMSG_CALENDAR_ARENA_TEAM                              = 0x142D,
     CMSG_CALENDAR_COMPLAIN                                = 0x1447,
@@ -363,7 +363,7 @@ enum Opcodes
     CMSG_IGNORE_REQUIREMENTS_CHEAT                        = 0x13A9,
     CMSG_IGNORE_TRADE                                     = 0x7112, // 4.3.4 15595
     CMSG_INITIATE_TRADE                                   = 0x7916, // 4.3.4 15595
-    CMSG_INSPECT                                          = 0x0927, // 4.3.4 15595
+    CMSG_INSPECT                                          = 0x01D4, // 5.4.7 18019
 	CMSG_INSPECT_HONOR_STATS							  = 0x01D6, // 5.3.0 17128
     CMSG_INSPECT_RATED_BG_STATS                           = 0x3010, // 4.3.4 15595
     CMSG_INSTANCE_LOCK_RESPONSE                           = 0x1140,
@@ -390,7 +390,7 @@ enum Opcodes
     CMSG_LFG_SET_NEEDS                                    = 0x136C,
     CMSG_LFG_SET_ROLES                                    = 0x136B,
     CMSG_LFG_TELEPORT                                     = 0x1371,
-    CMSG_LIST_INVENTORY                                   = 0x0346, // 5.4.1 17538
+    CMSG_LIST_INVENTORY                                   = 0x10DD, // 5.4.7 18019
     CMSG_LOAD_DANCES                                      = 0x144E,
     CMSG_LOAD_SCREEN                                      = 0x2422, // 4.3.4 15595
     CMSG_LOGOUT_CANCEL                                    = 0x2324, // 4.3.4 15595
@@ -487,7 +487,7 @@ enum Opcodes
     CMSG_NEXT_CINEMATIC_CAMERA                            = 0x10FC,
     CMSG_NO_SPELL_VARIANCE                                = 0x1417,
 	CMSG_NPC_TEXT_QUERY									  = 0x17CF, // 5.4.1 17538
-    CMSG_OBJECT_UPDATE_FAILED                             = 0x1A44, // 5.4.1 17538
+    CMSG_OBJECT_UPDATE_FAILED                             = 0x0882, // 5.4.7 18019
 	CMSG_OFFER_PETITION                                   = 0x4817, // 4.3.4 15595
 	CMSG_ON_MISSILE_TRAJECTORY_COLLISION                  = 0x14BF,
 	CMSG_OPEN_ITEM                                        = 0x6A34, // 4.3.4 15595
