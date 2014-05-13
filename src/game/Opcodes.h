@@ -106,11 +106,11 @@ enum Opcodes
     CMSG_BOT_DETECTED2                                    = 0x1018,
     CMSG_BUG                                              = 0x4035, // 4.3.4 15595
     CMSG_BUSY_TRADE                                       = 0x331C, // 4.3.4 15595
-    CMSG_BUY_BANK_SLOT                                    = 0x0425, // 4.3.4 15595
-    CMSG_BUY_ITEM                                         = 0x0B66, // 5.4.1 17538
+    CMSG_BUY_BANK_SLOT                                    = 0x00FE, // 5.4.7 18019
+    CMSG_BUY_ITEM                                         = 0x1077, // 5.4.7 18019
     CMSG_BUY_LOTTERY_TICKET_OBSOLETE                      = 0x1337,
     CMSG_BUY_STABLE_SLOT                                  = 0x1273,
-    CMSG_BUYBACK_ITEM                                     = 0x6C17, // 4.3.4 15595
+    CMSG_BUYBACK_ITEM                                     = 0x07D7, // 5.4.7 18019
     CMSG_CALENDAR_ADD_EVENT                               = 0x142E,
     CMSG_CALENDAR_ARENA_TEAM                              = 0x142D,
     CMSG_CALENDAR_COMPLAIN                                = 0x1447,
