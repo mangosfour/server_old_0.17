@@ -50,7 +50,7 @@ enum Opcodes
 	CMSG_ALTER_APPEARANCE                                 = 0x0914, // 4.3.4 15595
 	CMSG_AREA_SPIRIT_HEALER_QUERY                         = 0x4907, // 4.3.4 15595
 	CMSG_AREA_SPIRIT_HEALER_QUEUE                         = 0x4815, // 4.3.4 15595
-	CMSG_AREATRIGGER                                      = 0x0937, // 4.3.4 15595
+	CMSG_AREATRIGGER                                      = 0x155A, // 5.4.7 18019
 	CMSG_ARENA_TEAM_ACCEPT                                = 0x2A25, // 4.3.4 15595
 	CMSG_ARENA_TEAM_CREATE                                = 0x04A1, // 4.3.4 15595
 	CMSG_ARENA_TEAM_DECLINE                               = 0x6925, // 4.3.4 15595
