@@ -390,7 +390,7 @@ enum Opcodes
     CMSG_LFG_SET_NEEDS                                    = 0x136C,
     CMSG_LFG_SET_ROLES                                    = 0x136B,
     CMSG_LFG_TELEPORT                                     = 0x1371,
-    CMSG_LIST_INVENTORY                                   = 0x0346, // 5.4.1 17538
+    CMSG_LIST_INVENTORY                                   = 0x10DD, // 5.4.7 18019
     CMSG_LOAD_DANCES                                      = 0x144E,
     CMSG_LOAD_SCREEN                                      = 0x2422, // 4.3.4 15595
     CMSG_LOGOUT_CANCEL                                    = 0x2324, // 4.3.4 15595
