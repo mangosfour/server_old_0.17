@@ -164,7 +164,7 @@ enum Opcodes
 	CMSG_CHANNEL_VOICE_ON                                 = 0x1144, // 4.3.4 15595
 	CMSG_CHAR_CREATE                                      = 0x08CD, // 5.4.1 17538
 	CMSG_CHAR_CUSTOMIZE                                   = 0x2C34, // 4.3.4 15595
-	CMSG_CHAR_DELETE                                      = 0x09C0, // 5.4.1 17538
+	CMSG_CHAR_DELETE                                      = 0x113B, // 5.4.7 18019
     CMSG_CHAR_ENUM                                        = 0x0848, // 5.4.1 17538
 	CMSG_CHAR_FACTION_CHANGE                              = 0x2735, // 4.3.4 15595
 	CMSG_CHAR_RACE_CHANGE                                 = 0x0D24, // 4.3.4 15595
