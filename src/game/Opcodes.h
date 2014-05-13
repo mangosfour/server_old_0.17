@@ -487,7 +487,7 @@ enum Opcodes
     CMSG_NEXT_CINEMATIC_CAMERA                            = 0x10FC,
     CMSG_NO_SPELL_VARIANCE                                = 0x1417,
 	CMSG_NPC_TEXT_QUERY									  = 0x17CF, // 5.4.1 17538
-    CMSG_OBJECT_UPDATE_FAILED                             = 0x1A44, // 5.4.1 17538
+    CMSG_OBJECT_UPDATE_FAILED                             = 0x0882, // 5.4.7 18019
 	CMSG_OFFER_PETITION                                   = 0x4817, // 4.3.4 15595
 	CMSG_ON_MISSILE_TRAJECTORY_COLLISION                  = 0x14BF,
 	CMSG_OPEN_ITEM                                        = 0x6A34, // 4.3.4 15595
