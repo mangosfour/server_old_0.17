@@ -363,7 +363,7 @@ enum Opcodes
     CMSG_IGNORE_REQUIREMENTS_CHEAT                        = 0x13A9,
     CMSG_IGNORE_TRADE                                     = 0x7112, // 4.3.4 15595
     CMSG_INITIATE_TRADE                                   = 0x7916, // 4.3.4 15595
-    CMSG_INSPECT                                          = 0x0927, // 4.3.4 15595
+    CMSG_INSPECT                                          = 0x01D4, // 5.4.7 18019
 	CMSG_INSPECT_HONOR_STATS							  = 0x01D6, // 5.3.0 17128
     CMSG_INSPECT_RATED_BG_STATS                           = 0x3010, // 4.3.4 15595
     CMSG_INSTANCE_LOCK_RESPONSE                           = 0x1140,
