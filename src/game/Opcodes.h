@@ -128,9 +128,9 @@ enum Opcodes
     CMSG_CALENDAR_GUILD_FILTER                            = 0x142C,
     CMSG_CALENDAR_REMOVE_EVENT                            = 0x1430,
     CMSG_CALENDAR_UPDATE_EVENT                            = 0x142F,
-    CMSG_CANCEL_AURA                                      = 0x1B6F, // 5.4.1 17538
+    CMSG_CANCEL_AURA                                      = 0x16E1, // 5.4.7 18019
     CMSG_CANCEL_AUTO_REPEAT_SPELL                         = 0x6C35, // 4.3.4 15595
-    CMSG_CANCEL_CAST                                      = 0x0115, // 4.3.4 15595
+    CMSG_CANCEL_CAST                                      = 0x12EB, // 5.4.7 18019
     CMSG_CANCEL_CHANNELLING                               = 0x6C25, // 4.3.4 15595
     CMSG_CANCEL_GROWTH_AURA                               = 0x129C,
     CMSG_CANCEL_MOUNT_AURA                                = 0x0635, // 4.3.4 15595
@@ -164,7 +164,7 @@ enum Opcodes
 	CMSG_CHANNEL_VOICE_ON                                 = 0x1144, // 4.3.4 15595
 	CMSG_CHAR_CREATE                                      = 0x08CD, // 5.4.1 17538
 	CMSG_CHAR_CUSTOMIZE                                   = 0x2C34, // 4.3.4 15595
-	CMSG_CHAR_DELETE                                      = 0x09C0, // 5.4.1 17538
+	CMSG_CHAR_DELETE                                      = 0x113B, // 5.4.7 18019
     CMSG_CHAR_ENUM                                        = 0x0848, // 5.4.1 17538
 	CMSG_CHAR_FACTION_CHANGE                              = 0x2735, // 4.3.4 15595
 	CMSG_CHAR_RACE_CHANGE                                 = 0x0D24, // 4.3.4 15595
