@@ -538,7 +538,7 @@ enum Opcodes
 	CMSG_QUEST_CONFIRM_ACCEPT                             = 0x0D15, // 4.3.4 15595
 	CMSG_QUEST_POI_QUERY                                  = 0x4037, // 4.3.4 15595
 	CMSG_QUEST_QUERY                                      = 0x0D06, // 4.3.4 15595
-	CMSG_QUESTGIVER_ACCEPT_QUEST                          = 0x6B37, // 4.3.4 15595
+	CMSG_QUESTGIVER_ACCEPT_QUEST                          = 0x0356, // 5.4.7 18019
 	CMSG_QUESTGIVER_CANCEL                                = 0x1191,
 	CMSG_QUESTGIVER_CHOOSE_REWARD                         = 0x2125, // 4.3.4 15595
 	CMSG_QUESTGIVER_COMPLETE_QUEST                        = 0x0114, // 4.3.4 15595
