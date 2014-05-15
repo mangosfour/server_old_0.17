@@ -470,7 +470,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_QUESTGIVER_STATUS,                       STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_QUESTGIVER_HELLO,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverHelloOpcode     );
     //OPCODE(SMSG_QUESTGIVER_QUEST_LIST,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(CMSG_QUESTGIVER_QUERY_QUEST,                  STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQueryQuestOpcode);
+    OPCODE(CMSG_QUESTGIVER_QUERY_QUEST,                  STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQueryQuestOpcode);
     //OPCODE(CMSG_QUESTGIVER_QUEST_AUTOLAUNCH,             STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQuestAutoLaunch );
     //OPCODE(SMSG_QUESTGIVER_QUEST_DETAILS,                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               ); // +
     //OPCODE(CMSG_QUESTGIVER_ACCEPT_QUEST,                 STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverAcceptQuestOpcode);
