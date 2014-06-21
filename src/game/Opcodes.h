@@ -735,7 +735,7 @@ enum Opcodes
     MSG_MINIMAP_PING                                      = 0x6635, // 4.3.4 15595
     MSG_MOVE_FEATHER_FALL                                 = 0x12B1,
     MSG_MOVE_GRAVITY_CHNG                                 = 0x14D3,
-	MSG_MOVE_HEARTBEAT								      = 0x0AC8, // 5.4.1 17538
+	MSG_MOVE_HEARTBEAT								      = 0x01F2, // 5.4.8 18414
     MSG_MOVE_HOVER                                        = 0x10F8,
     MSG_MOVE_ROOT                                         = 0x10ED,
     MSG_MOVE_SET_ALL_SPEED_CHEAT                          = 0x10D7,
