@@ -395,7 +395,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_CHANNEL_START,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(SMSG_CHANNEL_UPDATE,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_CANCEL_CHANNELLING,                      STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleCancelChanneling          );
-    //OPCODE(SMSG_AI_REACTION,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_AI_REACTION,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(CMSG_SET_SELECTION,                           STATUS_LOGGEDIN, PROCESS_INPLACE,      &WorldSession::HandleSetSelectionOpcode        );
     //OPCODE(CMSG_DELETEEQUIPMENT_SET,                     STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleEquipmentSetDeleteOpcode  );
     //OPCODE(CMSG_INSTANCE_LOCK_RESPONSE,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );

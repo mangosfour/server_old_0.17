@@ -788,7 +788,7 @@ enum Opcodes
     SMSG_ADD_RUNE_POWER                                   = 0x6915, // 4.3.4 15595
     SMSG_ADDON_INFO                                       = 0x1136, // 5.4.1 17538
 	SMSG_AFK_MONITOR_INFO_RESPONSE                        = 0x1505,
-	SMSG_AI_REACTION                                      = 0x0637, // 4.3.4 15595
+	SMSG_AI_REACTION                                      = 0x06AF, // 5.4.8 18414
 	SMSG_ALL_ACHIEVEMENT_DATA							  = 0x12D1, // 5.3.0 17128
     SMSG_ALL_QUESTS_COMPLETED                             = 0x6314, // 4.3.4 15595
     SMSG_AREA_SPIRIT_HEALER_TIME                          = 0x0734, // 4.3.4 15595
