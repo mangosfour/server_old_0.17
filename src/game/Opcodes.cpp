@@ -517,7 +517,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_TRAINER_BUY_SPELL,                       STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleTrainerBuySpellOpcode     );
     //OPCODE(SMSG_TRAINER_SERVICE,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_TRAINER_BUY_FAILED,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(CMSG_BINDER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBinderActivateOpcode      );
+    OPCODE(CMSG_BINDER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBinderActivateOpcode      );
     //OPCODE(SMSG_PLAYERBINDERROR,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_BANKER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBankerActivateOpcode      );
     //OPCODE(SMSG_SHOW_BANK,                               STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
