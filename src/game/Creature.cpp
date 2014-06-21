@@ -1758,7 +1758,7 @@ void Creature::SendAIReaction(AiReaction reactionType)
 {
     WorldPacket data(SMSG_AI_REACTION, 12);
 
-    ObjectGuid guid = GetGUID();
+    ObjectGuid guid = GetObjectGuid();
 
     data.WriteBit(guid[5]);
     data.WriteBit(guid[7]);
