@@ -1194,7 +1194,7 @@ enum Opcodes
 	SMSG_PLAY_SPELL_VISUAL								  = 0x07D0, // 5.3.0 17128
     SMSG_PLAY_TIME_WARNING                                = 0x12F6,
 	SMSG_PLAYED_TIME									  = 0x0995, // 5.3.0 17128
-    SMSG_PLAYER_MOVE                                      = 0x0294, // 5.1.0 16357
+    SMSG_PLAYER_MOVE                                      = 0x1A32, // 5.4.8 18414
 	SMSG_PLAYER_SKINNED                                   = 0x12BD,
 	SMSG_PLAYERBINDERROR                                  = 0x6A24, // 4.3.4 15595
 	SMSG_PLAYERBOUND									  = 0x12DD, // 5.3.0 17128
