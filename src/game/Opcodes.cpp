@@ -420,7 +420,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_BREAK_TARGET,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_SAVE_PLAYER,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_SETDEATHBINDPOINT,                       STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
-    //OPCODE(SMSG_BINDPOINTUPDATE,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_BINDPOINTUPDATE,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_GETDEATHBINDZONE,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(SMSG_BINDZONEREPLY,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_PLAYERBOUND,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );

@@ -845,7 +845,7 @@ enum Opcodes
 	SMSG_BATTLEGROUND_PLAYER_LEFT						  = 0x1581, // 5.3.0 17128
 	SMSG_BATTLEGROUND_PLAYER_POSITIONS                    = 0x03CC, // 5.3.0
     SMSG_BINDER_CONFIRM                                   = 0x2835, // 4.3.4 15595
-	SMSG_BINDPOINTUPDATE								  = 0x04CC, // 5.3.0 17128
+	SMSG_BINDPOINTUPDATE								  = 0x0E3B, // 5.4.8 18414
     SMSG_BINDZONEREPLY                                    = 0x1158,
     SMSG_BREAK_TARGET                                     = 0x0105, // 4.3.4 15595
 	SMSG_BUY_FAILED										  = 0x0D95, // 5.3.0 17128
