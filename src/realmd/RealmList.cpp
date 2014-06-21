@@ -37,6 +37,8 @@ extern DatabaseType LoginDatabase;
 
 static RealmBuildInfo ExpectedRealmdClientBuilds[] =
 {
+    {18414, 5, 4, 8, ' '},                                  // highest supported build, also auto accept all above for simplify future supported builds testing
+    {18291, 5, 4, 8, ' '},                                  // highest supported build, also auto accept all above for simplify future supported builds testing
     {18019, 5, 4, 7, ' '},                                  // highest supported build, also auto accept all above for simplify future supported builds testing
     {17956, 5, 4, 7, ' '},                                  // highest supported build, also auto accept all above for simplify future supported builds testing
     {17930, 5, 4, 7, ' '},                                  // highest supported build, also auto accept all above for simplify future supported builds testing
