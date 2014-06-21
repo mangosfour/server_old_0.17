@@ -440,7 +440,7 @@ enum Opcodes
 	CMSG_MOVE_CHARACTER_CHEAT                             = 0x100E,
 	CMSG_MOVE_CHARM_PORT_CHEAT                            = 0x10E1,
 	CMSG_MOVE_CHNG_TRANSPORT                              = 0x1361, // 5.4.1 17538
-	CMSG_MOVE_FALL_LAND									  = 0x17E9, // 5.4.1 17538
+	MSG_MOVE_FALL_LAND									  = 0x08FA, // 5.4.8 18414
 	CMSG_MOVE_FALL_RESET								  = 0x12C1, // 5.4.1 17538
     CMSG_MOVE_FEATHER_FALL_ACK                            = 0x12D0,
     CMSG_MOVE_GRAVITY_DISABLE_ACK                         = 0x14D0,
