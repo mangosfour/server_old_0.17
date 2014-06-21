@@ -395,7 +395,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_CHANNEL_START,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(SMSG_CHANNEL_UPDATE,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_CANCEL_CHANNELLING,                      STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleCancelChanneling          );
-    //OPCODE(SMSG_AI_REACTION,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_AI_REACTION,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     OPCODE(CMSG_SET_SELECTION,                           STATUS_LOGGEDIN, PROCESS_INPLACE,      &WorldSession::HandleSetSelectionOpcode        );
     //OPCODE(CMSG_DELETEEQUIPMENT_SET,                     STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleEquipmentSetDeleteOpcode  );
     //OPCODE(CMSG_INSTANCE_LOCK_RESPONSE,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
@@ -470,10 +470,10 @@ void InitializeOpcodes()
     //OPCODE(SMSG_QUESTGIVER_STATUS,                       STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_QUESTGIVER_HELLO,                        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverHelloOpcode     );
     //OPCODE(SMSG_QUESTGIVER_QUEST_LIST,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(CMSG_QUESTGIVER_QUERY_QUEST,                  STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQueryQuestOpcode);
+    OPCODE(CMSG_QUESTGIVER_QUERY_QUEST,                  STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQueryQuestOpcode);
     //OPCODE(CMSG_QUESTGIVER_QUEST_AUTOLAUNCH,             STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverQuestAutoLaunch );
     //OPCODE(SMSG_QUESTGIVER_QUEST_DETAILS,                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               ); // +
-    //OPCODE(CMSG_QUESTGIVER_ACCEPT_QUEST,                 STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverAcceptQuestOpcode);
+    OPCODE(CMSG_QUESTGIVER_ACCEPT_QUEST,                 STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverAcceptQuestOpcode);
     //OPCODE(CMSG_QUESTGIVER_COMPLETE_QUEST,               STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverCompleteQuest   );
     //OPCODE(SMSG_QUESTGIVER_REQUEST_ITEMS,                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_QUESTGIVER_REQUEST_REWARD,               STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleQuestgiverRequestRewardOpcode);
@@ -517,7 +517,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_TRAINER_BUY_SPELL,                       STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleTrainerBuySpellOpcode     );
     //OPCODE(SMSG_TRAINER_SERVICE,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_TRAINER_BUY_FAILED,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(CMSG_BINDER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBinderActivateOpcode      );
+    OPCODE(CMSG_BINDER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBinderActivateOpcode      );
     //OPCODE(SMSG_PLAYERBINDERROR,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_BANKER_ACTIVATE,                         STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBankerActivateOpcode      );
     //OPCODE(SMSG_SHOW_BANK,                               STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );

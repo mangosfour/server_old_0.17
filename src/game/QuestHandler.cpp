@@ -109,17 +109,36 @@ void WorldSession::HandleQuestgiverHelloOpcode(WorldPacket& recv_data)
     _player->SendPreparedGossip(pCreature);
 }
 
-void WorldSession::HandleQuestgiverAcceptQuestOpcode(WorldPacket& recv_data)
+void WorldSession::HandleQuestgiverAcceptQuestOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;
     uint32 quest;
-    uint32 unk1;
-    recv_data >> guid >> quest >> unk1;
+
+    recvData >> quest;
+
+    guid[3] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+    recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[3]);
+    recvData.ReadByteSeq(guid[4]);
+    recvData.ReadByteSeq(guid[7]);
+    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[0]);
 
     if (!CanInteractWithQuestGiver(guid, "CMSG_QUESTGIVER_ACCEPT_QUEST"))
         return;
 
-    DEBUG_LOG("WORLD: Received opcode CMSG_QUESTGIVER_ACCEPT_QUEST - for %s to %s, quest = %u, unk1 = %u", _player->GetGuidStr().c_str(), guid.GetString().c_str(), quest, unk1);
+    DEBUG_LOG("WORLD: Received opcode CMSG_QUESTGIVER_ACCEPT_QUEST - for %s to %s, quest = %u", _player->GetGuidStr().c_str(), guid.GetString().c_str(), quest);
 
     Object* pObject = _player->GetObjectByTypeMask(guid, TYPEMASK_CREATURE_GAMEOBJECT_PLAYER_OR_ITEM);
 
@@ -196,14 +215,32 @@ void WorldSession::HandleQuestgiverAcceptQuestOpcode(WorldPacket& recv_data)
     _player->PlayerTalkClass->CloseGossip();
 }
 
-void WorldSession::HandleQuestgiverQueryQuestOpcode(WorldPacket& recv_data)
+void WorldSession::HandleQuestgiverQueryQuestOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;
     uint32 quest;
-    uint8 unk1;
-    recv_data >> guid >> quest >> unk1;
 
-    DEBUG_LOG("WORLD: Received opcode CMSG_QUESTGIVER_QUERY_QUEST - for %s to %s, quest = %u, unk1 = %u", _player->GetGuidStr().c_str(), guid.GetString().c_str(), quest, unk1);
+    recvData >> quest;
+    guid[6] = recvData.ReadBit();
+    guid[3] = recvData.ReadBit();
+    guid[1] = recvData.ReadBit();
+    recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[2] = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+    guid[0] = recvData.ReadBit();
+
+    recvData.ReadByteSeq(guid[5]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[0]);
+    recvData.ReadByteSeq(guid[1]);
+    recvData.ReadByteSeq(guid[4]);
+    recvData.ReadByteSeq(guid[3]);
+    recvData.ReadByteSeq(guid[7]);
+
+    DEBUG_LOG("WORLD: Received opcode CMSG_QUESTGIVER_QUERY_QUEST - for %s to %s, quest = %u", _player->GetGuidStr().c_str(), guid.GetString().c_str(), quest);
 
     // Verify that the guid is valid and is a questgiver or involved in the requested quest
     Object* pObject = _player->GetObjectByTypeMask(guid, TYPEMASK_CREATURE_GAMEOBJECT_OR_ITEM);

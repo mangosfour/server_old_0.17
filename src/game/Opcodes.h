@@ -100,7 +100,7 @@ enum Opcodes
     CMSG_BATTLEMASTER_JOIN_ARENA                          = 0x701C, // 4.3.4 15595
     CMSG_BEASTMASTER                                      = 0x1022,
     CMSG_BEGIN_TRADE                                      = 0x721E, // 4.3.4 15595
-    CMSG_BINDER_ACTIVATE                                  = 0x4006, // 4.3.4 15595
+    CMSG_BINDER_ACTIVATE                                  = 0x1248, // 5.4.8 18414
     CMSG_BOOTME                                           = 0x1002,
     CMSG_BOT_DETECTED                                     = 0x13C1,
     CMSG_BOT_DETECTED2                                    = 0x1018,
@@ -538,12 +538,12 @@ enum Opcodes
 	CMSG_QUEST_CONFIRM_ACCEPT                             = 0x0D15, // 4.3.4 15595
 	CMSG_QUEST_POI_QUERY                                  = 0x4037, // 4.3.4 15595
 	CMSG_QUEST_QUERY                                      = 0x0D06, // 4.3.4 15595
-	CMSG_QUESTGIVER_ACCEPT_QUEST                          = 0x6B37, // 4.3.4 15595
+	CMSG_QUESTGIVER_ACCEPT_QUEST                          = 0x0356, // 5.4.7 18019
 	CMSG_QUESTGIVER_CANCEL                                = 0x1191,
 	CMSG_QUESTGIVER_CHOOSE_REWARD                         = 0x2125, // 4.3.4 15595
 	CMSG_QUESTGIVER_COMPLETE_QUEST                        = 0x0114, // 4.3.4 15595
 	CMSG_QUESTGIVER_HELLO                                 = 0x0D17, // 4.3.4 15595
-	CMSG_QUESTGIVER_QUERY_QUEST                           = 0x2F14, // 4.3.4 15595
+	CMSG_QUESTGIVER_QUERY_QUEST                           = 0x0474, // 5.4.7 18019
 	CMSG_QUESTGIVER_QUEST_AUTOLAUNCH                      = 0x1188,
 	CMSG_QUESTGIVER_REQUEST_REWARD                        = 0x2534, // 4.3.4 15595
 	CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY                 = 0x6305, // 4.3.4 15595
@@ -788,7 +788,7 @@ enum Opcodes
     SMSG_ADD_RUNE_POWER                                   = 0x6915, // 4.3.4 15595
     SMSG_ADDON_INFO                                       = 0x1136, // 5.4.1 17538
 	SMSG_AFK_MONITOR_INFO_RESPONSE                        = 0x1505,
-	SMSG_AI_REACTION                                      = 0x0637, // 4.3.4 15595
+	SMSG_AI_REACTION                                      = 0x06AF, // 5.4.8 18414
 	SMSG_ALL_ACHIEVEMENT_DATA							  = 0x12D1, // 5.3.0 17128
     SMSG_ALL_QUESTS_COMPLETED                             = 0x6314, // 4.3.4 15595
     SMSG_AREA_SPIRIT_HEALER_TIME                          = 0x0734, // 4.3.4 15595
@@ -1194,7 +1194,7 @@ enum Opcodes
 	SMSG_PLAY_SPELL_VISUAL								  = 0x07D0, // 5.3.0 17128
     SMSG_PLAY_TIME_WARNING                                = 0x12F6,
 	SMSG_PLAYED_TIME									  = 0x0995, // 5.3.0 17128
-    SMSG_PLAYER_MOVE                                      = 0x0294, // 5.1.0 16357
+    SMSG_PLAYER_MOVE                                      = 0x1A32, // 5.4.8 18414
 	SMSG_PLAYER_SKINNED                                   = 0x12BD,
 	SMSG_PLAYERBINDERROR                                  = 0x6A24, // 4.3.4 15595
 	SMSG_PLAYERBOUND									  = 0x12DD, // 5.3.0 17128
