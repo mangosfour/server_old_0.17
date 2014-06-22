@@ -325,7 +325,7 @@ MovementStatusElements MovementHeartBeatSequence[] =
     MSEPitch,   
     MSEUnkTime,
     MSETimestamp,
-    MSEEnd
+    MSEEnd,
 };
 
 MovementStatusElements MovementJumpSequence[] =
