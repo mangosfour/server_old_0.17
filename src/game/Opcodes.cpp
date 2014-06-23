@@ -272,7 +272,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_MOVE_TELEPORT_ACK,                       STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMoveTeleportAckOpcode     );
     //OPCODE(MSG_MOVE_TOGGLE_FALL_LOGGING,                 STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     OPCODE(MSG_MOVE_FALL_LAND,                           STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
-    OPCODE(CMSG_MOVE_START_SWIM,                         STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
+    OPCODE(MSG_MOVE_START_SWIM,                          STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     OPCODE(CMSG_MOVE_STOP_SWIM,                          STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     //OPCODE(MSG_MOVE_SET_RUN_SPEED_CHEAT,                 STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     OPCODE(SMSG_MOVE_SET_RUN_SPEED,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
