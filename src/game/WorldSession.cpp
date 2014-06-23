@@ -737,12 +737,12 @@ void WorldSession::SendAuthResponse(uint8 code, bool queued, uint32 queuePos)
         packet.WriteBit(queued);
 
         if (queued)
-            packet.WriteBit(1);                             // Unknown
+            packet.WriteBit(1);
 
         packet.FlushBits();
 
         if (queued)
-            packet << uint32(0);                            // Unknown
+            packet << uint32(queuePos);
 
         for (uint8 i = 0; i < MAX_PLAYABLE_RACES; ++i)
         {
