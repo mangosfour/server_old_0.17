@@ -478,7 +478,7 @@ enum Opcodes
 	MSG_MOVE_STOP_STRAFE								  = 0x0171, // 5.4.8 18414
 	CMSG_MOVE_STOP_SWIM									  = 0x0FC9, // 5.4.1 17538
     CMSG_MOVE_STOP_SWIM_CHEAT                             = 0x12DA,
-	CMSG_MOVE_STOP_TURN									  = 0x1749, // 5.4.1 17538
+	MSG_MOVE_STOP_TURN									  = 0x1170, // 5.4.8 18414
     CMSG_MOVE_TELEPORT_ACK                                = 0x390C, // 4.3.4 15595
     CMSG_MOVE_TIME_SKIPPED                                = 0x7A0A, // 4.3.4 15595
     CMSG_MOVE_WATER_WALK_ACK                              = 0x3B00, // 4.3.4 15595
