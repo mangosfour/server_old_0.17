@@ -821,7 +821,7 @@ enum Opcodes
 	SMSG_AURA_UPDATE_ALL								  = 0x6916, // 5.3.0 17128
 	SMSG_AURACASTLOG                                      = 0x11D2,
     SMSG_AUTH_CHALLENGE                                   = 0x0949, // 5.4.8 18414
-    SMSG_AUTH_RESPONSE                                    = 0x15A0, // 5.4.7 18019
+    SMSG_AUTH_RESPONSE                                    = 0x0ABA, // 5.4.8 18414
 	SMSG_AUTH_SRP6_RESPONSE                               = 0x103A,
 	SMSG_AVAILABLE_VOICE_CHANNEL                          = 0x13DB,
 	SMSG_BARBER_SHOP_RESULT                               = 0x6125, // 4.3.4 15595
