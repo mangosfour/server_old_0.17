@@ -883,7 +883,7 @@ enum Opcodes
     SMSG_CHANNEL_UPDATE                                   = 0x2417, // 4.3.4 15595
 	SMSG_CHAR_CREATE                                      = 0x11C3, // 5.4.8 18414
     SMSG_CHAR_CUSTOMIZE                                   = 0x4F16, // 4.3.4 15595
-	SMSG_CHAR_DELETE                                      = 0x0017, // 5.4.1 17538
+	SMSG_CHAR_DELETE                                      = 0x0C9F, // 5.4.8 18414
     SMSG_CHAR_ENUM                                        = 0x040E, // 5.4.1 17538
 	SMSG_CHAR_FACTION_CHANGE                              = 0x4C06, // 4.3.4 15595
 	SMSG_CHAR_RENAME                                      = 0x2024, // 4.3.4 15595
