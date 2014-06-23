@@ -1065,7 +1065,7 @@ MovementStatusElements MovementStopSequence[] =
     MSETransportPositionX,
     MSETransportTime,
     MSETransportGuidByte3,
-    MSETransportPosition,
+    MSETransportPositionO,
     MSETransportPositionY,
     MSETransportGuidByte2,
     MSETransportGuidByte6,
