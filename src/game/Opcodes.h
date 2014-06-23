@@ -452,7 +452,7 @@ enum Opcodes
     CMSG_MOVE_SET_CAN_FLY_ACK                             = 0x790C, // 4.3.4 15595
     CMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY_ACK = 0x1341,
     CMSG_MOVE_SET_COLLISION_HGT_ACK                       = 0x1518,
-    CMSG_MOVE_SET_FACING                                  = 0x1368, // 5.4.1 17538
+    MSG_MOVE_SET_FACING                                   = 0x1050, // 5.4.8 18414
     CMSG_MOVE_SET_FLY                                     = 0x1769, // 5.4.1 17538
     CMSG_MOVE_SET_PITCH                                   = 0x0261, // 5.4.1 17538
     CMSG_MOVE_SET_RAW_POSITION                            = 0x10E2,
