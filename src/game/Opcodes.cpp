@@ -936,7 +936,7 @@ void InitializeOpcodes()
     //OPCODE(CMSG_ARENA_TEAM_LEADER,                       STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleArenaTeamLeaderOpcode     );
     //OPCODE(SMSG_ARENA_TEAM_EVENT,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_BATTLEMASTER_JOIN_ARENA,                 STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleBattlemasterJoinArena     );
-    OPCODE(CMSG_MOVE_START_ASCEND,                       STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
+    OPCODE(MSG_MOVE_START_ASCEND,                        STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     OPCODE(CMSG_MOVE_STOP_ASCEND,                        STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleMovementOpcodes           );
     //OPCODE(SMSG_ARENA_TEAM_STATS,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_LFG_JOIN,                                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleLfgJoinOpcode             );
