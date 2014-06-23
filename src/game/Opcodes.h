@@ -462,7 +462,7 @@ enum Opcodes
     CMSG_MOVE_SPLINE_DONE                                 = 0x790E, // 4.3.4 15595
 	MSG_MOVE_START_ASCEND								  = 0x11FA, // 5.4.8 18414
 	MSG_MOVE_START_BACKWARD							      = 0x09D8, // 5.4.8 18414
-	CMSG_MOVE_START_DESCEND								  = 0x0641, // 5.4.1 17538
+	MSG_MOVE_START_DESCEND								  = 0x01D1, // 5.4.8 18414
 	MSG_MOVE_START_FORWARD								  = 0x095A, // 5.4.8 18414
 	CMSG_MOVE_START_PITCH_DOWN							  = 0x16E8, // 5.4.1 17538
 	CMSG_MOVE_START_PITCH_UP							  = 0x0FE1, // 5.4.1 17538
