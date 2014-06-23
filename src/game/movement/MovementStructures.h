@@ -785,69 +785,73 @@ MovementStatusElements MovementStartStrafeRightSequence[] =
     MSEPositionY,
     MSEPositionX,
     MSEPositionZ,
-    MSEHasPitch,
-    MSEGuidBit1,
-    MSEHasOrientation,
-    MSEGuidBit4,
-    MSEHasSpline,
-    MSEHasUnknownBit,
-    MSEGuidBit5,
+    MSEGuidBit0,
     MSEHasFallData,
-    MSEHasSplineElevation,
-    MSEHasTimestamp,
-    MSEHasMovementFlags,
-    MSEGuidBit2,
+    MSECounterCount,
     MSEGuidBit7,
     MSEGuidBit6,
+    MSEGuidBit4,
+    MSEHasMovementFlags,
+    MSEGuidBit5,
+    MSEHasSplineElevation, 
     MSEGuidBit3,
+    MSEHasUnknownBit,
+	MSEHasTransportData,
+    MSEHasUnkTime,
+    MSEGuidBit1,
+    MSEHasUnknownBit,
+    MSEGuidBit2,
+    MSEHasPitch,
     MSEHasMovementFlags2,
-    MSEHasTransportData,
-    MSEGuidBit0,
-    MSETransportGuidBit7,
-    MSETransportGuidBit2,
+    MSEHasOrientation,
+    MSEHasUnknownBit,
+    MSEHasTimestamp,
+    MSEHasFallDirection,
+    MSETransportGuidBit1,
+    MSETransportGuidBit6,
     MSETransportGuidBit3,
     MSETransportGuidBit5,
+    MSETransportGuidBit2,
     MSETransportGuidBit0,
-    MSEHasTransportTime2,
-    MSETransportGuidBit6,
-    MSETransportGuidBit1,
     MSETransportGuidBit4,
     MSEHasTransportTime3,
-    MSEFlags2,
+    MSETransportGuidBit7,
+    MSEHasTransportTime2,
     MSEFlags,
-    MSEHasFallDirection,
-    MSEGuidByte7,
-    MSEGuidByte5,
-    MSEGuidByte3,
-    MSEGuidByte1,
-    MSEGuidByte2,
-    MSEGuidByte4,
+    MSEFlags2,
     MSEGuidByte6,
+    MSEGuidByte7,
     MSEGuidByte0,
-    MSETransportGuidByte5,
-    MSETransportGuidByte1,
-    MSETransportGuidByte6,
-    MSETransportPositionY,
-    MSETransportPositionO,
-    MSETransportGuidByte0,
-    MSETransportGuidByte2,
-    MSETransportSeat,
-    MSETransportPositionX,
-    MSETransportTime3,
-    MSETransportTime,
-    MSETransportGuidByte4,
-    MSETransportGuidByte7,
-    MSETransportTime2,
-    MSETransportPositionZ,
-    MSETransportGuidByte3,
+    MSEGuidByte4,
+    MSEGuidByte1,
+    MSEMovementCounter,
+    MSEGuidByte2,
+    MSEGuidByte3,
+    MSEGuidByte5,
     MSEPitch,
-    MSEPositionO,
-    MSEFallCosAngle,
-    MSEFallSinAngle,
-    MSEFallHorizontalSpeed,
-    MSEFallTime,
-    MSEFallVerticalSpeed,
+    MSETransportGuidByte1,
+    MSETransportGuidByte3,
+    MSETransportTime2,
+    MSETransportGuidByte7,
+    MSETransportTime3,
+    MSETransportGuidByte5,
+    MSETransportGuidByte6,
+    MSETransportGuidByte2,
+    MSETransportGuidByte0,
+    MSETransportTime,
+    MSETransportPositionO,
+    MSETransportPositionY,
+    MSETransportPositionZ,
+    MSETransportGuidByte4,
+    MSETransportPositionX,
     MSETimestamp,
+    MSEFallVerticalSpeed,
+    MSEFallCosAngle,
+    MSEFallHorizontalSpeed,
+    MSEFallSinAngle,
+    MSEFallTime,
+    MSEPositionO,
+    MSEUnkTime,
     MSESplineElevation,
     MSEEnd,
 };
@@ -2532,15 +2536,15 @@ MovementStatusElements* GetMovementStatusElementsSequence(uint16 opcode)
             return MovementCastSpellSequence;
         case CMSG_MOVE_CHNG_TRANSPORT:
             return MovementChngTransportSequence;
-        case MSG_MOVE_FALL_LAND:
+        case MSG_MOVE_FALL_LAND: // 5.4.8
             return MovementFallLandSequence;
         case CMSG_MOVE_FALL_RESET:
             return MovementFallResetSequence;
-        case MSG_MOVE_JUMP:
+        case MSG_MOVE_JUMP: // 5.4.8
             return MovementJumpSequence;
         case CMSG_MOVE_SET_CAN_FLY_ACK:
             return MovementSetCanFlyAckSequence;
-        case MSG_MOVE_SET_FACING:
+        case MSG_MOVE_SET_FACING: // 5.4.8
             return MovementSetFacingSequence;
         case CMSG_MOVE_SET_PITCH:
             return MovementSetPitchSequence;
@@ -2550,13 +2554,13 @@ MovementStatusElements* GetMovementStatusElementsSequence(uint16 opcode)
             return MovementSetWalkModeSequence;
         case CMSG_MOVE_SPLINE_DONE:
             return MovementSplineDoneSequence;
-        case MSG_MOVE_START_BACKWARD:
+        case MSG_MOVE_START_BACKWARD: // 5.4.8
             return MovementStartBackwardSequence;
-        case MSG_MOVE_START_FORWARD:
+        case MSG_MOVE_START_FORWARD: // 5.4.8
             return MovementStartForwardSequence;
-        case MSG_MOVE_START_STRAFE_LEFT:
+        case MSG_MOVE_START_STRAFE_LEFT: // 5.4.8
             return MovementStartStrafeLeftSequence;
-        case CMSG_MOVE_START_STRAFE_RIGHT:
+        case MSG_MOVE_START_STRAFE_RIGHT: // 5.4.8
             return MovementStartStrafeRightSequence;
         case CMSG_MOVE_START_TURN_LEFT:
             return MovementStartTurnLeftSequence;
@@ -2584,9 +2588,9 @@ MovementStatusElements* GetMovementStatusElementsSequence(uint16 opcode)
             return MovementStartPitchUpSequence;
         case CMSG_MOVE_STOP_PITCH:
             return MovementStopPitchSequence;
-        case MSG_MOVE_HEARTBEAT:
+        case MSG_MOVE_HEARTBEAT: // 5.4.8
             return MovementHeartBeatSequence;
-        case SMSG_PLAYER_MOVE:
+        case SMSG_PLAYER_MOVE: // 5.4.8
             return PlayerMoveSequence;
         case CMSG_MOVE_KNOCK_BACK_ACK:
             return MoveKnockbackAckSequence;
