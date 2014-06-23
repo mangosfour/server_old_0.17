@@ -472,7 +472,7 @@ enum Opcodes
     CMSG_MOVE_START_SWIM_CHEAT                            = 0x12D9,
 	MSG_MOVE_START_TURN_LEFT							  = 0x01D0, // 5.4.8 18414
 	MSG_MOVE_START_TURN_RIGHT							  = 0x107B, // 5.4.8 18414
-	CMSG_MOVE_STOP										  = 0x0649, // 5.4.1 17538
+	MSG_MOVE_STOP										  = 0x08F1, // 5.4.8 18414
 	CMSG_MOVE_STOP_ASCEND								  = 0x1268, // 5.4.1 17538
 	CMSG_MOVE_STOP_PITCH								  = 0x1A48, // 5.4.1 17538
 	CMSG_MOVE_STOP_STRAFE								  = 0x12C9, // 5.4.1 17538
