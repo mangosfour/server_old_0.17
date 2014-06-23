@@ -224,7 +224,7 @@ MovementStatusElements MovementFallLandSequence[] =
     MSEGuidByte5,
     MSEGuidByte1,
     MSEGuidByte6,
-    MSEMovementCounter
+    MSEMovementCounter,
     MSEFallSinAngle,
     MSEFallHorizontalSpeed,
     MSEFallCosAngle,
@@ -245,7 +245,7 @@ MovementStatusElements MovementFallLandSequence[] =
     MSETransportPositionX,
     MSETransportGuidByte7,
     MSETransportGuidByte0,
-    MSEUnkTime
+    MSEUnkTime,
     MSETimestamp,
     MSESplineElevation,
     MSEPitch,
@@ -265,8 +265,8 @@ MovementStatusElements MovementHeartBeatSequence[] =
     MSEGuidBit3,
     MSEGuidBit6,
     MSEHasPitch,
-    MSEHasUnknownBit
-    MSEHasUnknownBit
+    MSEHasUnknownBit,
+    MSEHasUnknownBit,
     MSEGuidBit7,
     MSEGuidBit2,
     MSEGuidBit4,
@@ -298,7 +298,7 @@ MovementStatusElements MovementHeartBeatSequence[] =
     MSEGuidByte1,
     MSEGuidByte4,
     MSEGuidByte7,
-    MSEMovementCounter
+    MSEMovementCounter,
     MSEGuidByte5,
     MSEGuidByte0,
     MSEFallSinAngle,
