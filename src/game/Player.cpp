@@ -20636,12 +20636,13 @@ void Player::SendInitialPacketsBeforeAddToMap()
     // guild bank list wtf?
 
     // Homebind
-    WorldPacket data(SMSG_BINDPOINTUPDATE, 5*4);
-    data << m_homebindZ;
+    WorldPacket data(SMSG_BINDPOINTUPDATE,  4 + 4 + 4 + 4 + 4);
     data << m_homebindX;
-    data << (uint32) m_homebindMapId;
+    data << m_homebindZ;
     data << m_homebindY;
     data << (uint32) m_homebindAreaId;
+    data << (uint32) m_homebindMapId;
+
     GetSession()->SendPacket(&data);
 
     // SMSG_SET_PROFICIENCY
@@ -22904,7 +22905,7 @@ void Player::LearnPetTalent(ObjectGuid petGuid, uint32 talentId, uint32 talentRa
 
 void Player::UpdateFallInformationIfNeed(MovementInfo const& minfo, uint16 opcode)
 {
-    if (m_lastFallTime >= minfo.GetFallTime() || m_lastFallZ <= minfo.GetPos()->z || opcode == CMSG_MOVE_FALL_LAND)
+    if (m_lastFallTime >= minfo.GetFallTime() || m_lastFallZ <= minfo.GetPos()->z || opcode == MSG_MOVE_FALL_LAND)
         SetFallInformation(minfo.GetFallTime(), minfo.GetPos()->z);
 }
 

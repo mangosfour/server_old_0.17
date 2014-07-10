@@ -207,16 +207,20 @@ void WorldSession::HandleCharEnumOpcode(WorldPacket & /*recv_data*/)
                                   PET_SAVE_AS_CURRENT, GetAccountId());
 }
 
-void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
+void WorldSession::HandleCharCreateOpcode(WorldPacket& recvData)
 {
     // extract other data required for player creating
-    uint8 gender, skin, face, hairStyle, hairColor, facialHair, outfitId;
-    std::string name;
-    uint8 race_, class_;
+    uint8 hairStyle, face, facialHair, hairColor, race_, class_, skin, gender, outfitId;
 
-    recv_data >> class_ >> hairStyle >> facialHair >> race_;
-    recv_data >> face >> skin >> gender >> hairColor >> outfitId;
-    name = recv_data.ReadString(recv_data.ReadBits(8));
+    recvData >> outfitId >> hairStyle >> class_ >> skin;
+    recvData >> face >> race_ >> facialHair >> gender >> hairColor;
+	
+    uint32 nameLength = recvData.ReadBits(6);
+    uint8 unk = recvData.ReadBit();
+    std::string name = recvData.ReadString(nameLength);
+
+    if (unk)
+        recvData.read_skip<uint32>();
 
     WorldPacket data(SMSG_CHAR_CREATE, 1);                  // returned with diff.values in all cases
 
@@ -558,22 +562,22 @@ void WorldSession::HandleCharDeleteOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;
 
-    guid[6] = recvData.ReadBit();
-    guid[4] = recvData.ReadBit();
-    guid[5] = recvData.ReadBit();
     guid[1] = recvData.ReadBit();
-    guid[7] = recvData.ReadBit();
     guid[3] = recvData.ReadBit();
     guid[2] = recvData.ReadBit();
+    guid[7] = recvData.ReadBit();
+    guid[4] = recvData.ReadBit();
+    guid[6] = recvData.ReadBit();
     guid[0] = recvData.ReadBit();
+    guid[5] = recvData.ReadBit();
 
+    recvData.ReadByteSeq(guid[7]);
     recvData.ReadByteSeq(guid[1]);
-    recvData.ReadByteSeq(guid[2]);
+    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[0]);
     recvData.ReadByteSeq(guid[3]);
     recvData.ReadByteSeq(guid[4]);
-    recvData.ReadByteSeq(guid[0]);
-    recvData.ReadByteSeq(guid[7]);
-    recvData.ReadByteSeq(guid[6]);
+    recvData.ReadByteSeq(guid[2]);
     recvData.ReadByteSeq(guid[5]);
 
     // can't delete loaded character
@@ -638,26 +642,27 @@ void WorldSession::HandleCharDeleteOpcode(WorldPacket& recvData)
 void WorldSession::HandlePlayerLoginOpcode(WorldPacket& recvData)
 {
     ObjectGuid playerGuid;
+    float unk = 0;
+	
+    recvData >> unk;
 
-    playerGuid[7] = recvData.ReadBit();
-    playerGuid[6] = recvData.ReadBit();
-    playerGuid[0] = recvData.ReadBit();
-    playerGuid[4] = recvData.ReadBit();
-    playerGuid[5] = recvData.ReadBit();
-    playerGuid[2] = recvData.ReadBit();
-    playerGuid[3] = recvData.ReadBit();
     playerGuid[1] = recvData.ReadBit();
+    playerGuid[4] = recvData.ReadBit();
+    playerGuid[7] = recvData.ReadBit();
+    playerGuid[3] = recvData.ReadBit();
+    playerGuid[2] = recvData.ReadBit();
+    playerGuid[6] = recvData.ReadBit();
+    playerGuid[5] = recvData.ReadBit();
+    playerGuid[0] = recvData.ReadBit();
 
     recvData.ReadByteSeq(playerGuid[5]);
-    recvData.ReadByteSeq(playerGuid[0]);
     recvData.ReadByteSeq(playerGuid[1]);
+    recvData.ReadByteSeq(playerGuid[0]);
     recvData.ReadByteSeq(playerGuid[6]);
-    recvData.ReadByteSeq(playerGuid[7]);
     recvData.ReadByteSeq(playerGuid[2]);
-    recvData.ReadByteSeq(playerGuid[3]);
     recvData.ReadByteSeq(playerGuid[4]);
-
-    float unk = recvData.ReadSingle();
+    recvData.ReadByteSeq(playerGuid[7]);
+    recvData.ReadByteSeq(playerGuid[3]);
 
     DEBUG_LOG("WORLD: Received opcode Player Logon Message from %s, unk float: %f", playerGuid.GetString().c_str(), unk);
     if (PlayerLoading() || GetPlayer() != NULL)

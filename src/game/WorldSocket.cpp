@@ -303,24 +303,16 @@ int WorldSocket::SendAuthChallenge()
 {
     DEBUG_LOG("Sending SMSG_AUTH_CHALLENGE");
     WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
+    packet << uint16(0);
 
-    packet << uint16(0);                                    // crap
+    for (int i = 0; i < 8; i++)
+        packet << uint32(0);
+
     packet << uint8(1);
-
-    BigNumber seed1;
-    seed1.SetRand(16 * 8);
-    packet.append(seed1.AsByteArray(16), 16);               // new encryption seeds
-
-    BigNumber seed2;
-    seed2.SetRand(16 * 8);
-    packet.append(seed2.AsByteArray(16), 16);               // new encryption seeds
-
     packet << uint32(m_Seed);
 
-    if (SendPacket(packet) == -1)
-        return -1;
+    return SendPacket(packet);
 
-    return 0;
 }
 
 int WorldSocket::close (int)

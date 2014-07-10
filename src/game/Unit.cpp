@@ -76,7 +76,9 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
 {
     bool hasTransportData = false,
         hasMovementFlags = false,
-        hasMovementFlags2 = false;
+        hasMovementFlags2 = false,
+        hasUnkTime = false;
+    uint32 counterCount = 0;
 
     MovementStatusElements* sequence = GetMovementStatusElementsSequence(opcode);
     if(!sequence)
@@ -253,8 +255,12 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                 if (hasTransportData && si.hasTransportTime3)
                     data >> fallTime;
                 break;
+            case MSECounterCount:
+                counterCount = data.ReadBits(22);
+                break;
             case MSEMovementCounter:
-                data.read_skip<uint32>();
+                for (int i = 0; i < counterCount; i++)
+                    data.read_skip<uint32>();
                 break;
             case MSEUnknownCount:
                 unkArray.resize(data.ReadBits(24));
@@ -267,6 +273,13 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                 if (si.hasUnkInt32)
                     data >> unkInt32;
                 break;
+            case MSEHasUnkTime:
+                hasUnkTime = !data.ReadBit();
+                break;
+            case MSEUnkTime:
+                if (hasUnkTime)
+                    data.read_skip<uint32>();
+                  break;
             default:
                 MANGOS_ASSERT(false && "Wrong movement status element");
                 break;
@@ -454,6 +467,9 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
                 if (hasTransportData && si.hasTransportTime3)
                     data << uint32(fallTime);
                 break;
+            case MSECounterCount:
+                data.WriteBits(0, 22);
+                break;
             case MSEMovementCounter:
                 data << uint32(0);
                 break;
@@ -467,6 +483,9 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
             case MSEUnkInt32:
                 if (si.hasUnkInt32)
                     data << int32(unkInt32);
+                break;
+            case MSEUintCount:
+                data << uint32(0);
                 break;
             default:
                 MANGOS_ASSERT(false && "Wrong movement status element");
