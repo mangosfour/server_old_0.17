@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #ifndef DBCFILE_H
@@ -23,59 +29,118 @@
 #include <string>
 #include "StormLib.h"
 
+/**
+ * @brief
+ *
+ */
 class DBCFile
 {
     public:
         DBCFile(HANDLE mpq, const char* filename);
+        /**
+         * @brief
+         *
+         */
         ~DBCFile();
 
-        // Open database. It must be openened before it can be used.
+        /**
+         * @brief Open database. It must be openened before it can be used.
+         *
+         * @return bool
+         */
         bool open();
 
-        // TODO: Add a close function?
-
-        // Database exceptions
+        /**
+         * @brief Database exceptions
+         *
+         */
         class Exception
         {
             public:
+                /**
+                 * @brief
+                 *
+                 * @param message
+                 */
                 Exception(const std::string& message): message(message)
                 { }
+                /**
+                 * @brief
+                 *
+                 */
                 virtual ~Exception()
                 { }
+                /**
+                 * @brief
+                 *
+                 * @return const std::string
+                 */
                 const std::string& getMessage() {return message;}
             private:
-                std::string message;
+                std::string message; /**< TODO */
         };
-
-        //
+        /**
+         * @brief
+         *
+         */
         class NotFound: public Exception
         {
             public:
+                /**
+                 * @brief
+                 *
+                 */
                 NotFound(): Exception("Key was not found")
                 { }
         };
-
-        // Iteration over database
         class Iterator;
+        /**
+         * @brief Iteration over database
+         *
+         */
         class Record
         {
             public:
+                /**
+                 * @brief
+                 *
+                 * @param field
+                 * @return float
+                 */
                 float getFloat(size_t field) const
                 {
                     assert(field < file._fieldCount);
-                    return *reinterpret_cast<float*>(offset + field * 4);
+                    return *reinterpret_cast<float*>(offset + (field * 4));
                 }
+                /**
+                 * @brief
+                 *
+                 * @param field
+                 * @return unsigned int
+                 */
                 unsigned int getUInt(size_t field) const
                 {
                     assert(field < file._fieldCount);
-                    return *reinterpret_cast<unsigned int*>(offset + field * 4);
+                    return *reinterpret_cast<unsigned int*>(offset + (field * 4));
                 }
+                /**
+                 * @brief
+                 *
+                 * @param field
+                 * @return int
+                 */
                 int getInt(size_t field) const
                 {
                     assert(field < file._fieldCount);
-                    return *reinterpret_cast<int*>(offset + field * 4);
+                    return *reinterpret_cast<int*>(offset + (field * 4));
                 }
 
+                /**
+                 * @brief
+                 *
+                 * @param field
+                 * @return const char
+                 */
                 const char* getString(size_t field) const
                 {
                     assert(field < file._fieldCount);
@@ -84,54 +149,121 @@ class DBCFile
                     return reinterpret_cast<char*>(file._stringTable + stringOffset);
                 }
             private:
+                /**
+                 * @brief
+                 *
+                 * @param file
+                 * @param offset
+                 */
                 Record(DBCFile& file, unsigned char* offset): file(file), offset(offset) {}
-                DBCFile& file;
-                unsigned char* offset;
+                DBCFile& file; /**< TODO */
+                unsigned char* offset; /**< TODO */
 
                 friend class DBCFile;
                 friend class DBCFile::Iterator;
         };
 
-        /* Iterator that iterates over records */
+        /**
+         * @brief Iterator that iterates over records
+         *
+         */
         class Iterator
         {
             public:
-                Iterator(DBCFile& file, unsigned char* offset) : record(file, offset) { }
-
-                /// Advance (prefix only)
+                /**
+                 * @brief
+                 *
+                 * @param file
+                 * @param offset
+                 */
+                Iterator(DBCFile& file, unsigned char* offset):
+                    record(file, offset) {}
+                /**
+                 * @brief Advance (prefix only)
+                 *
+                 * @return Iterator &operator
+                 */
                 Iterator& operator++()
                 {
                     record.offset += record.file._recordSize;
                     return *this;
                 }
-                /// Return address of current instance
+                /**
+                 * @brief Return address of current instance
+                 *
+                 * @return const Record &operator
+                 */
                 Record const& operator*() const { return record; }
-                const Record* operator->() const { return &record; }
-
-                /// Comparison
+                /**
+                 * @brief
+                 *
+                 * @return const Record *operator ->
+                 */
+                const Record* operator->() const
+                {
+                    return &record;
+                }
+                /**
+                 * @brief Comparison
+                 *
+                 * @param b
+                 * @return bool operator
+                 */
                 bool operator==(const Iterator& b) const
                 {
                     return record.offset == b.record.offset;
                 }
+                /**
+                 * @brief
+                 *
+                 * @param b
+                 * @return bool operator
+                 */
                 bool operator!=(const Iterator& b) const
                 {
                     return record.offset != b.record.offset;
                 }
             private:
-                Record record;
+                Record record; /**< TODO */
         };
 
-        // Get record by id
+        /**
+         * @brief Get record by id
+         *
+         * @param id
+         * @return Record
+         */
         Record getRecord(size_t id);
-        /// Get begin iterator over records
+        /**
+         * @brief Get begin iterator over records
+         *
+         * @return Iterator
+         */
         Iterator begin();
-        /// Get begin iterator over records
+        /**
+         * @brief Get begin iterator over records
+         *
+         * @return Iterator
+         */
         Iterator end();
-        /// Trivial
+        /**
+         * @brief Trivial
+         *
+         * @return size_t
+         */
         size_t getRecordCount() const { return _recordCount; }
+        /**
+         * @brief
+         *
+         * @return size_t
+         */
         size_t getFieldCount() const { return _fieldCount; }
+        /**
+         * @brief
+         *
+         * @return size_t
+         */
         size_t getMaxId();
-
     private:
         HANDLE _mpq;
         const char* _filename;

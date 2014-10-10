@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #define _CRT_SECURE_NO_DEPRECATE
@@ -61,7 +67,7 @@
 HANDLE WorldMpq = NULL;
 HANDLE LocaleMpq = NULL;
 
-uint32 CONF_TargetBuild = 17538;              //  5.4.1 17538
+uint32 CONF_TargetBuild = 18414;              //  5.4.8.18414
 
 // List MPQ for extract maps from
 char const* CONF_mpq_list[] =
@@ -74,7 +80,7 @@ char const* CONF_mpq_list[] =
     "expansion4.MPQ",
 };
 
-uint32 const Builds[] = {15005, 15050, 15211, 15354, 15595, 15890, 16016, 16048, 16057, 16309, 16357, 16516, 16650, 16769, 16844, 16965, 17128, 17520, 0};
+uint32 const Builds[] = {15005, 15050, 15211, 15354, 15595, 15890, 16016, 16048, 16057, 16309, 16357, 16516, 16650, 16769, 16844, 16965, 17128, 17520, 18414, 0};
 #define LAST_DBC_IN_DATA_BUILD 13623    // after this build mpqs with dbc are back to locale folder
 
 char* const Locales[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU"};
@@ -113,7 +119,7 @@ bool LoadLocaleMPQFile(int locale)
 {
     TCHAR buff[512];
     memset(buff, 0, sizeof(buff));
-    _stprintf(buff, _T("%s/Data/%s/locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
+	_stprintf(buff, _T("%s\\misc.MPQ"), input_path);
     if (!SFileOpenArchive(buff, 0, MPQ_OPEN_READ_ONLY, &LocaleMpq))
     {
         if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -122,7 +128,7 @@ bool LoadLocaleMPQFile(int locale)
     }
 
     char const* prefix = NULL;
-    _stprintf(buff, _T("%s%s/locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
+    _stprintf(buff, _T("%s%s\\locale-%s.MPQ"), input_path, LocalesT[locale], LocalesT[locale]);
     prefix = "";
     if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
     {
@@ -135,19 +141,20 @@ bool LoadLocaleMPQFile(int locale)
     for (int i = 0; Builds[i] && Builds[i] <= CONF_TargetBuild; ++i)
     {
         memset(buff, 0, sizeof(buff));
-        if (Builds[i] > LAST_DBC_IN_DATA_BUILD)
-        {
-            prefix = "";
-            _stprintf(buff, _T("%s/Data/%s/wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
-        }
-        else
-        {
-            prefix = Locales[locale];
-            _stprintf(buff, _T("%s/Data/wow-update-%u.MPQ"), input_path, Builds[i]);
-        }
+        
+		prefix = "";
+		_stprintf(buff, _T("%s%s\\wow-update-%s-%u.MPQ"), input_path, LocalesT[locale], LocalesT[locale], Builds[i]);
+		
+		if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
+		{
+			//prefix = Locales[locale];
+			//_stprintf(buff, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
+			if (GetLastError() != ERROR_FILE_NOT_FOUND)
+				 _tprintf(_T("Cannot open patch archive %s\n"), buff);
+		}
 
-        prefix = Locales[locale];
-        _stprintf(buff, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
+		prefix = Locales[locale];
+		_stprintf(buff, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
 
         if (!SFileOpenPatchArchive(LocaleMpq, buff, prefix, 0))
         {
@@ -163,7 +170,7 @@ bool LoadLocaleMPQFile(int locale)
 void LoadCommonMPQFiles(uint32 build)
 {
     TCHAR filename[512];
-    _stprintf(filename, _T("%s/Data/world.MPQ"), input_path);
+    _stprintf(filename, _T("%sworld.MPQ"), input_path);
     if (!SFileOpenArchive(filename, 0, MPQ_OPEN_READ_ONLY, &WorldMpq))
     {
         if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -177,7 +184,7 @@ void LoadCommonMPQFiles(uint32 build)
         if (build < 15211 && !strcmp("misc.MPQ", CONF_mpq_list[i]))   // 4.3.2 and higher MPQ
             continue;
 
-        _stprintf(filename, _T("%s/Data/%s"), input_path, CONF_mpq_list[i]);
+        _stprintf(filename, _T("%s%s"), input_path, CONF_mpq_list[i]);
         if (!SFileOpenPatchArchive(WorldMpq, filename, "", 0))
         {
             if (GetLastError() != ERROR_FILE_NOT_FOUND)
@@ -218,12 +225,12 @@ void LoadCommonMPQFiles(uint32 build)
         if (Builds[i] > LAST_DBC_IN_DATA_BUILD)
         {
             prefix = "";
-            _stprintf(filename, _T("%s/Data/wow-update-base-%u.MPQ"), input_path, Builds[i]);
+            _stprintf(filename, _T("%swow-update-base-%u.MPQ"), input_path, Builds[i]);
         }
         else
         {
             prefix = "base";
-            _stprintf(filename, _T("%s/Data/wow-update-%u.MPQ"), input_path, Builds[i]);
+            _stprintf(filename, _T("%swow-update-%u.MPQ"), input_path, Builds[i]);
         }
 
         if (!SFileOpenPatchArchive(WorldMpq, filename, prefix, 0))
@@ -289,7 +296,7 @@ void ReadLiquidTypeTableDBC()
 {
     printf("Read LiquidType.dbc file...");
 
-    DBCFile dbc(LocaleMpq, "DBFilesClient/LiquidType.dbc");
+    DBCFile dbc(LocaleMpq, "DBFilesClient\\LiquidType.dbc");
     if (!dbc.open())
     {
         printf("Fatal error: Invalid LiquidType.dbc file format!\n");
@@ -302,7 +309,7 @@ void ReadLiquidTypeTableDBC()
     memset(LiqType, 0xff, (LiqType_maxid + 1) * sizeof(uint16));
 
     for (uint32 x = 0; x < LiqType_count; ++x)
-        LiqType[dbc.getRecord(x).getUInt(0)] = dbc.getRecord(x).getUInt(3);
+        { LiqType[dbc.getRecord(x).getUInt(0)] = dbc.getRecord(x).getUInt(3); }
 
     printf("Done! (%u LiqTypes loaded)\n", (unsigned int)LiqType_count);
 }
@@ -326,7 +333,7 @@ bool ExtractWmo()
     SFileFindClose(find);
 
     if (success)
-        printf("\nExtract wmo complete (No (fatal) errors)\n");
+        { printf("\nExtract wmo complete (No (fatal) errors)\n"); }
 
     return success;
 }
@@ -341,7 +348,7 @@ bool ExtractSingleWmo(std::string& fname)
     fixnamen(szLocalFile, strlen(szLocalFile));
 
     if (FileExists(szLocalFile))
-        return true;
+        { return true; }
 
     int p = 0;
     //Select root wmo files
@@ -354,12 +361,12 @@ bool ExtractSingleWmo(std::string& fname)
         {
             int m = cpy[i];
             if (isdigit(m))
-                p++;
+                { p++; }
         }
     }
 
     if (p == 3)
-        return true;
+        { return true; }
 
     bool file_ok = true;
     std::cout << "Extracting " << fname << std::endl;
@@ -408,7 +415,7 @@ bool ExtractSingleWmo(std::string& fname)
 
     // Delete the extracted file in the case of an error
     if (!file_ok)
-        remove(szLocalFile);
+        { remove(szLocalFile); }
     return true;
 }
 
@@ -421,7 +428,7 @@ void ParsMapFiles()
     for (unsigned int i = 0; i < map_count; ++i)
     {
         sprintf(id, "%03u", map_ids[i].id);
-        sprintf(fn, "World/Maps/%s/%s.wdt", map_ids[i].name, map_ids[i].name);
+        sprintf(fn, "World\\Maps\\%s\\%s.wdt", map_ids[i].name, map_ids[i].name);
         WDTFile WDT(fn, map_ids[i].name);
         if (WDT.init(id, map_ids[i].id))
         {
@@ -448,7 +455,7 @@ void ParsMapFiles()
     {
         printf("Warning: Some models could not be extracted, see below\n");
         for (StringSet::const_iterator itr = failedPaths.begin(); itr != failedPaths.end(); ++itr)
-            printf("Could not find file of model %s\n", itr->c_str());
+            { printf("Could not find file of model %s\n", itr->c_str()); }
         printf("A few not found models can be expected and are not alarming.\n");
     }
 }
@@ -538,6 +545,7 @@ bool processArgv(int argc, char** argv)
             break;
         }
     }
+
     if (!result)
     {
         printf("Extract for %s.\n", szRawVMAPMagic);
@@ -548,6 +556,9 @@ bool processArgv(int argc, char** argv)
         printf("   -b : target build (default %u)", CONF_TargetBuild);
         printf("   -? : This message.\n");
     }
+
+    if (!hasInputPathParam)
+        getGamePath();
 
     return result;
 }
@@ -564,11 +575,12 @@ bool processArgv(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
+
     bool success = true;
 
     // Use command line arguments, when some
     if (!processArgv(argc, argv))
-        return 1;
+        { return 1; }
 
     // some simple check if working dir is dirty
     else
@@ -581,7 +593,7 @@ int main(int argc, char** argv)
             printf("Your output directory seems to be polluted, please use an empty directory!\n");
             printf("<press return to exit>");
             char garbage[2];
-            scanf("%c", garbage);
+            int ret = scanf("%c", garbage);
             return 1;
         }
     }
@@ -590,11 +602,11 @@ int main(int argc, char** argv)
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     // Create the working directory
     if (mkdir(szWorkDirWmo
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
               , 0711
 #endif
              ))
-        success = (errno == EEXIST);
+        { success = (errno == EEXIST); }
 
     LoadCommonMPQFiles(CONF_TargetBuild);
 
@@ -617,7 +629,7 @@ int main(int argc, char** argv)
 
     // extract data
     if (success)
-        success = ExtractWmo();
+        { success = ExtractWmo(); }
 
     //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     //map.dbc

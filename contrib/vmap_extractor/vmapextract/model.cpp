@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #define _CRT_SECURE_NO_WARNINGS
-
 #include "vmapexport.h"
 #include "model.h"
 #include "wmo.h"
@@ -27,7 +32,6 @@
 #include <cstdio>
 
 extern HANDLE WorldMpq;
-
 Model::Model(std::string& filename) : filename(filename), vertices(0), indices(0)
 {
 }
@@ -85,6 +89,7 @@ bool Model::ConvertToVMAPModel(const char* outfilename)
     fwrite(szRawVMAPMagic, 8, 1, output);
     uint32 nVertices = 0;
     nVertices = header.nBoundingVertices;
+
     fwrite(&nVertices, sizeof(int), 1, output);
     uint32 nofgroups = 1;
     fwrite(&nofgroups, sizeof(uint32), 1, output);
@@ -162,15 +167,15 @@ ModelInstance::ModelInstance(MPQFile& f, const char* ModelInstName, uint32 mapID
 
     fseek(input, 8, SEEK_SET); // get the correct no of vertices
     int nVertices;
-    fread(&nVertices, sizeof(int), 1, input);
+    size_t file_read = fread(&nVertices, sizeof(int), 1, input);
     fclose(input);
 
-    if (nVertices == 0)
-        return;
+    if (nVertices == 0 || file_read <= 0)
+        { return; }
 
     uint16 adtId = 0;// not used for models
     uint32 flags = MOD_M2;
-    if (tileX == 65 && tileY == 65) flags |= MOD_WORLDSPAWN;
+    if (tileX == 65 && tileY == 65) { flags |= MOD_WORLDSPAWN; }
     //write mapID, tileX, tileY, Flags, ID, Pos, Rot, Scale, name
     fwrite(&mapID, sizeof(uint32), 1, pDirfile);
     fwrite(&tileX, sizeof(uint32), 1, pDirfile);

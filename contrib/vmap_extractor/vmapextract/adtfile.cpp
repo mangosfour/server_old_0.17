@@ -1,5 +1,8 @@
 /**
- * This code is part of MaNGOS. Contributor & Copyright details are in AUTHORS/THANKS.
+ * MaNGOS is a full featured server for World of Warcraft, supporting
+ * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
+ *
+ * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * World of Warcraft, and all World of Warcraft or Warcraft art, images,
+ * and lore are copyrighted by Blizzard Entertainment, Inc.
  */
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -33,7 +39,7 @@ const char* GetPlainName(const char* FileName)
     const char* szTemp;
 
     if ((szTemp = strrchr(FileName, '\\')) != NULL)
-        FileName = szTemp + 1;
+        { FileName = szTemp + 1; }
     return FileName;
 }
 
@@ -42,7 +48,7 @@ char* GetPlainName(char* FileName)
     char* szTemp;
 
     if ((szTemp = strrchr(FileName, '\\')) != NULL)
-        FileName = szTemp + 1;
+        { FileName = szTemp + 1; }
     return FileName;
 }
 
@@ -61,7 +67,7 @@ void fixnamen(char* name, size_t len)
     }
     //extension in lowercase
     for (size_t i = len - 3; i < len; i++)
-        name[i] |= 0x20;
+        { name[i] |= 0x20; }
 }
 
 void fixname2(char* name, size_t len)
@@ -69,7 +75,7 @@ void fixname2(char* name, size_t len)
     for (size_t i = 0; i < len - 3; i++)
     {
         if (name[i] == ' ')
-            name[i] = '_';
+            { name[i] = '_'; }
     }
 }
 
@@ -77,7 +83,7 @@ char const* GetExtension(char const* FileName)
 {
     char const* szTemp;
     if ((szTemp = strrchr(FileName, '.')) != NULL)
-        return szTemp;
+        { return szTemp; }
     return NULL;
 }
 
@@ -91,7 +97,7 @@ ADTFile::ADTFile(char* filename): ADT(WorldMpq, filename)
 bool ADTFile::init(uint32 map_num, uint32 tileX, uint32 tileY, StringSet& failedPaths)
 {
     if (ADT.isEof())
-        return false;
+        { return false; }
 
     uint32 size;
 
