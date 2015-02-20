@@ -1420,43 +1420,7 @@ void SpellMgr::LoadSpellProcEvents()
                                             "SpellFamilyMaskB0, SpellFamilyMaskB1, SpellFamilyMaskB2, "
     //                                       9                  10                 11
                                             "SpellFamilyMaskC0, SpellFamilyMaskC1, SpellFamilyMaskC2, "
-    //                                       12                 13                 14
-                                            "SpellFamilyMaskD0, SpellFamilyMaskD1, SpellFamilyMaskD2, "
-    //                                       15                 16                 17
-                                            "SpellFamilyMaskE0, SpellFamilyMaskE1, SpellFamilyMaskE2, "
-    //                                       18                 19                 20
-                                            "SpellFamilyMaskF0, SpellFamilyMaskF1, SpellFamilyMaskF2, "
-    //                                       21                 22                 23
-                                            "SpellFamilyMaskG0, SpellFamilyMaskG1, SpellFamilyMaskG2, "
-    //                                       24                 25                 26
-                                            "SpellFamilyMaskH0, SpellFamilyMaskH1, SpellFamilyMaskH2, "
-    //                                       27                 28                 29
-                                            "SpellFamilyMaskI0, SpellFamilyMaskI1, SpellFamilyMaskI2, "
-    //                                       30                 31                 32
-                                            "SpellFamilyMaskJ0, SpellFamilyMaskJ1, SpellFamilyMaskJ2, "
-    //                                       33                 34                 35
-                                            "SpellFamilyMaskK0, SpellFamilyMaskK1, SpellFamilyMaskK2, "
-    //                                       36                 37                 38
-                                            "SpellFamilyMaskL0, SpellFamilyMaskL1, SpellFamilyMaskL2, "
-    //                                       39                 40                 41
-                                            "SpellFamilyMaskM0, SpellFamilyMaskM1, SpellFamilyMaskM2, "
-    //                                       42                 43                 44
-                                            "SpellFamilyMaskN0, SpellFamilyMaskN1, SpellFamilyMaskN2, "
-    //                                       45                 46                 47
-                                            "SpellFamilyMaskO0, SpellFamilyMaskO1, SpellFamilyMaskO2, "
-    //                                       48                 49                 50
-                                            "SpellFamilyMaskP0, SpellFamilyMaskP1, SpellFamilyMaskP2, "
-    //                                       51                 52                 53
-                                            "SpellFamilyMaskQ0, SpellFamilyMaskQ1, SpellFamilyMaskQ2, "
-    //                                       54                 55                 56
-                                            "SpellFamilyMaskR0, SpellFamilyMaskR1, SpellFamilyMaskR2, "
-    //                                       57                 58                 59
-                                            "SpellFamilyMaskS0, SpellFamilyMaskS1, SpellFamilyMaskS2, "
-    //                                       60                 61                 62
-                                            "SpellFamilyMaskT0, SpellFamilyMaskT1, SpellFamilyMaskT2, "
-    //                                       63                 64                 65
-                                            "SpellFamilyMaskU0, SpellFamilyMaskU1, SpellFamilyMaskU2, "
-    //                                       66         67      68       69            70
+    //                                       12         13      14       15            16
                                             "procFlags, procEx, ppmRate, CustomChance, Cooldown FROM spell_proc_event");
     if (!result)
     {
@@ -1489,11 +1453,11 @@ void SpellMgr::LoadSpellProcEvents()
                                          (uint64)fields[i + 3].GetUInt32() | ((uint64)fields[i + 6].GetUInt32() << 32),
                                          fields[i + 9].GetUInt32());
         }
-        spe.procFlags       = fields[66].GetUInt32();
-        spe.procEx          = fields[67].GetUInt32();
-        spe.ppmRate         = fields[68].GetFloat();
-        spe.customChance    = fields[69].GetFloat();
-        spe.cooldown        = fields[70].GetUInt32();
+        spe.procFlags       = fields[12].GetUInt32();
+        spe.procEx          = fields[13].GetUInt32();
+        spe.ppmRate         = fields[14].GetFloat();
+        spe.customChance    = fields[15].GetFloat();
+        spe.cooldown        = fields[16].GetUInt32();
 
         rankHelper.RecordRank(spe, entry);
     }

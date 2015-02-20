@@ -504,9 +504,8 @@ void Spell::FillTargetMap()
     // TODO: ADD the correct target FILLS!!!!!!
 
     UnitList tmpUnitLists[MAX_EFFECT_INDEX];                // Stores the temporary Target Lists for each effect
-    uint8 effToIndex[MAX_EFFECT_INDEX] = { 0, 1, 2, 3, 4, 5, 6,
-                                           7, 8, 9, 10, 11, 12, 13,
-                                           14, 15, 16, 17, 18, 19, 20 };    // Helper array, to link to another tmpUnitList, if the targets for both effects match
+    uint8 effToIndex[MAX_EFFECT_INDEX] = {0, 1, 2};    // Helper array, to link to another tmpUnitList, if the targets for both effects match
+    
     for (int i = 0; i < MAX_EFFECT_INDEX; ++i)
     {
         SpellEffectEntry const* spellEffect = m_spellInfo->GetSpellEffect(SpellEffectIndex(i));
