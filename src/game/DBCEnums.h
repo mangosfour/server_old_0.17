@@ -559,36 +559,10 @@ enum SpellEffectIndex
 {
     EFFECT_INDEX_0     = 0,
     EFFECT_INDEX_1     = 1,
-    EFFECT_INDEX_2     = 2,
-    EFFECT_INDEX_3     = 3,
-    EFFECT_INDEX_4     = 4,
-    EFFECT_INDEX_5     = 5,
-    EFFECT_INDEX_6     = 6,
-    EFFECT_INDEX_7     = 7,
-    EFFECT_INDEX_8     = 8,
-    EFFECT_INDEX_9     = 9,
-    EFFECT_INDEX_10    = 10,
-    EFFECT_INDEX_11    = 11,
-    EFFECT_INDEX_12    = 12,
-    EFFECT_INDEX_13    = 13,
-    EFFECT_INDEX_14    = 14,
-    EFFECT_INDEX_15    = 15,
-    EFFECT_INDEX_16    = 16,
-    EFFECT_INDEX_17    = 17,
-    EFFECT_INDEX_18    = 18,
-    EFFECT_INDEX_19    = 19,
-    EFFECT_INDEX_20    = 20,
+    EFFECT_INDEX_2     = 2
 };
 
-#define EFFECT_MASK_ALL \
-    ((1 << EFFECT_INDEX_0) | (1 << EFFECT_INDEX_1) | (1 << EFFECT_INDEX_2) | \
-    (1 << EFFECT_INDEX_3) | (1 << EFFECT_INDEX_4) | (1 << EFFECT_INDEX_5) | \
-    (1 << EFFECT_INDEX_6) | (1 << EFFECT_INDEX_7) | (1 << EFFECT_INDEX_8) | \
-    (1 << EFFECT_INDEX_9) | (1 << EFFECT_INDEX_10) | (1 << EFFECT_INDEX_11) | \
-    (1 << EFFECT_INDEX_12) | (1 << EFFECT_INDEX_13) | (1 << EFFECT_INDEX_14) | \
-    (1 << EFFECT_INDEX_15) | (1 << EFFECT_INDEX_16) | (1 << EFFECT_INDEX_17) | \
-    (1 << EFFECT_INDEX_18) | (1 << EFFECT_INDEX_19) | (1 << EFFECT_INDEX_20))
-#define MAX_EFFECT_INDEX 21
+#define MAX_EFFECT_INDEX 3
 
 enum SpellFamily
 {
