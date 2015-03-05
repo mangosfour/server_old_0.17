@@ -82,7 +82,7 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
 {
     bool hasTransportData = false,
         hasMovementFlags = false,
-        hasMovementFlags2 = false,
+        hasMovementFlags2 = false;
 
     MovementStatusElements* sequence = GetMovementStatusElementsSequence(opcode);
     if(!sequence)
@@ -260,7 +260,6 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                     data >> fallTime;
                 break;
             case MSEMovementCounter:
-                for (int i = 0; i < counterCount; i++)
                     data.read_skip<uint32>();
                 break;
             case MSEUnknownCount:
