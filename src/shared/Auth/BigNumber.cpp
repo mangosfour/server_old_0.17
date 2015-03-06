@@ -173,19 +173,20 @@ bool BigNumber::isZero() const
 
 uint8* BigNumber::AsByteArray(int minSize, bool reverse)
 {
-    int length = (minSize >= GetNumBytes()) ? minSize : GetNumBytes();
+    int numBytes = GetNumBytes();
+    int length = (minSize >= numBytes) ? minSize : numBytes;
 
     delete[] _array;
     _array = new uint8[length];
 
     // If we need more bytes than length of BigNumber set the rest to 0
-    if (length > GetNumBytes())
+    if (length > numBytes)
         memset((void*)_array, 0, length);
 
     BN_bn2bin(_bn, (unsigned char*)_array);
 
     if (reverse)
-        std::reverse(_array, _array + length);
+        std::reverse(_array, _array + numBytes);
 
     return _array;
 }
