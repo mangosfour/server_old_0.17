@@ -568,7 +568,7 @@ enum Opcodes
 	CMSG_REPAIR_ITEM                                      = 0x2917, // 4.3.4 15595
 	CMSG_REPOP_REQUEST                                    = 0x6235, // 4.3.4 15595
 	CMSG_REPORT_PVP_AFK                                   = 0x6734, // 4.3.4 15595
-	CMSG_REQUEST_ACCOUNT_DATA							  = 0x0A82, // 5.3.0 17128
+	CMSG_REQUEST_ACCOUNT_DATA							  = 0x1D8A, // 5.4.8 18414
     CMSG_REQUEST_HOTFIX                                   = 0x2401, // 4.3.4 15595
     CMSG_REQUEST_PARTY_MEMBER_STATS                       = 0x0C04, // 4.3.4 15595
     CMSG_REQUEST_PET_INFO                                 = 0x4924, // 4.3.4 15595
@@ -1393,7 +1393,7 @@ enum Opcodes
 	SMSG_UNKNOWN_1316                                     = 0x1525,
 	SMSG_UNKNOWN_1317                                     = 0x1526,
 	SMSG_UNKNOWN_1329                                     = 0x1532,
-	SMSG_UPDATE_ACCOUNT_DATA							  = 0x0684, // 5.3.0 17128
+	SMSG_UPDATE_ACCOUNT_DATA							  = 0x0AAE, // 5.4.8 18414
     SMSG_UPDATE_ACCOUNT_DATA_COMPLETE                     = 0x2015, // 4.3.4 15595
     SMSG_UPDATE_COMBO_POINTS                              = 0x6B34, // 4.3.4 15595
     SMSG_UPDATE_INSTANCE_OWNERSHIP                        = 0x4915, // 4.3.4 15595
