@@ -82,9 +82,7 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
 {
     bool hasTransportData = false,
         hasMovementFlags = false,
-        hasMovementFlags2 = false,
-        hasUnkTime = false;
-    uint32 counterCount = 0;
+        hasMovementFlags2 = false;
 
     MovementStatusElements* sequence = GetMovementStatusElementsSequence(opcode);
     if(!sequence)
@@ -136,10 +134,10 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                 if (hasMovementFlags2)
                     moveFlags2 = data.ReadBits(13);
                 break;
-            case MSEHasUnknownBit:
+            case MSEUnknownBit:
                 data.ReadBit();
                 break;
-            case MSEHasUnknownBit2:
+            case MSEUnknownBit2:
                 si.unkBit2 = data.ReadBit();
                 break;
             case MSEHasUnkInt32:
@@ -261,11 +259,7 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                 if (hasTransportData && si.hasTransportTime3)
                     data >> fallTime;
                 break;
-            case MSECounterCount:
-                counterCount = data.ReadBits(22);
-                break;
             case MSEMovementCounter:
-                for (int i = 0; i < counterCount; i++)
                     data.read_skip<uint32>();
                 break;
             case MSEUnknownCount:
@@ -279,13 +273,6 @@ void MovementInfo::Read(ByteBuffer& data, uint16 opcode)
                 if (si.hasUnkInt32)
                     data >> unkInt32;
                 break;
-            case MSEHasUnkTime:
-                hasUnkTime = !data.ReadBit();
-                break;
-            case MSEUnkTime:
-                if (hasUnkTime)
-                    data.read_skip<uint32>();
-                  break;
             default:
                 MANGOS_ASSERT(false && "Wrong movement status element");
                 break;
@@ -364,10 +351,10 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
             case MSEHasTimestamp:
                 data.WriteBit(!si.hasTimeStamp);
                 break;
-            case MSEHasUnknownBit:
+            case MSEUnknownBit:
                 data.WriteBit(false);
                 break;
-            case MSEHasUnknownBit2:
+            case MSEUnknownBit2:
                 data.WriteBit(si.unkBit2);
                 break;
             case MSEHasUnkInt32:
@@ -472,9 +459,6 @@ void MovementInfo::Write(ByteBuffer& data, uint16 opcode) const
             case MSETransportTime3:
                 if (hasTransportData && si.hasTransportTime3)
                     data << uint32(fallTime);
-                break;
-            case MSECounterCount:
-                data.WriteBits(0, 22);
                 break;
             case MSEMovementCounter:
                 data << uint32(0);
