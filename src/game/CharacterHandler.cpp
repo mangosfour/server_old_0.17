@@ -713,7 +713,7 @@ void WorldSession::HandlePlayerLogin(LoginQueryHolder* holder)
 
     WorldPacket data(SMSG_LOGIN_VERIFY_WORLD, 20);
     data << pCurrChar->GetPositionX();
-    data << pCurrChar->NormalizeOrientation(pCurrChar->GetOrientation());
+    data << pCurrChar->GetOrientation();
     data << pCurrChar->GetPositionY();
     data << pCurrChar->GetMapId();
     data << pCurrChar->GetPositionZ();
@@ -1319,7 +1319,7 @@ void WorldSession::HandleCharCustomizeOpcode(WorldPacket& recv_data)
     guid[0] = recv_data.ReadBit();
     guid[7] = recv_data.ReadBit();
     guid[5] = recv_data.ReadBit();
-    recvData >> newname;
+    recv_data >> newname;
     guid[4] = recv_data.ReadBit();
     guid[3] = recv_data.ReadBit();
 	
