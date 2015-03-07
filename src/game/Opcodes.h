@@ -112,7 +112,7 @@ enum Opcodes
     CMSG_BOT_DETECTED2                                    = 0x1018,
     CMSG_BUG                                              = 0x4035, // 4.3.4 15595
     CMSG_BUSY_TRADE                                       = 0x331C, // 4.3.4 15595
-    CMSG_BUY_BANK_SLOT                                    = 0x00FE, // 5.4.7 18019
+    CMSG_BUY_BANK_SLOT                                    = 0x12F2, // 5.4.8 18414
     CMSG_BUY_ITEM                                         = 0x1077, // 5.4.7 18019
     CMSG_BUY_LOTTERY_TICKET_OBSOLETE                      = 0x1337,
     CMSG_BUY_STABLE_SLOT                                  = 0x1273,
@@ -265,8 +265,8 @@ enum Opcodes
     CMSG_FORCEACTION                                      = 0x1019,
     CMSG_FORCEACTIONONOTHER                               = 0x101A,
     CMSG_FORCEACTIONSHOW                                  = 0x101B,
-    CMSG_GAMEOBJ_REPORT_USE                               = 0x4827, // 4.3.4 15595
-    CMSG_GAMEOBJ_USE                                      = 0x4E17, // 4.3.4 15595
+    CMSG_GAMEOBJ_REPORT_USE                               = 0x06D9, // 5.4.8 18414
+    CMSG_GAMEOBJ_USE                                      = 0x06D8, // 5.4.8 18414
 	CMSG_GAMEOBJECT_QUERY                                 = 0x1677, // 5.4.1 17538
     CMSG_GAMESPEED_SET                                    = 0x1047,
     CMSG_GAMETIME_SET                                     = 0x1045,
@@ -656,7 +656,7 @@ enum Opcodes
     CMSG_SKILL_BUY_RANK                                   = 0x1221,
     CMSG_SKILL_BUY_STEP                                   = 0x1220,
     CMSG_SOCKET_GEMS                                      = 0x2F04, // 4.3.4 15595
-    CMSG_SPELLCLICK                                       = 0x0805, // 4.3.4 15595
+    CMSG_SPELLCLICK                                       = 0x067A, // 5.4.8 18414
     CMSG_SPIRIT_HEALER_ACTIVATE                           = 0x2E26, // 4.3.4 15595
     CMSG_SPLIT_ITEM                                       = 0x0F17, // 4.3.4 15595
     CMSG_STABLE_PET                                       = 0x1271,
