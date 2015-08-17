@@ -887,7 +887,7 @@ enum Opcodes
     SMSG_CHANNEL_NOTIFY                                   = 0x0825,
     SMSG_CHANNEL_START                                    = 0x0A15,
     SMSG_CHANNEL_UPDATE                                   = 0x2417,
-    SMSG_CHAR_CREATE                                      = 0x11C3, // 5.4.8 18414
+    SMSG_CHAR_CREATE                                      = 0x1CAA, // 5.4.8 18414
     SMSG_CHAR_CUSTOMIZE                                   = 0x1432, // 5.4.8 18414
     SMSG_CHAR_DELETE                                      = 0x0C9F, // 5.4.8 18414
     SMSG_CHAR_ENUM                                        = 0x11C3, // 5.4.8 18414
