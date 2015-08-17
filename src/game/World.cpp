@@ -1301,11 +1301,11 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading GameObjects for quests...");
     sObjectMgr.LoadGameObjectForQuests();
 
-    sLog.outString("Loading BattleMasters...");
-    sBattleGroundMgr.LoadBattleMastersEntry();
+    //sLog.outString("Loading BattleMasters...");
+    //sBattleGroundMgr.LoadBattleMastersEntry();
 
-    sLog.outString("Loading BattleGround event indexes...");
-    sBattleGroundMgr.LoadBattleEventIndexes();
+    //sLog.outString("Loading BattleGround event indexes...");
+    //sBattleGroundMgr.LoadBattleEventIndexes();
 
     sLog.outString("Loading GameTeleports...");
     sObjectMgr.LoadGameTele();
@@ -1405,12 +1405,12 @@ void World::SetInitialWorldSettings()
     sMapMgr.Initialize();
 
     ///- Initialize Battlegrounds
-    sLog.outString("Starting BattleGround System");
-    sBattleGroundMgr.CreateInitialBattleGrounds();
+    //sLog.outString("Starting BattleGround System");
+    //sBattleGroundMgr.CreateInitialBattleGrounds();
 
     ///- Initialize Outdoor PvP
-    sLog.outString("Starting Outdoor PvP System");
-    sOutdoorPvPMgr.InitOutdoorPvP();
+    //sLog.outString("Starting Outdoor PvP System");
+    //sOutdoorPvPMgr.InitOutdoorPvP();
 
     // Not sure if this can be moved up in the sequence (with static data loading) as it uses MapManager
     sLog.outString("Loading Transports...");
@@ -1586,8 +1586,8 @@ void World::Update(uint32 diff)
     /// <li> Handle all other objects
     ///- Update objects (maps, transport, creatures,...)
     sMapMgr.Update(diff);
-    sBattleGroundMgr.Update(diff);
-    sOutdoorPvPMgr.Update(diff);
+    //sBattleGroundMgr.Update(diff);
+    //sOutdoorPvPMgr.Update(diff);
 
     ///- Delete all characters which have been deleted X days before
     if (m_timers[WUPDATE_DELETECHARS].Passed())

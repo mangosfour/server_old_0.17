@@ -880,14 +880,17 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 {
     // NOTE: ATM the socket is singlethread, have this in mind ...
     uint8 digest[20];
-    uint16 clientBuild, security;
-    uint32 id, m_addonSize, clientSeed, expansion;
-    std::string accountName;
+    uint32 clientSeed;
+    uint8 security;
+    uint16 clientBuild;
+    uint32 id;
+    uint32 m_addonSize;
+    uint32 expansion;
     LocaleConstant locale;
-
+    std::string accountName;
     Sha1Hash sha1;
     BigNumber v, s, g, N, K;
-    WorldPacket packet;
+    WorldPacket addonsData;
 
     recvPacket.read_skip<uint32>();
     recvPacket.read_skip<uint32>();
@@ -918,14 +921,15 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     recvPacket >> digest[15];
     recvPacket >> digest[1];
     recvPacket >> digest[10];
+    recvPacket >> m_addonSize;
 
-    recvPacket >> m_addonSize;                            // addon data size
-
-    ByteBuffer addonsData;
     addonsData.resize(m_addonSize);
     recvPacket.read((uint8*)addonsData.contents(), m_addonSize);
 
-    accountName = recvPacket.ReadString(recvPacket.ReadBits(11));
+    recvPacket.ReadBit();
+    uint32 accountNameLength = recvPacket.ReadBits(11);
+
+    accountName = recvPacket.ReadString(accountNameLength);
 
     DEBUG_LOG("WorldSocket::HandleAuthSession: client build %u, account %s, clientseed %X",
                 clientBuild,
