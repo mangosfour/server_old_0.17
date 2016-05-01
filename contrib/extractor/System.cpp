@@ -104,7 +104,7 @@ float CONF_flat_liquid_delta_limit = 0.001f; // If max - min less this value - l
 static char* const langs[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU", "itIT"};
 #define LANG_COUNT 13
 
-#define MIN_SUPPORTED_BUILD 17520                           // code expect mpq files and mpq content files structure for this build or later
+#define MIN_SUPPORTED_BUILD 18414                           // code expect mpq files and mpq content files structure for this build or later
 #define EXPANSION_COUNT 4
 #define WORLD_COUNT 1
 
