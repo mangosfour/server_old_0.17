@@ -104,7 +104,7 @@ float CONF_flat_liquid_delta_limit = 0.001f; // If max - min less this value - l
 static char* const langs[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU", "itIT"};
 #define LANG_COUNT 13
 
-#define MIN_SUPPORTED_BUILD 18414                           // code expect mpq files and mpq content files structure for this build or later
+#define MIN_SUPPORTED_BUILD 18273                           // code expect mpq files and mpq content files structure for this build or later
 #define EXPANSION_COUNT 4
 #define WORLD_COUNT 1
 
@@ -1048,9 +1048,9 @@ void ExtractMapsFromMpq(uint32 build, const int locale)
     char mpq_map_name[1024];
 
     printf("\nExtracting maps...\n");
-    if (build==17520)
+    if (build==18273)
 	{
-		build = 18273;
+		build = 18414;
 	}
 
     uint32 map_count = ReadMapDBC(locale);
@@ -1080,7 +1080,7 @@ void ExtractMapsFromMpq(uint32 build, const int locale)
                     continue;
 
                 sprintf(mpq_filename, "World\\Maps\\%s\\%s_%u_%u.adt", map_ids[z].name, map_ids[z].name, x, y);
-                sprintf(output_filename, "%s/maps/%03u%02u%02u.map", output_path, map_ids[z].id, y, x);
+                sprintf(output_filename, "%s/maps/%04u%02u%02u.map", output_path, map_ids[z].id, y, x);
                 ConvertADT(mpq_filename, output_filename, y, x, build);
             }
             // draw progress bar
@@ -1330,9 +1330,9 @@ int main(int argc, char* arg[])
             {
                 FirstLocale = i;
                 build = ReadBuild(FirstLocale);
-                if (build==17520)
+                if (build==18273)
 				{
-					build = 18273;
+					build = 18414;
 				}
                 printf("Detected client build: %u\n", build);
                 break;
@@ -1343,9 +1343,9 @@ int main(int argc, char* arg[])
             {
                 FirstLocale = i;
                 build = ReadBuild(FirstLocale);
-                if (build==17520)
+                if (build==18273)
 				{
-					build = 18273;
+					build = 18414;
 				}
                 printf("Detected client build: %u\n", build);
                 ExtractDBCFiles(i, true);

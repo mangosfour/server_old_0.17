@@ -299,7 +299,7 @@ enum AreaFlags
     AREA_FLAG_PVP                   = 0x00008000,           // pvp objective area? (Death's Door also has this flag although it's no pvp object area)
     AREA_FLAG_ARENA_INSTANCE        = 0x00010000,           // used by instanced arenas, Twin Peaks indoor areas, THe Lost Isles
     AREA_FLAG_UNUSED2               = 0x00020000,           // not used now (no area/zones with this flag set in 3.0.3)
-    AREA_FLAG_UNK5                  = 0x00040000,           // only used for Amani Pass, Hatchet Hills
+    AREA_FLAG_CONQUESTED_AREA       = 0x00040000,           // only used for Amani Pass, Hatchet Hills
     AREA_FLAG_UNK6                  = 0x00080000,           // Valgarde, Acherus: The Ebon Hold, Gilneas, Kezhan, The Maelstrom, Duskmist Shore, The Lost Isles
     AREA_FLAG_LOWLEVEL              = 0x00100000,           // used for some starting areas with area_level <=15
     AREA_FLAG_TOWN                  = 0x00200000,           // small towns with Inn
@@ -326,11 +326,19 @@ enum Difficulty
     RAID_DIFFICULTY_25MAN_NORMAL = 1,
     RAID_DIFFICULTY_10MAN_HEROIC = 2,
     RAID_DIFFICULTY_25MAN_HEROIC = 3,
+	RAID_DIFFICULTY_10_MAN_FLEX  = 4,
+	RAID_DIFFICULTY_25_MAN_LFR   = 5,
+
+	SCENARIO_DIFFICULTY_NORMAL   = 0,
+	SCENARIO_DIFFICULTY_HEROIC   = 1
+
 };
 
 #define MAX_DUNGEON_DIFFICULTY     3
-#define MAX_RAID_DIFFICULTY        4
+#define MAX_RAID_DIFFICULTY        6
 #define MAX_DIFFICULTY             4
+#define MAX_SCENARIO_DIFFICULTY    2
+#define RAID_DIFFICULTY_MASK_25MAN 1
 
 enum SpawnMask
 {
@@ -344,18 +352,25 @@ enum SpawnMask
     SPAWNMASK_RAID_10MAN_NORMAL = (1 << RAID_DIFFICULTY_10MAN_NORMAL),
     SPAWNMASK_RAID_25MAN_NORMAL = (1 << RAID_DIFFICULTY_25MAN_NORMAL),
     SPAWNMASK_RAID_NORMAL_ALL   = (SPAWNMASK_RAID_10MAN_NORMAL | SPAWNMASK_RAID_25MAN_NORMAL),
+	SPAWNMASK_RAID_10_MAN_FLEX  = (1 << RAID_DIFFICULTY_10_MAN_FLEX),
+	SPAWNMASK_RAID_25_MAN_LFR   = (1 << RAID_DIFFICULTY_25_MAN_LFR),
 
     SPAWNMASK_RAID_10MAN_HEROIC = (1 << RAID_DIFFICULTY_10MAN_HEROIC),
     SPAWNMASK_RAID_25MAN_HEROIC = (1 << RAID_DIFFICULTY_25MAN_HEROIC),
     SPAWNMASK_RAID_HEROIC_ALL   = (SPAWNMASK_RAID_10MAN_HEROIC | SPAWNMASK_RAID_25MAN_HEROIC),
 
     SPAWNMASK_RAID_ALL          = (SPAWNMASK_RAID_NORMAL_ALL | SPAWNMASK_RAID_HEROIC_ALL),
+
+	SPAWNMASK_SCENARIO_NORMAL = (1 << SCENARIO_DIFFICULTY_NORMAL),
+	SPAWNMASK_SCENARIO_HEROIC = (1 << SCENARIO_DIFFICULTY_HEROIC),
+	SPAWNMASK_SCENRAIO_ALL    = (SCENARIO_DIFFICULTY_NORMAL | SCENARIO_DIFFICULTY_HEROIC)
 };
 
 enum FactionTemplateFlags
 {
-    FACTION_TEMPLATE_FLAG_PVP               = 0x00000800,   // flagged for PvP
-    FACTION_TEMPLATE_FLAG_CONTESTED_GUARD   = 0x00001000,   // faction will attack players that were involved in PvP combats
+    FACTION_TEMPLATE_FLAG_PVP                = 0x00000800,   // flagged for PvP
+    FACTION_TEMPLATE_FLAG_CONTESTED_GUARD    = 0x00001000,   // faction will attack players that were involved in PvP combats
+	FACTION_TEMPLATE_FLAG_HOSTILE_BY_DEFAULT = 0x00002000    // hostile by default
 };
 
 enum FactionMasks

@@ -961,6 +961,7 @@ enum Opcodes
 	SMSG_CHALLENGE_MODE_RESET                             = 0x0000, // ADDED
 	SMSG_CHALLENGE_MODE_START                             = 0x0000, // ADDED
 	SMSG_CHALLENGE_MODE_REWARDS                           = 0x168A, // 18414
+	SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD                 = 0x10C3, // 18414
     SMSG_CHANGEPLAYER_DIFFICULTY_RESULT                   = 0x2217, // OLD
     SMSG_CHANNEL_LIST                                     = 0x052C,
     SMSG_CHANNEL_MEMBER_COUNT                             = 0x6414,
