@@ -24,7 +24,7 @@
 
 #ifndef __REVISION_SQL_H__
 #define __REVISION_SQL_H__
- #define REVISION_DB_CHARACTERS "required_12712_01_characters_characters"
- #define REVISION_DB_MANGOS "required_12752_01_mangos_reputation_spillover_template"
-#define REVISION_DB_REALMD "required_20140607_Realm_Resync"
+ #define REVISION_DB_CHARACTERS "18414"
+ #define REVISION_DB_MANGOS "18414"
+#define REVISION_DB_REALMD "18414"
 #endif // __REVISION_SQL_H__

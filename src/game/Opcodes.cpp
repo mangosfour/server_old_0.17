@@ -78,6 +78,7 @@ void InitializeOpcodes()
     //OPCODE(SMSG_CHECK_FOR_BOTS,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_MAKEMONSTERATTACKGUID,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_BOT_DETECTED2,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
+	OPCODE(SMSG_FACTION_BONUS_INFO,                        STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_FORCEACTION,                             STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_FORCEACTIONONOTHER,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_FORCEACTIONSHOW,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
@@ -397,8 +398,9 @@ void InitializeOpcodes()
     //OPCODE(SMSG_SPELL_FAILURE,                           STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_SPELL_COOLDOWN,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_COOLDOWN_EVENT,                          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    OPCODE(CMSG_CANCEL_AURA,                             STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleCancelAuraOpcode          );
+    OPCODE(CMSG_CANCEL_AURA,                               STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleCancelAuraOpcode          );
     //OPCODE(SMSG_EQUIPMENT_SET_ID,                        STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+	OPCODE(SMSG_EQUIPMENT_SET_LIST,                        STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
     //OPCODE(SMSG_PET_CAST_FAILED,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
 	OPCODE(SMSG_CHALLENGE_MODE_ALL_MAP_STATS,              STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide                );
 	OPCODE(SMSG_CHALLENGE_MODE_COMPLETE,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide                );
@@ -889,6 +891,9 @@ void InitializeOpcodes()
     //OPCODE(CMSG_FORCE_SWIM_BACK_SPEED_CHANGE_ACK,        STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleForceSpeedChangeAckOpcodes);
     //OPCODE(SMSG_FORCE_TURN_RATE_CHANGE,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_FORCE_TURN_RATE_CHANGE_ACK,              STATUS_LOGGEDIN, PROCESS_THREADSAFE,   &WorldSession::HandleForceSpeedChangeAckOpcodes);
+	OPCODE(SMSG_FORCE_SEND_QUEUE_PACKETS,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+	//OPCODE(SMSG_FORCE_MASTER_SET,                          STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
+	OPCODE(SMSG_FORCE_OBJECT_RELINK,                       STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_PVP_LOG_DATA,                            STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandlePVPLogDataOpcode          );
     //OPCODE(SMSG_PVP_LOG_DATA,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_LEAVE_BATTLEFIELD,                       STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleLeaveBattlefieldOpcode    );
@@ -1130,7 +1135,10 @@ void InitializeOpcodes()
     //OPCODE(MSG_RAID_READY_CHECK_FINISHED,                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleRaidReadyCheckFinishedOpcode);
     //OPCODE(CMSG_COMPLAIN,                                STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleComplainOpcode            );
     //OPCODE(SMSG_COMPLAIN_RESULT,                         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
-    //OPCODE(SMSG_FEATURE_SYSTEM_STATUS,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+    OPCODE(SMSG_FEATURE_SYSTEM_STATUS,                     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+	OPCODE(SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN,         STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_ServerSide               );
+	//OPCODE(SMSG_FLOOD_DETECTED,                          STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
+	OPCODE(SMSG_FORCED_DEATH_UPDATE,                       STATUS_NEVER,    PROCESS_THREADUNSAFE, &WorldSession::Handle_ServerSide               );
     //OPCODE(CMSG_GM_SHOW_COMPLAINTS,                      STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_GM_UNSQUELCH,                            STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
     //OPCODE(CMSG_CHANNEL_SILENCE_VOICE,                   STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::Handle_NULL                     );
