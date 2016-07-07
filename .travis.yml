@@ -1,26 +1,42 @@
 language: cpp
 
+# use docker in travis
+sudo: false
+
 # reduce clone time by only getting the latest commit and not the whole history (default for travis is 100)
 git:
   depth: 1
 
-# only run travis on the master branch
-branches:
-  only:
-  - master
+# send notifications to stack as well as email
+notifications:
+  slack: getmangos:yRgNBSgRQVh8WdfGEbT08Hit
+
+# build on both Linux and OSX (finally)
+os:
+  - linux
+  - osx
 
 # build with both gcc and clang to ensure compatibility
 compiler:
   - gcc
   - clang
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
+      - clang
+
 before_install:
- - sudo apt-get update -qq
- - sudo apt-get install -qq libbz2-dev libncurses5-dev libmysqlclient-dev libreadline-dev libsdl1.2-dev libssl-dev zlib1g-dev libace-dev
+  - bash .travis.sh
+  - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CC" = "gcc" ] ; then export CC=gcc-4.8 CXX=g++-4.8 ; fi
 
 script:
   - test -d _build || mkdir _build
   - test -d _install || mkdir _install
   - cd _build
-  - cmake -DCMAKE_INSTALL_PREFIX=../_install -DCMAKE_BUILD_TYPE=Debug -DACE_USE_EXTERNAL=1 ..
+  - cmake -DCMAKE_INSTALL_PREFIX=../_install ..
   - make -j4
