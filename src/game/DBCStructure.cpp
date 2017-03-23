@@ -442,12 +442,6 @@ uint32 SpellEntry::GetAttributesEx12() const
     return misc ? misc->AttributesEx12 : 0;
 }
 
-uint32 SpellEntry::GetAttributesEx13() const
-{
-    SpellMiscEntry const* misc = GetSpellMisc();
-    return misc ? misc->AttributesEx13 : 0;
-}
-
 uint32 SpellEntry::GetCastingTimeIndex() const
 {
     SpellMiscEntry const* misc = GetSpellMisc();

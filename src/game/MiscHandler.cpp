@@ -407,23 +407,23 @@ void WorldSession::HandleSetSelectionOpcode(WorldPacket& recv_data)
 {
     ObjectGuid guid;
 
-    guid[7] = recv_data.ReadBit();
-    guid[6] = recv_data.ReadBit();
-    guid[5] = recv_data.ReadBit();
-    guid[4] = recv_data.ReadBit();
-    guid[3] = recv_data.ReadBit();
-    guid[2] = recv_data.ReadBit();
-    guid[1] = recv_data.ReadBit();
-    guid[0] = recv_data.ReadBit();
-
-    recv_data.ReadByteSeq(guid[0]);
-    recv_data.ReadByteSeq(guid[7]);
-    recv_data.ReadByteSeq(guid[3]);
-    recv_data.ReadByteSeq(guid[5]);
-    recv_data.ReadByteSeq(guid[1]);
-    recv_data.ReadByteSeq(guid[4]);
-    recv_data.ReadByteSeq(guid[6]);
-    recv_data.ReadByteSeq(guid[2]);
+    guid[4] = recv_data.ReadBit(); 
+    guid[3] = recv_data.ReadBit(); 
+    guid[2] = recv_data.ReadBit(); 
+    guid[0] = recv_data.ReadBit(); 
+    guid[5] = recv_data.ReadBit(); 
+    guid[7] = recv_data.ReadBit(); 
+    guid[6] = recv_data.ReadBit(); 
+    guid[1] = recv_data.ReadBit(); 
+ 
+    recv_data.ReadByteSeq(guid[1]); 
+    recv_data.ReadByteSeq(guid[2]); 
+    recv_data.ReadByteSeq(guid[3]); 
+    recv_data.ReadByteSeq(guid[0]); 
+    recv_data.ReadByteSeq(guid[7]); 
+    recv_data.ReadByteSeq(guid[5]); 
+    recv_data.ReadByteSeq(guid[4]); 
+    recv_data.ReadByteSeq(guid[6]); 
 
     _player->SetSelectionGuid(guid);
 
@@ -923,7 +923,8 @@ void WorldSession::HandleRequestAccountData(WorldPacket& recv_data)
 {
     DETAIL_LOG("WORLD: Received opcode CMSG_REQUEST_ACCOUNT_DATA");
 
-    uint32 type = recv_data.ReadBits(3);
+    uint32 type;
+    recv_data >> type;
 
     DEBUG_LOG("RAD: type %u", type);
 
@@ -948,33 +949,7 @@ void WorldSession::HandleRequestAccountData(WorldPacket& recv_data)
     dest.resize(destSize);
 
     WorldPacket data(SMSG_UPDATE_ACCOUNT_DATA, 8 + 4 + 4 + 4 + destSize);
-
-    ObjectGuid guid;
-	
-    data.WriteBits(type, 3);
-    data.WriteBit(guid[5]);
-    data.WriteBit(guid[1]);
-    data.WriteBit(guid[3]);
-    data.WriteBit(guid[7]);
-    data.WriteBit(guid[0]);
-    data.WriteBit(guid[4]);
-    data.WriteBit(guid[2]);
-    data.WriteBit(guid[6]);
-	
-    data.WriteByteSeq(guid[3]);
-    data.WriteByteSeq(guid[1]);
-    data.WriteByteSeq(guid[5]);
-    data << uint32(size);
-    data << uint32(destSize);
-    data.append(dest);
-    data.WriteByteSeq(guid[7]);
-    data.WriteByteSeq(guid[4]);
-    data.WriteByteSeq(guid[0]);
-    data.WriteByteSeq(guid[6]);
-    data.WriteByteSeq(guid[2]);
-    data << uint32(adata->Time);
-	
-	
+    data << (_player ? _player->GetObjectGuid() : ObjectGuid());// player guid
     data << uint32(type);                                   // type (0-7)
     data << uint32(adata->Time);                            // unix time
     data << uint32(size);                                   // decompressed length
@@ -1671,23 +1646,23 @@ void WorldSession::HandleObjectUpdateFailedOpcode(WorldPacket& recvPacket)
 {
     ObjectGuid guid;
 
-    guid[3] = recvPacket.ReadBit();
-    guid[5] = recvPacket.ReadBit();
+    guid[4] = recvPacket.ReadBit();
     guid[6] = recvPacket.ReadBit();
+    guid[3] = recvPacket.ReadBit();
     guid[0] = recvPacket.ReadBit();
+    guid[7] = recvPacket.ReadBit();
+    guid[5] = recvPacket.ReadBit();
     guid[1] = recvPacket.ReadBit();
     guid[2] = recvPacket.ReadBit();
-    guid[7] = recvPacket.ReadBit();
-    guid[4] = recvPacket.ReadBit();
 
+    recvPacket.ReadByteSeq(guid[4]);
+    recvPacket.ReadByteSeq(guid[7]);
     recvPacket.ReadByteSeq(guid[0]);
     recvPacket.ReadByteSeq(guid[6]);
     recvPacket.ReadByteSeq(guid[5]);
-    recvPacket.ReadByteSeq(guid[7]);
     recvPacket.ReadByteSeq(guid[2]);
     recvPacket.ReadByteSeq(guid[1]);
     recvPacket.ReadByteSeq(guid[3]);
-    recvPacket.ReadByteSeq(guid[4]);
 
 
     DEBUG_LOG("WORLD: Received CMSG_OBJECT_UPDATE_FAILED from %s (%u) guid: %s", GetPlayerName(), GetAccountId(), guid.GetString().c_str());

@@ -1149,9 +1149,6 @@ class ObjectMgr
             return ret ? ret : uint32(time(NULL));
         }
 
-        void LoadPhaseDefinitions();
-        void LoadSpellPhaseInfo();
-
         PhaseDefinitionStore const* GetPhaseDefinitionStore() { return &_PhaseDefinitionStore; }
         SpellPhaseStore const* GetSpellPhaseStore() { return &_SpellPhaseStore; }
 

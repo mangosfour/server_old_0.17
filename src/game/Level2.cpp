@@ -3879,15 +3879,6 @@ bool ChatHandler::HandleWpShowCommand(char* args)
     return true;
 }                                                           // HandleWpShowCommand
 
-bool ChatHandler::HandleReloadPhaseDefinitionsCommand(char* /*args*/)
-{
-    SendSysMessage("Reloading phase_definitions table...");
-    sObjectMgr.LoadPhaseDefinitions();
-    sWorld.UpdatePhaseDefinitions();
-    SendSysMessage("Phase Definitions reloaded.");
-    return true;
-}
-
 bool ChatHandler::HandleWpExportCommand(char* args)
 {
     if (!*args)

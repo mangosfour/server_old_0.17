@@ -88,7 +88,6 @@ DBCStorage <CreatureFamilyEntry> sCreatureFamilyStore(CreatureFamilyfmt);
 DBCStorage <CreatureSpellDataEntry> sCreatureSpellDataStore(CreatureSpellDatafmt);
 DBCStorage <CreatureTypeEntry> sCreatureTypeStore(CreatureTypefmt);
 DBCStorage <CurrencyTypesEntry> sCurrencyTypesStore(CurrencyTypesfmt);
-uint32 PowersByClass[MAX_CLASSES][MAX_POWERS];
 
 DBCStorage <DestructibleModelDataEntry> sDestructibleModelDataStore(DestructibleModelDataFmt);
 DBCStorage <DungeonEncounterEntry> sDungeonEncounterStore(DungeonEncounterfmt);
@@ -350,7 +349,7 @@ template<class T>
 inline void LoadDBC(LocalData& localeData, BarGoLink& bar, StoreProblemList& errlist, DBCStorage<T>& storage, const std::string& dbc_path, const std::string& filename)
 {
     // compatibility format and C++ structure sizes
-    MANGOS_ASSERT(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()) == sizeof(T) || LoadDBC_assert_print(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()), sizeof(T), filename));
+  // MANGOS_ASSERT(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()) == sizeof(T) || LoadDBC_assert_print(DBCFileLoader::GetFormatRecordSize(storage.GetFormat()), sizeof(T), filename));
 
     std::string dbc_filename = dbc_path + filename;
     if(storage.Load(dbc_filename.c_str(),localeData.defaultLocale))
@@ -445,7 +444,7 @@ void LoadDBCStores(const std::string& dataPath)
             sAreaFlagByAreaID.insert(AreaFlagByAreaID::value_type(uint16(area->ID), area->exploreFlag));
 
             // fill MapId->DBC records ( skip sub zones and continents )
-            if (area->zone == 0 && area->mapid != 0 && area->mapid != 1 && area->mapid != 530 && area->mapid != 571 && area->mapid != 860 && area->mapid != 870)
+            if (area->zone == 0 && area->mapid != 0 && area->mapid != 1 && area->mapid != 530 && area->mapid != 571)
                 sAreaFlagByMapID.insert(AreaFlagByMapID::value_type(area->mapid, area->exploreFlag));
         }
     }
@@ -463,22 +462,35 @@ void LoadDBCStores(const std::string& dataPath)
     LoadDBC(availableDbcLocales, bar, bad_dbc_files, sCharTitlesStore,          dbcPath, "CharTitles.dbc");
     LoadDBC(availableDbcLocales, bar, bad_dbc_files, sChatChannelsStore,        dbcPath, "ChatChannels.dbc");
     LoadDBC(availableDbcLocales, bar, bad_dbc_files, sChrClassesStore,          dbcPath, "ChrClasses.dbc");
-    LoadDBC(availableDbcLocales, bar, bad_dbc_files, sChrPowerTypesStore,       dbcPath,"ChrClassesXPowerTypes.dbc");
+    LoadDBC(availableDbcLocales,bar,bad_dbc_files,sChrPowerTypesStore,       dbcPath,"ChrClassesXPowerTypes.dbc");
     for (uint32 i = 0; i < MAX_CLASSES; ++i)
+    {
         for (uint32 j = 0; j < MAX_POWERS; ++j)
-            PowersByClass[i][j] = MAX_POWERS;
-
+            sChrClassXPowerTypesStore[i][j] = INVALID_POWER_INDEX;
+        for (uint32 j = 0; j < MAX_STORED_POWERS; ++j)
+            sChrClassXPowerIndexStore[i][j] = INVALID_POWER;
+    }
     for (uint32 i = 0; i < sChrPowerTypesStore.GetNumRows(); ++i)
     {
-        if (ChrPowerTypesEntry const* power = sChrPowerTypesStore.LookupEntry(i))
-        {
-            uint32 index = 0;
-            for (uint32 j = 0; j < MAX_POWERS; ++j)
-                if (PowersByClass[power->classId][j] != MAX_POWERS)
-                    ++index;
+        ChrPowerTypesEntry const* entry = sChrPowerTypesStore.LookupEntry(i);
+        if (!entry)
+            continue;
 
-            PowersByClass[power->classId][power->power] = index;
+        MANGOS_ASSERT(entry->classId < MAX_CLASSES && "MAX_CLASSES not updated");
+  //      MANGOS_ASSERT(entry->power < MAX_POWERS && "MAX_POWERS not updated");
+
+        uint32 index = 0;
+
+        for (uint32 j = 0; j < MAX_POWERS; ++j)
+        {
+            if (sChrClassXPowerTypesStore[entry->classId][j] != INVALID_POWER_INDEX)
+                ++index;
         }
+
+   //     MANGOS_ASSERT(index < MAX_STORED_POWERS && "MAX_STORED_POWERS not updated");
+
+        sChrClassXPowerTypesStore[entry->classId][entry->power] = index;
+        sChrClassXPowerIndexStore[entry->classId][index] = entry->power;
     }
     LoadDBC(availableDbcLocales, bar, bad_dbc_files, sChrRacesStore,            dbcPath, "ChrRaces.dbc");
     LoadDBC(availableDbcLocales, bar, bad_dbc_files, sCinematicSequencesStore,  dbcPath, "CinematicSequences.dbc");
@@ -588,7 +600,7 @@ void LoadDBCStores(const std::string& dataPath)
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellCategoriesStore,     dbcPath,"SpellCategories.dbc");
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellClassOptionsStore,   dbcPath,"SpellClassOptions.dbc");
     LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellCooldownsStore,      dbcPath,"SpellCooldowns.dbc");
-    //LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellEffectStore,         dbcPath,"SpellEffect.dbc");
+    LoadDBC(availableDbcLocales,bar,bad_dbc_files,sSpellEffectStore,         dbcPath,"SpellEffect.dbc");
 
     for (uint32 i = 1; i < sSpellStore.GetNumRows(); ++i)
     {
@@ -617,7 +629,7 @@ void LoadDBCStores(const std::string& dataPath)
                 case SPELL_AURA_PERIODIC_MANA_LEECH:
                 case SPELL_AURA_PERIODIC_ENERGIZE:
                 case SPELL_AURA_POWER_BURN_MANA:
-                    MANGOS_ASSERT(spellEffect->EffectMiscValue >= 0 && spellEffect->EffectMiscValue < MAX_POWERS);
+ //                   MANGOS_ASSERT(spellEffect->EffectMiscValue >= 0 && spellEffect->EffectMiscValue < MAX_POWERS);
                     break;
             }
 
@@ -1116,11 +1128,6 @@ PvPDifficultyEntry const* GetBattlegroundBracketById(uint32 mapid, BattleGroundB
 uint32 const* GetTalentTabPages(uint32 cls)
 {
     return sTalentTabPages[cls];
-}
-
-uint32 GetPowerIndexByClass(uint32 powerType, uint32 classId)
-{
-    return PowersByClass[classId][powerType];
 }
 
 std::vector<uint32> const* GetTalentTreeMasterySpells(uint32 talentTree)
