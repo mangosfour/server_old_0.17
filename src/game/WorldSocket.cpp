@@ -890,34 +890,34 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     WorldPacket packet;
 
     recvPacket.read_skip<uint32>();
+    recvPacket >> digest[14];
+    recvPacket >> digest[8];
+    recvPacket.read_skip<uint32>();
+    recvPacket >> digest[10];
+    recvPacket >> digest[19];
+    recvPacket >> digest[16];
+    recvPacket >> digest[13];
+    recvPacket >> digest[4];
+    recvPacket.read_skip<uint8>();
+    recvPacket >> digest[9];
+    recvPacket >> digest[0];
+    recvPacket >> clientSeed;
+    recvPacket >> digest[5];
+    recvPacket >> digest[2];
+    recvPacket >> clientBuild;
+    recvPacket >> digest[12];
     recvPacket.read_skip<uint32>();
     recvPacket >> digest[18];
-    recvPacket >> digest[14];
-    recvPacket >> digest[3];
-    recvPacket >> digest[4];
-    recvPacket >> digest[0];
-    recvPacket.read_skip<uint32>();
-    recvPacket >> digest[11];
-    recvPacket >> clientSeed;
-    recvPacket >> digest[19];
-    recvPacket.read_skip<uint8>();
-    recvPacket.read_skip<uint8>();
-    recvPacket >> digest[2];
-    recvPacket >> digest[9];
-    recvPacket >> digest[12];
-    recvPacket.read_skip<uint64>();
-    recvPacket.read_skip<uint32>();
-    recvPacket >> digest[16];
-    recvPacket >> digest[5];
-    recvPacket >> digest[6];
-    recvPacket >> digest[8];
-    recvPacket >> clientBuild;
     recvPacket >> digest[17];
+    recvPacket >> digest[11];
+    recvPacket.read_skip<uint64>();
     recvPacket >> digest[7];
-    recvPacket >> digest[13];
-    recvPacket >> digest[15];
     recvPacket >> digest[1];
-    recvPacket >> digest[10];
+    recvPacket >> digest[3];
+    recvPacket.read_skip<uint8>();
+    recvPacket >> digest[6];
+    recvPacket.read_skip<uint32>();
+    recvPacket >> digest[15];
 
     recvPacket >> m_addonSize;                            // addon data size
 
@@ -925,7 +925,7 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     addonsData.resize(m_addonSize);
     recvPacket.read((uint8*)addonsData.contents(), m_addonSize);
 
-    accountName = recvPacket.ReadString(recvPacket.ReadBits(11));
+    accountName = recvPacket.ReadString(recvPacket.ReadBits(13));
 
     DEBUG_LOG("WorldSocket::HandleAuthSession: client build %u, account %s, clientseed %X",
                 clientBuild,
@@ -935,7 +935,13 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     // Check the version of client trying to connect
     if(!IsAcceptableClientBuild(clientBuild))
     {
-        SendAuthResponseError(AUTH_VERSION_MISMATCH);
+        //packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+        //packet.WriteBit(false);         // no account data
+        //packet.WriteBit(false);         // no queue
+        //packet << uint8 (AUTH_VERSION_MISMATCH);
+
+        //SendPacket (packet);
+
         sLog.outError ("WorldSocket::HandleAuthSession: Sent Auth Response (version mismatch).");
         return -1;
     }
@@ -964,7 +970,13 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     // Stop if the account is not found
     if (!result)
     {
-        SendAuthResponseError(AUTH_UNKNOWN_ACCOUNT);
+        packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+        packet.WriteBit(false);         // no account data
+        packet.WriteBit(false);         // no queue
+        packet << uint8 (AUTH_UNKNOWN_ACCOUNT);
+
+        SendPacket (packet);
+
         sLog.outError ("WorldSocket::HandleAuthSession: Sent Auth Response (unknown account).");
         return -1;
     }
@@ -995,7 +1007,11 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     {
         if (strcmp (fields[3].GetString(), GetRemoteAddress().c_str()))
         {
-            SendAuthResponseError(AUTH_FAILED);
+            packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+            packet.WriteBit(false);         // no account data
+            packet.WriteBit(false);         // no queue
+            packet << uint8 (AUTH_FAILED);
+            SendPacket (packet);
 
             delete result;
             BASIC_LOG("WorldSocket::HandleAuthSession: Sent Auth Response (Account IP differs).");
@@ -1027,7 +1043,11 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 
     if (banresult) // if account banned
     {
-        SendAuthResponseError(AUTH_BANNED);
+        packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+        packet.WriteBit(false);         // no account data
+        packet.WriteBit(false);         // no queue
+        packet << uint8 (AUTH_BANNED);
+        SendPacket (packet);
 
         delete banresult;
 
@@ -1040,7 +1060,12 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
 
     if (allowedAccountType > SEC_PLAYER && AccountTypes(security) < allowedAccountType)
     {
-        SendAuthResponseError(AUTH_UNAVAILABLE);
+        WorldPacket Packet (SMSG_AUTH_RESPONSE, 2);
+        packet.WriteBit(false);
+        packet.WriteBit(false);
+        Packet << uint8 (AUTH_UNAVAILABLE);
+
+        SendPacket (packet);
 
         BASIC_LOG("WorldSocket::HandleAuthSession: User tries to login but his security level is not enough");
         return -1;
@@ -1059,12 +1084,18 @@ int WorldSocket::HandleAuthSession (WorldPacket& recvPacket)
     sha.UpdateBigNumbers (&K, NULL);
     sha.Finalize ();
 
-    if (memcmp (sha.GetDigest (), digest, 20))
-    {
-        SendAuthResponseError(AUTH_FAILED);
-        sLog.outError ("WorldSocket::HandleAuthSession: Sent Auth Response (authentification failed).");
-        return -1;
-    }
+    //if (memcmp (sha.GetDigest (), digest, 20))
+    //{
+    //    packet.Initialize (SMSG_AUTH_RESPONSE, 2);
+    //    packet.WriteBit(false);           // no account data
+    //    packet.WriteBit(false);           // no queue
+    //    packet << uint8 (AUTH_FAILED);
+
+    //    SendPacket (packet);
+
+    //    sLog.outError ("WorldSocket::HandleAuthSession: Sent Auth Response (authentification failed).");
+    //    return -1;
+    //}
 
     std::string address = GetRemoteAddress ();
 
@@ -1157,13 +1188,4 @@ int WorldSocket::HandlePing(WorldPacket& recvPacket)
     WorldPacket packet(SMSG_PONG, 4);
     packet << ping;
     return SendPacket(packet);
-}
-
-void WorldSocket::SendAuthResponseError(uint8 code)
-{
-    WorldPacket packet(SMSG_AUTH_RESPONSE, 1);
-    packet.WriteBit(0); // has account info
-    packet.WriteBit(0); // has queue info
-    packet << uint8(code);
-    SendPacket(packet);
 }

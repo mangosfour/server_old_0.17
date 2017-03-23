@@ -6752,7 +6752,7 @@ void ObjectMgr::LoadReputationSpilloverTemplate()
     m_RepSpilloverTemplateMap.clear();                      // for reload case
 
     uint32 count = 0;
-    QueryResult* result = WorldDatabase.Query("SELECT faction, faction1, rate_1, rank_1, faction2, rate_2, rank_2, faction3, rate_3, rank_3, faction4, rate_4, rank_4, faction5, rate_5, rank_5 FROM reputation_spillover_template");
+    QueryResult* result = WorldDatabase.Query("SELECT faction, faction1, rate_1, rank_1, faction2, rate_2, rank_2, faction3, rate_3, rank_3, faction4, rate_4, rank_4 FROM reputation_spillover_template");
 
     if (!result)
     {
@@ -6789,9 +6789,6 @@ void ObjectMgr::LoadReputationSpilloverTemplate()
         repTemplate.faction[3]          = fields[10].GetUInt32();
         repTemplate.faction_rate[3]     = fields[11].GetFloat();
         repTemplate.faction_rank[3]     = fields[12].GetUInt32();
-        repTemplate.faction[4]          = fields[13].GetUInt32();
-        repTemplate.faction_rate[4]     = fields[14].GetFloat();
-        repTemplate.faction_rank[4]     = fields[15].GetUInt32();
 
         FactionEntry const* factionEntry = sFactionStore.LookupEntry(factionId);
 
@@ -9926,118 +9923,6 @@ bool FindCreatureData::operator()(CreatureDataPair const& dataPair)
     }
 
     return false;
-}
-
-
-void ObjectMgr::LoadPhaseDefinitions()
-{
-    for (PhaseDefinitionStore::iterator itr = _PhaseDefinitionStore.begin(); itr != _PhaseDefinitionStore.end(); ++itr)
-    {
-        for (PhaseDefinitionContainer::iterator itr2 = itr->second.begin(); itr2 != itr->second.end(); ++itr2)
-            delete *itr2;
-    }
-
-    _PhaseDefinitionStore.clear();
-
-    //                                                0       1      2          3        4               5      6
-    QueryResult* result = WorldDatabase.Query("SELECT zoneId, entry, phasemask, phaseId, terrainswapmap, flags, condition_id FROM `phase_definitions` ORDER BY `entry` ASC");
-
-    if (!result)
-    {
-        sLog.outString(">> Loaded 0 phasing definitions. DB table `phase_definitions` is empty.");
-        return;
-    }
-
-    uint32 count = 0;
-    do
-    {
-        Field* fields = result->Fetch();
-
-        PhaseDefinition* phaseDefinition = new PhaseDefinition();
-
-        phaseDefinition->zoneId                = fields[0].GetUInt32();
-        phaseDefinition->entry                 = fields[1].GetUInt32();
-        phaseDefinition->phasemask             = fields[2].GetUInt32();
-        phaseDefinition->phaseId               = fields[3].GetUInt32();
-        phaseDefinition->terrainswapmap        = fields[4].GetUInt32();
-        phaseDefinition->flags                 = fields[5].GetUInt32();
-        phaseDefinition->conditionId           = fields[6].GetUInt16();
-
-        // Checks
-        if ((phaseDefinition->flags & PHASE_FLAG_OVERWRITE_EXISTING) && (phaseDefinition->flags & PHASE_FLAG_NEGATE_PHASE))
-        {
-            sLog.outError("Flags defined in phase_definitions in zoneId %d and entry %u does contain PHASE_FLAG_OVERWRITE_EXISTING and PHASE_FLAG_NEGATE_PHASE. Setting flags to PHASE_FLAG_OVERWRITE_EXISTING", phaseDefinition->zoneId, phaseDefinition->entry);
-            phaseDefinition->flags &= ~PHASE_FLAG_NEGATE_PHASE;
-        }
-
-        if (!sConditionStorage.LookupEntry<PlayerCondition>(phaseDefinition->conditionId))
-        {
-            sLog.outError("Condition id  defined in phase_definitions in zoneId %d and entry %u does not exists. Skipping condition.", phaseDefinition->zoneId, phaseDefinition->entry);
-            phaseDefinition->conditionId = 0;
-        }
-
-        _PhaseDefinitionStore[phaseDefinition->zoneId].push_back(phaseDefinition);
-
-        ++count;
-    }
-    while (result->NextRow());
-
-    delete result;
-
-    sLog.outString(">> Loaded %u phasing definitions.", count);
-}
-
-void ObjectMgr::LoadSpellPhaseInfo()
-{
-    for (SpellPhaseStore::iterator itr = _SpellPhaseStore.begin(); itr != _SpellPhaseStore.end(); ++itr)
-        delete itr->second;
-
-    _SpellPhaseStore.clear();
-
-    //                                                0   1          2
-    QueryResult* result = WorldDatabase.Query("SELECT id, phasemask, terrainswapmap FROM `spell_phase`");
-
-    if (!result)
-    {
-        sLog.outString(">> Loaded 0 spell dbc infos. DB table `spell_phase` is empty.");
-        return;
-    }
-
-    uint32 count = 0;
-    do
-    {
-        Field* fields = result->Fetch();
-
-        SpellPhaseInfo* spellPhaseInfo = new SpellPhaseInfo();
-        spellPhaseInfo->spellId = fields[0].GetUInt32();
-
-        SpellEntry const* spell = sSpellStore.LookupEntry(spellPhaseInfo->spellId);
-        if (!spell)
-        {
-            sLog.outError("Spell %u defined in `spell_phase` does not exists, skipped.", spellPhaseInfo->spellId);
-            delete spellPhaseInfo;
-            continue;
-        }
-
-        if (!IsSpellHaveAura(spell, SPELL_AURA_PHASE) && !IsSpellHaveAura(spell, SPELL_AURA_PHASE_2))
-        {
-            sLog.outError("Spell %u defined in `spell_phase` does not have aura effect type SPELL_AURA_PHASE or SPELL_AURA_PHASE_2, useless value.", spellPhaseInfo->spellId);
-            delete spellPhaseInfo;
-            continue;
-        }
-
-        spellPhaseInfo->phasemask              = fields[1].GetUInt32();
-        spellPhaseInfo->terrainswapmap         = fields[2].GetUInt32();
-
-        _SpellPhaseStore[spellPhaseInfo->spellId] = spellPhaseInfo;
-
-        ++count;
-    }
-    while (result->NextRow());
-
-    delete result;
-
-    sLog.outString(">> Loaded %u spell phase dbc infos.", count);
 }
 
 CreatureDataPair const* FindCreatureData::GetResult() const

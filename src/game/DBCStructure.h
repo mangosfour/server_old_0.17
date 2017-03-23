@@ -624,7 +624,7 @@ struct BattlemasterListEntry
     uint32  id;                                             // 0        m_ID
     int32   mapid[16];                                      // 1-16     m_mapID[10]
     uint32  type;                                           // 17       m_instanceType
-    //uint32 unkName;                                       // 18
+    //uint32 canJoinAsGroup;                                // 18       m_groupsAllowed
     DBCString name;                                         // 19       m_name_lang
     uint32 maxGroupSize;                                    // 20       m_maxGroupSize
     uint32 HolidayWorldStateId;                             // 21       m_holidayWorldState
@@ -634,8 +634,8 @@ struct BattlemasterListEntry
     uint32 minPlayers;                                      // 25       4.0.6.13596
     uint32 maxPlayers;                                      // 26       4.0.1
     uint32 rated;                                           // 27       4.0.3, value 2 for Rated Battlegrounds
-    //uint32                                                // 28       5.4.x
-    //uint32                                                // 29       5.4.x
+    //uint32                                                // 28       5.4.1
+    //uint32                                                // 29       5.4.1
 };
 
 /*struct Cfg_CategoriesEntry
@@ -1358,25 +1358,26 @@ struct MailTemplateEntry
 
 struct MapEntry
 {
-    uint32      MapID;                                          // 0        m_ID
-    DBCString   internalname;                                   // 1        unused
-    uint32      map_type;                                       // 2        m_InstanceType
+    uint32  MapID;                                          // 0        m_ID
+    DBCString   internalname;                                   // 1        m_Directory
+    uint32  map_type;                                       // 2        m_InstanceType
     uint32      mapFlags;                                       // 3        m_Flags (0x100 - CAN_CHANGE_PLAYER_DIFFICULTY)
-    uint32      isPvP;                                          // 4        m_PVP 0 or 1 for battlegrounds (not arenas)
-    DBCString   name;                                           // 5        m_MapName_lang
-    uint32      linked_zone;                                    // 6        m_areaTableID
-    DBCString   hordeIntro;                                     // 7        m_MapDescription0_lang
-    DBCString   allianceIntro;                                  // 8        m_MapDescription1_lang
-    uint32      multimap_id;                                    // 9        m_LoadingScreenID (LoadingScreens.dbc)
-    float       BattlefieldMapIconScale;                        // 10       m_minimapIconScale
-    int32       ghost_entrance_map;                             // 11       m_corpseMapID map_id of entrance map in ghost mode (continent always and in most cases = normal entrance)
-    float       ghost_entrance_x;                               // 12       m_corpseX entrance x coordinate in ghost mode  (in most cases = normal entrance)
-    float       ghost_entrance_y;                               // 13       m_corpseY entrance y coordinate in ghost mode  (in most cases = normal entrance)
-    uint32      timeOfDayOverride;                              // 14       m_timeOfDayOverride
-    uint32      addon;                                          // 15       m_expansionID
-    uint32      unkTime;                                        // 16       m_raidOffset
-    uint32      maxPlayers;                                     // 17       m_maxPlayers
-    int32       rootPhaseMap;                                   // 18       map with base phasing
+    uint32      unk4;                                           // 4        4.0.1
+    uint32      isPvP;                                          // 5        m_PVP 0 or 1 for battlegrounds (not arenas)
+    DBCString   name;                                           // 6        m_MapName_lang
+    uint32      linked_zone;                                    // 7        m_areaTableID
+    DBCString   hordeIntro;                                     // 8        m_MapDescription0_lang
+    DBCString   allianceIntro;                                  // 9        m_MapDescription1_lang
+    uint32      multimap_id;                                    // 10       m_LoadingScreenID (LoadingScreens.dbc)
+    float       BattlefieldMapIconScale;                        // 11       m_minimapIconScale
+    int32       ghost_entrance_map;                             // 12       m_corpseMapID map_id of entrance map in ghost mode (continent always and in most cases = normal entrance)
+    float       ghost_entrance_x;                               // 13       m_corpseX entrance x coordinate in ghost mode  (in most cases = normal entrance)
+    float       ghost_entrance_y;                               // 14       m_corpseY entrance y coordinate in ghost mode  (in most cases = normal entrance)
+    uint32      timeOfDayOverride;                              // 15       m_timeOfDayOverride
+    uint32      addon;                                          // 16       m_expansionID
+    uint32      unkTime;                                        // 17       m_raidOffset
+    uint32      maxPlayers;                                     // 18       m_maxPlayers
+    int32       rootPhaseMap;                                   // 19       map with base phasing
 
     // Helpers
     uint32 Expansion() const { return addon; }
@@ -1393,21 +1394,21 @@ struct MapEntry
     bool IsMountAllowed() const
     {
         return !IsDungeon() ||
-               MapID == 209 || MapID == 269  || MapID == 309 ||     // TanarisInstance, CavernsOfTime, Zul'gurub
-               MapID == 509 || MapID == 534  || MapID == 560 ||     // AhnQiraj, HyjalPast, HillsbradPast
-               MapID == 568 || MapID == 580  || MapID == 595 ||     // ZulAman, Sunwell Plateau, Culling of Stratholme
-               MapID == 603 || MapID == 615  || MapID == 616 ||     // Ulduar, The Obsidian Sanctum, The Eye Of Eternity
-               MapID == 654 || MapID == 655  || MapID == 656 ||     // Gilneas, Gilneas Phase 1, Gilneas Phase 2
-               MapID == 658 || MapID == 720  || MapID == 724 ||     // Pit of Saron, Firelands, Ruby Sanctum
-               MapID == 754 || MapID == 755  || MapID == 859 ||     // Throne of Four Winds, Tol'vir, Zul'gurub
-               MapID == 861 || MapID == 938  || MapID == 939 ||     // Firelands Dailies, End Time, Well of Eternity
-               MapID == 940 || MapID == 962  || MapID == 967 ||     // Hour of Twilight, Gate of Setting Sun, Dragon Soul
+               MapID == 209 || MapID == 269 || MapID == 309 || // TanarisInstance, CavernsOfTime, Zul'gurub
+               MapID == 509 || MapID == 534 || MapID == 560 || // AhnQiraj, HyjalPast, HillsbradPast
+               MapID == 568 || MapID == 580 || MapID == 595 || // ZulAman, Sunwell Plateau, Culling of Stratholme
+               MapID == 603 || MapID == 615 || MapID == 616 ||     // Ulduar, The Obsidian Sanctum, The Eye Of Eternity
+               MapID == 654 || MapID == 655 || MapID == 656 ||     // Gilneas, Gilneas Phase 1, Gilneas Phase 2
+               MapID == 658 || MapID == 720 || MapID == 724 ||     // Pit of Saron, Firelands, Ruby Sanctum
+               MapID == 754 || MapID == 755 || MapID == 859 ||     // Throne of Four Winds, Tol'vir, Zul'gurub
+               MapID == 861 || MapID == 938 || MapID == 939 ||     // Firelands Dailies, End Time, Well of Eternity
+               MapID == 940 || MapID == 962 || MapID == 967 ||     // Hour of Twilight, Gate of Setting Sun, Dragon Soul
                MapID == 996 || MapID == 1007 || MapID == 1011;     // Endless Spring, New Scholomance, Niuzao Temple 
     }
 
     bool IsContinent() const
     {
-        return MapID == 0 || MapID == 1 || MapID == 530 || MapID == 571 || MapID == 860 || MapID == 870;
+        return MapID == 0 || MapID == 1 || MapID == 530 || MapID == 571 || MapID == 870;
     }
 
     bool IsTransport() const
@@ -2005,15 +2006,14 @@ struct SpellMiscEntry
     uint32 AttributesEx10;                                  // 13
     uint32 AttributesEx11;                                  // 14
     uint32 AttributesEx12;                                  // 15
-    uint32 AttributesEx13;                                  // 16
-    uint32 CastingTimeIndex;                                // 17       m_castingTimeIndex
-    uint32 DurationIndex;                                   // 18       m_durationIndex
-    uint32 rangeIndex;                                      // 19       m_rangeIndex
-    float  speed;                                           // 20       m_speed
-    uint32 SpellVisual[2];                                  // 21-22    m_spellVisualID
-    uint32 SpellIconID;                                     // 23       m_spellIconID
-    uint32 activeIconID;                                    // 24       m_activeIconID
-    uint32 SchoolMask;                                      // 25       m_schoolMask
+    uint32 CastingTimeIndex;                                // 16       m_castingTimeIndex
+    uint32 DurationIndex;                                   // 17       m_durationIndex
+    uint32 rangeIndex;                                      // 18       m_rangeIndex
+    float  speed;                                           // 19       m_speed
+    uint32 SpellVisual[2];                                  // 20-21    m_spellVisualID
+    uint32 SpellIconID;                                     // 22       m_spellIconID
+    uint32 activeIconID;                                    // 23       m_activeIconID
+    uint32 SchoolMask;                                      // 24       m_schoolMask
 };
 
 struct SpellReagentsEntry;
@@ -2157,7 +2157,6 @@ struct MANGOS_DLL_SPEC SpellEntry
     uint32 GetAttributesEx10() const;
     uint32 GetAttributesEx11() const;
     uint32 GetAttributesEx12() const;
-    uint32 GetAttributesEx13() const;
     inline bool HasAttribute(SpellAttributes attribute) const { return GetAttributes() & attribute; }
     inline bool HasAttribute(SpellAttributesEx attribute) const { return GetAttributesEx() & attribute; }
     inline bool HasAttribute(SpellAttributesEx2 attribute) const { return GetAttributesEx2() & attribute; }
@@ -2171,7 +2170,6 @@ struct MANGOS_DLL_SPEC SpellEntry
     inline bool HasAttribute(SpellAttributesEx10 attribute) const { return GetAttributesEx10() & attribute; }
     inline bool HasAttribute(SpellAttributesEx11 attribute) const { return GetAttributesEx11() & attribute; }
     inline bool HasAttribute(SpellAttributesEx12 attribute) const { return GetAttributesEx12() & attribute; }
-    inline bool HasAttribute(SpellAttributesEx13 attribute) const { return GetAttributesEx13() & attribute; }
 
     private:
         // prevent creating custom entries (copy data from original in fact)
