@@ -110,7 +110,7 @@ enum Opcodes
     CMSG_BUSY_TRADE                                        = 0x0000,
     CMSG_BUY_BANK_SLOT                                     = 0x12F2,
     CMSG_BUY_ITEM                                          = 0x02E2,
-    CMSG_BUYBACK_ITEM                                      = 0x0661,
+    CMSG_BUY_BACK_ITEM                                      = 0x0661,
     CMSG_CALENDAR_ADD_EVENT                                = 0x0A37,
     CMSG_CALENDAR_ARENA_TEAM                               = 0x0000,
     CMSG_CALENDAR_COMPLAIN                                 = 0x1F8F,
@@ -437,7 +437,7 @@ enum Opcodes
     CMSG_QUEST_GIVER_STATUS_QUERY                          = 0x036A,
     CMSG_QUEST_NPC_QUERY                                   = 0x1DAE,
     CMSG_QUEST_POI_QUERY                                   = 0x10C2,
-    CMSG_QUEST_PUSH_RESULT                                 = 0x0000,
+    CSMSG_QUEST_PUSH_RESULT                                = 0x0000,
     CMSG_QUEST_QUERY                                       = 0x02D5,
     CMSG_QUESTLOG_REMOVE_QUEST                             = 0x0779,
     CMSG_RAID_READY_CHECK                                  = 0x0817,
@@ -609,11 +609,9 @@ enum Opcodes
     MSG_NOTIFY_PARTY_SQUELCH                               = 0x0000,
     MSG_PARTY_ASSIGNMENT                                   = 0x0000,
     MSG_QUERY_NEXT_MAIL_TIME                               = 0x089B,
-    MSG_RAID_READY_CHECK_FINISHED                          = 0x0000,
+    CMSG_RAID_READY_CHECK_FINISHED                          = 0x0000,
     MSG_SAVE_GUILD_EMBLEM                                  = 0x0000,
     MSG_SET_RAID_DIFFICULTY                                = 0x0591,
-    MSG_SET_RAID_DIFFICULTY                                = 0x0591,
-    MSG_VERIFY_CONNECTIVITY                                = 0x4F57,
     MSG_VERIFY_CONNECTIVITY                                = 0x4F57,
     SMSG_ACCOUNT_CRITERIA_UPDATE                           = 0x189E,
     SMSG_ACCOUNT_DATA_TIMES                                = 0x162B,
@@ -650,7 +648,7 @@ enum Opcodes
     SMSG_AUCTION_BIDDER_LIST_RESULT                        = 0x0B24,
     SMSG_AUCTION_BIDDER_NOTIFICATION                       = 0x11C1,
     SMSG_AUCTION_COMMAND_RESULT                            = 0x1002,
-    SMSG_AUCTION_HELLO                                     = 0x10A7,
+    SMSG_AUCTION_HELLO_REQUEST                             = 0x10A7,
     SMSG_AUCTION_LIST_PENDING_SALES                        = 0x0000,
     SMSG_AUCTION_LIST_RESULT                               = 0x0982,
     SMSG_AUCTION_OWNER_LIST_RESULT                         = 0x1785,
@@ -1119,7 +1117,7 @@ enum Opcodes
     SMSG_QUERY_TIME_RESPONSE                               = 0x100F,
     SMSG_QUEST_CONFIRM_ACCEPT                              = 0x13C7,
     SMSG_QUEST_FORCE_REMOVE                                = 0x07C5,
-    SMSG_QUEST_GIVER_STATUS_MULTIPLE                       = 0x06CE,
+    SMSG_QUESTGIVER_STATUS_MULTIPLE                        = 0x06CE,
     SMSG_QUEST_NPC_QUERY_RESPONSE                          = 0x036D,
     SMSG_QUEST_POI_QUERY_RESPONSE                          = 0x067F,
     SMSG_QUEST_PUSH_RESULT                                 = 0x074D,
@@ -1343,7 +1341,8 @@ enum Opcodes
     SMSG_WHOIS                                             = 0x12BA,
     SMSG_WORLD_SERVER_INFO                                 = 0x0082,
     SMSG_XP_GAIN_ABORTED                                   = 0x1A2B,
-    SMSG_ZONE_UNDER_ATTACK                                 = 0x10C2
+    SMSG_ZONE_UNDER_ATTACK                                 = 0x10C2,
+ //   UNKNOWN_OPCODE                                         = NULL   // this is used in ProjectSkyfire
 };
 
 
