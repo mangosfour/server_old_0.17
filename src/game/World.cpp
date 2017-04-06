@@ -1295,11 +1295,13 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading GameObjects for quests...");
     sObjectMgr.LoadGameObjectForQuests();
 
-    sLog.outString("Loading BattleMasters...");
-    sBattleGroundMgr.LoadBattleMastersEntry();
+    sLog.outString("Loading BattleMasters...");  // stuck here
+//    sBattleGroundMgr.LoadBattleMastersEntry();  // FAULTY
+
+	sLog.outString("MADE IT HERE????");
 
     sLog.outString("Loading BattleGround event indexes...");
-    sBattleGroundMgr.LoadBattleEventIndexes();
+//    sBattleGroundMgr.LoadBattleEventIndexes();
 
     sLog.outString("Loading GameTeleports...");
     sObjectMgr.LoadGameTele();
@@ -1400,7 +1402,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize Battlegrounds
     sLog.outString("Starting BattleGround System");
-    sBattleGroundMgr.CreateInitialBattleGrounds();
+//    sBattleGroundMgr.CreateInitialBattleGrounds(); FAULTY
 
     ///- Initialize Outdoor PvP
     sLog.outString("Starting Outdoor PvP System");

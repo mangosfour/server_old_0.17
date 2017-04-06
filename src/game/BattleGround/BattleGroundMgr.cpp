@@ -2206,9 +2206,15 @@ uint32 BattleGroundMgr::GetPrematureFinishTime() const
 
 void BattleGroundMgr::LoadBattleMastersEntry()
 {
+	sLog.outError("Entered load battlemasters\n");
+	sLog.outString("Entered load battlemasters\n");
+
     mBattleMastersMap.clear();                              // need for reload case
 
-    QueryResult* result = WorldDatabase.Query("SELECT entry,bg_template FROM battlemaster_entry");
+	sLog.outError("querying database\n");
+
+	QueryResult* result = WorldDatabase.Query("SELECT entry,bg_template FROM battlemaster_entry");
+	sLog.outError("Finished querying database\n");
 
     uint32 count = 0;
 
@@ -2223,6 +2229,8 @@ void BattleGroundMgr::LoadBattleMastersEntry()
     }
 
     BarGoLink bar(result->GetRowCount());
+
+	sLog.outError("Looping through fields\n");
 
     do
     {
@@ -2241,7 +2249,9 @@ void BattleGroundMgr::LoadBattleMastersEntry()
 
         mBattleMastersMap[entry] = BattleGroundTypeId(bgTypeId);
     }
-    while (result->NextRow());
+	while (result->NextRow());
+
+	sLog.outError("Finished looping through fields\n");
 
     delete result;
 
@@ -2288,6 +2298,8 @@ bool BattleGroundMgr::IsBGWeekend(BattleGroundTypeId bgTypeId)
 
 void BattleGroundMgr::LoadBattleEventIndexes()
 {
+	sLog.outError("Entering load Battlegrounds");
+
     BattleGroundEventIdx events;
     events.event1 = BG_EVENT_NONE;
     events.event2 = BG_EVENT_NONE;
@@ -2297,6 +2309,8 @@ void BattleGroundMgr::LoadBattleEventIndexes()
     m_CreatureBattleEventIndexMap[-1] = events;
 
     uint32 count = 0;
+
+	sLog.outError("Querying database");
 
     QueryResult* result =
         //                           0         1           2                3                4              5           6
@@ -2329,7 +2343,10 @@ void BattleGroundMgr::LoadBattleEventIndexes()
                             ") data "
                             "LEFT OUTER JOIN battleground_events AS description ON data.map = description.map "
                             "AND data.ev1 = description.event1 AND data.ev2 = description.event2 "
-                            "ORDER BY m, ev1, ev2");
+							"ORDER BY m, ev1, ev2");
+
+	sLog.outError("Finished querying database");
+
     if (!result)
     {
         BarGoLink bar(1);
@@ -2341,6 +2358,8 @@ void BattleGroundMgr::LoadBattleEventIndexes()
     }
 
     BarGoLink bar(result->GetRowCount());
+
+	sLog.outError("Loop through fields loaded from database");
 
     do
     {
@@ -2393,9 +2412,14 @@ void BattleGroundMgr::LoadBattleEventIndexes()
 
         ++count;
     }
-    while (result->NextRow());
+	while (result->NextRow());
+
+	sLog.outError("Finished looping through fields loaded from database");
 
     sLog.outString();
     sLog.outString(">> Loaded %u battleground eventindexes", count);
     delete result;
+
+
+	sLog.outError("Leaving load Battlegrounds");
 }

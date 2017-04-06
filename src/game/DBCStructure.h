@@ -1377,7 +1377,7 @@ struct MapEntry
     uint32      addon;                                          // 16       m_expansionID
     uint32      unkTime;                                        // 17       m_raidOffset
     uint32      maxPlayers;                                     // 18       m_maxPlayers
-    int32       rootPhaseMap;                                   // 19       map with base phasing
+ //   int32       rootPhaseMap;                                   // 19       map with base phasing
 
     // Helpers
     uint32 Expansion() const { return addon; }
@@ -1990,6 +1990,37 @@ struct SpellTotemsEntry
 // SpellMisc.dbc
 struct SpellMiscEntry
 {
+	uint32    Id;                                           // 0        m_ID
+	//uint32  SpellId                                       // 1
+	//uint32  Unk                                           // 2
+	uint32    Attributes;                                   // 3        m_attribute
+	uint32    AttributesEx;                                 // 4        m_attributesEx
+	uint32    AttributesEx2;                                // 5        m_attributesExB
+	uint32    AttributesEx3;                                // 6        m_attributesExC
+	uint32    AttributesEx4;                                // 7        m_attributesExD
+	uint32    AttributesEx5;                                // 8        m_attributesExE
+	uint32    AttributesEx6;                                // 9        m_attributesExF
+	uint32    AttributesEx7;                                // 10       m_attributesExG
+	uint32    AttributesEx8;                                // 11       m_attributesExH
+	uint32    AttributesEx9;                                // 12       m_attributesExI
+	uint32    AttributesEx10;                               // 13       m_attributesExJ
+	uint32    AttributesEx11;                               // 14       m_attributesExK
+	uint32    AttributesEx12;                               // 15       m_attributesExL
+	uint32    AttributesEx13;                               // 16       m_attributesExM
+	uint32    CastingTimeIndex;                             // 17       m_castingTimeIndex
+	uint32    DurationIndex;                                // 18       m_durationIndex
+	uint32    rangeIndex;                                   // 19       m_rangeIndex
+	float     speed;                                        // 20       m_speed
+	uint32    SpellVisual[2];                               // 21-22    m_spellVisualID
+	uint32    SpellIconID;                                  // 23       m_spellIconID
+	uint32    activeIconID;                                 // 24       m_activeIconID
+	uint32    SchoolMask;                                   // 25       m_schoolMask
+};
+
+// SpellMisc.dbc
+/*
+struct SpellMiscEntry
+{
     //uint32 Id;                                            // 0
     //uint32 SpellId;                                       // 1
     //uint32                                                // 2        unk
@@ -2015,6 +2046,7 @@ struct SpellMiscEntry
     uint32 activeIconID;                                    // 23       m_activeIconID
     uint32 SchoolMask;                                      // 24       m_schoolMask
 };
+*/
 
 struct SpellReagentsEntry;
 
