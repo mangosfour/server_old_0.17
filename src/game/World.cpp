@@ -975,7 +975,6 @@ void World::SetInitialWorldSettings()
     DetectDBCLang();
     sObjectMgr.SetDBCLocaleIndex(GetDefaultDbcLocale());    // Get once for all the locale index of DBC language (console/broadcasts)
 
-	/* FUCK
     sLog.outString("Loading Script Names...");
     sScriptMgr.LoadScriptNames();
 
@@ -1295,10 +1294,9 @@ void World::SetInitialWorldSettings()
 
     sLog.outString("Loading GameObjects for quests...");
     sObjectMgr.LoadGameObjectForQuests();
-	*/
 
-    sLog.outString("Loading BattleMasters...");  // stuck here
-    sBattleGroundMgr.LoadBattleMastersEntry();  // FAULTY
+    sLog.outString("Loading BattleMasters...");
+    sBattleGroundMgr.LoadBattleMastersEntry();
 
 	sLog.outString("MADE IT HERE????");
 
