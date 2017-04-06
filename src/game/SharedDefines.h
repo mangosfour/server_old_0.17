@@ -3963,12 +3963,12 @@ enum BattleGroundTypeId
     BATTLEGROUND_RB            = 32,                        // random battleground
     BATTLEGROUND_RBG_10v10     = 100,                       // rated battleground 10v10
     BATTLEGROUND_RBG_15v15     = 101,                       // rated battleground 15v15
-    BATTLEGROUND_RBG_5v5       = 102,                       // rated battleground 5v5
+	BATTLEGROUND_RBG_25_VS_25  = 102,                       // Rated BG 25 vs 25
     BATTLEGROUND_TP            = 108,                       // 4.0.0
-    BATTLEGROUND_BG            = 120,                       // 4.3.4
-    //BATTLEGROUND_UNK1          = 441,                     // icecrown citadel
-    //BATTLEGROUND_UNK2          = 443,                     // ruby sanctum
-    //BATTLEGROUND_UNK3          = 656,                     // rated eye of the storm
+	BATTLEGROUND_BFG           = 120,                       // Battle For Gilneas
+	// 441 = "Icecrown Citadel"
+	// 443 = "The Ruby Sanctum"
+	// 656 = "Rated Eye of the Storm"
     BATTLEGROUND_TK            = 699,                       // 5.x Temple of Kotmogu
     BATTLEGROUND_CTF           = 706,                       // 5.x CTF3
     BATTLEGROUND_SM            = 708,                       // 5.x Silvershard Mines

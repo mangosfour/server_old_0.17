@@ -1298,6 +1298,8 @@ void World::SetInitialWorldSettings()
     sLog.outString("Loading BattleMasters...");
     sBattleGroundMgr.LoadBattleMastersEntry();
 
+	sLog.outString("MADE IT HERE????");
+
     sLog.outString("Loading BattleGround event indexes...");
     sBattleGroundMgr.LoadBattleEventIndexes();
 
@@ -1400,7 +1402,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize Battlegrounds
     sLog.outString("Starting BattleGround System");
-    sBattleGroundMgr.CreateInitialBattleGrounds();
+    sBattleGroundMgr.CreateInitialBattleGrounds(); // FAULTY
 
     ///- Initialize Outdoor PvP
     sLog.outString("Starting Outdoor PvP System");

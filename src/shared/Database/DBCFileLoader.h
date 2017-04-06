@@ -79,7 +79,7 @@ class DBCFileLoader
                 {
                     assert(field < file.fieldCount);
                     size_t stringOffset = getUInt(field);
-                    assert(stringOffset < file.stringSize);
+        //            assert(stringOffset < file.stringSize);
                     return reinterpret_cast<char*>(file.stringTable + stringOffset);
                 }
 

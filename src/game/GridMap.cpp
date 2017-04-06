@@ -622,9 +622,9 @@ bool GridMap::ExistMap(uint32 mapid, int gx, int gy)
 
     GridMapFileHeader header;
     fread(&header, sizeof(header), 1, pf);
-    if (header.mapMagic     != *((uint32 const*)(MAP_MAGIC)) ||
+    if (header.mapMagic     != *((uint32 const*)(MAP_MAGIC)) )/*||
             header.versionMagic != *((uint32 const*)(MAP_VERSION_MAGIC)) ||
-            !IsAcceptableClientBuild(header.buildMagic))
+            !IsAcceptableClientBuild(header.buildMagic))*/
     {
         sLog.outError("Map file '%s' is non-compatible version (outdated?). Please, create new using ad.exe program.", tmp);
         delete[] tmp;
@@ -639,6 +639,7 @@ bool GridMap::ExistMap(uint32 mapid, int gx, int gy)
 
 bool GridMap::ExistVMap(uint32 mapid, int gx, int gy)
 {
+	/*
     if (VMAP::IVMapManager* vmgr = VMAP::VMapFactory::createOrGetVMapManager())
     {
         if (vmgr->isMapLoadingEnabled())
@@ -653,6 +654,7 @@ bool GridMap::ExistVMap(uint32 mapid, int gx, int gy)
             }
         }
     }
+	*/
 
     return true;
 }

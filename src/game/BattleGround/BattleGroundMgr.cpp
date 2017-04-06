@@ -1131,12 +1131,15 @@ void BGQueueRemoveEvent::Abort(uint64 /*e_time*/)
 /***            BATTLEGROUND MANAGER                   ***/
 /*********************************************************/
 
-BattleGroundMgr::BattleGroundMgr() : m_ArenaTesting(false)
+BattleGroundMgr::BattleGroundMgr() : m_AutoDistributionTimeChecker(0), m_ArenaTesting(false)
 {
-    for (uint8 i = BATTLEGROUND_TYPE_NONE; i < MAX_BATTLEGROUND_TYPE_ID; ++i)
-        m_BattleGrounds[i].clear();
-    m_NextRatingDiscardUpdate = sWorld.getConfig(CONFIG_UINT32_ARENA_RATING_DISCARD_TIMER);
-    m_Testing = false;
+	for (uint32 i = BATTLEGROUND_TYPE_NONE; i < MAX_BATTLEGROUND_TYPE_ID; ++i)
+	{
+		sLog.outString("Battlegroud # %u      ", i);
+		m_BattleGrounds[i].clear();
+	}
+	m_NextRatingDiscardUpdate = sWorld.getConfig(CONFIG_UINT32_ARENA_RATING_DISCARD_TIMER);
+	m_Testing = false;
 }
 
 BattleGroundMgr::~BattleGroundMgr()
@@ -2081,7 +2084,7 @@ BattleGroundQueueTypeId BattleGroundMgr::BGQueueTypeId(BattleGroundTypeId bgType
             return BATTLEGROUND_QUEUE_NONE;
         case BATTLEGROUND_TP:
             return BATTLEGROUND_QUEUE_TP;
-        case BATTLEGROUND_BG:
+		case BATTLEGROUND_BFG: // Battle for Gilneas 
             return BATTLEGROUND_QUEUE_BG;
         case BATTLEGROUND_AA:
         case BATTLEGROUND_NA:
@@ -2124,7 +2127,7 @@ BattleGroundTypeId BattleGroundMgr::BGTemplateId(BattleGroundQueueTypeId bgQueue
         case BATTLEGROUND_QUEUE_TP:
             return BATTLEGROUND_TP;
         case BATTLEGROUND_QUEUE_BG:
-            return BATTLEGROUND_BG;
+            return BATTLEGROUND_BFG; // Battle for Gilneas
         case BATTLEGROUND_QUEUE_2v2:
         case BATTLEGROUND_QUEUE_3v3:
         case BATTLEGROUND_QUEUE_5v5:
@@ -2206,9 +2209,15 @@ uint32 BattleGroundMgr::GetPrematureFinishTime() const
 
 void BattleGroundMgr::LoadBattleMastersEntry()
 {
+	sLog.outError("Entered load battlemasters\n");
+	sLog.outString("Entered load battlemasters\n");
+
     mBattleMastersMap.clear();                              // need for reload case
 
-    QueryResult* result = WorldDatabase.Query("SELECT entry,bg_template FROM battlemaster_entry");
+	sLog.outError("querying database\n");
+
+	QueryResult* result = WorldDatabase.Query("SELECT entry,bg_template FROM battlemaster_entry");
+	sLog.outError("Finished querying database\n");
 
     uint32 count = 0;
 
@@ -2223,6 +2232,8 @@ void BattleGroundMgr::LoadBattleMastersEntry()
     }
 
     BarGoLink bar(result->GetRowCount());
+
+	sLog.outError("Looping through fields\n");
 
     do
     {
@@ -2241,7 +2252,9 @@ void BattleGroundMgr::LoadBattleMastersEntry()
 
         mBattleMastersMap[entry] = BattleGroundTypeId(bgTypeId);
     }
-    while (result->NextRow());
+	while (result->NextRow());
+
+	sLog.outError("Finished looping through fields\n");
 
     delete result;
 
@@ -2260,7 +2273,7 @@ HolidayIds BattleGroundMgr::BGTypeToWeekendHolidayId(BattleGroundTypeId bgTypeId
         case BATTLEGROUND_SA: return HOLIDAY_CALL_TO_ARMS_SA;
         case BATTLEGROUND_IC: return HOLIDAY_CALL_TO_ARMS_IC;
         case BATTLEGROUND_TP: return HOLIDAY_CALL_TO_ARMS_TP;
-        case BATTLEGROUND_BG: return HOLIDAY_CALL_TO_ARMS_BG;
+        case BATTLEGROUND_BFG: return HOLIDAY_CALL_TO_ARMS_BG;  // Battle for Gilneas
         default: return HOLIDAY_NONE;
     }
 }
@@ -2276,7 +2289,7 @@ BattleGroundTypeId BattleGroundMgr::WeekendHolidayIdToBGType(HolidayIds holiday)
         case HOLIDAY_CALL_TO_ARMS_SA: return BATTLEGROUND_SA;
         case HOLIDAY_CALL_TO_ARMS_IC: return BATTLEGROUND_IC;
         case HOLIDAY_CALL_TO_ARMS_TP: return BATTLEGROUND_TP;
-        case HOLIDAY_CALL_TO_ARMS_BG: return BATTLEGROUND_BG;
+		case HOLIDAY_CALL_TO_ARMS_BG: return BATTLEGROUND_BFG; // Battle for Gilneas
         default: return BATTLEGROUND_TYPE_NONE;
     }
 }
@@ -2288,6 +2301,8 @@ bool BattleGroundMgr::IsBGWeekend(BattleGroundTypeId bgTypeId)
 
 void BattleGroundMgr::LoadBattleEventIndexes()
 {
+	sLog.outError("Entering load Battlegrounds");
+
     BattleGroundEventIdx events;
     events.event1 = BG_EVENT_NONE;
     events.event2 = BG_EVENT_NONE;
@@ -2297,6 +2312,8 @@ void BattleGroundMgr::LoadBattleEventIndexes()
     m_CreatureBattleEventIndexMap[-1] = events;
 
     uint32 count = 0;
+
+	sLog.outError("Querying database");
 
     QueryResult* result =
         //                           0         1           2                3                4              5           6
@@ -2329,7 +2346,10 @@ void BattleGroundMgr::LoadBattleEventIndexes()
                             ") data "
                             "LEFT OUTER JOIN battleground_events AS description ON data.map = description.map "
                             "AND data.ev1 = description.event1 AND data.ev2 = description.event2 "
-                            "ORDER BY m, ev1, ev2");
+							"ORDER BY m, ev1, ev2");
+
+	sLog.outError("Finished querying database");
+
     if (!result)
     {
         BarGoLink bar(1);
@@ -2341,6 +2361,8 @@ void BattleGroundMgr::LoadBattleEventIndexes()
     }
 
     BarGoLink bar(result->GetRowCount());
+
+	sLog.outError("Loop through fields loaded from database");
 
     do
     {
@@ -2393,9 +2415,14 @@ void BattleGroundMgr::LoadBattleEventIndexes()
 
         ++count;
     }
-    while (result->NextRow());
+	while (result->NextRow());
+
+	sLog.outError("Finished looping through fields loaded from database");
 
     sLog.outString();
     sLog.outString(">> Loaded %u battleground eventindexes", count);
     delete result;
+
+
+	sLog.outError("Leaving load Battlegrounds");
 }
