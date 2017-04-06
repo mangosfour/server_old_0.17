@@ -2081,7 +2081,7 @@ BattleGroundQueueTypeId BattleGroundMgr::BGQueueTypeId(BattleGroundTypeId bgType
             return BATTLEGROUND_QUEUE_NONE;
         case BATTLEGROUND_TP:
             return BATTLEGROUND_QUEUE_TP;
-        case BATTLEGROUND_BG:
+		case BATTLEGROUND_BFG: // Battle for Gilneas 
             return BATTLEGROUND_QUEUE_BG;
         case BATTLEGROUND_AA:
         case BATTLEGROUND_NA:
@@ -2124,7 +2124,7 @@ BattleGroundTypeId BattleGroundMgr::BGTemplateId(BattleGroundQueueTypeId bgQueue
         case BATTLEGROUND_QUEUE_TP:
             return BATTLEGROUND_TP;
         case BATTLEGROUND_QUEUE_BG:
-            return BATTLEGROUND_BG;
+            return BATTLEGROUND_BFG; // Battle for Gilneas
         case BATTLEGROUND_QUEUE_2v2:
         case BATTLEGROUND_QUEUE_3v3:
         case BATTLEGROUND_QUEUE_5v5:
@@ -2270,7 +2270,7 @@ HolidayIds BattleGroundMgr::BGTypeToWeekendHolidayId(BattleGroundTypeId bgTypeId
         case BATTLEGROUND_SA: return HOLIDAY_CALL_TO_ARMS_SA;
         case BATTLEGROUND_IC: return HOLIDAY_CALL_TO_ARMS_IC;
         case BATTLEGROUND_TP: return HOLIDAY_CALL_TO_ARMS_TP;
-        case BATTLEGROUND_BG: return HOLIDAY_CALL_TO_ARMS_BG;
+        case BATTLEGROUND_BFG: return HOLIDAY_CALL_TO_ARMS_BG;  // Battle for Gilneas
         default: return HOLIDAY_NONE;
     }
 }
@@ -2286,7 +2286,7 @@ BattleGroundTypeId BattleGroundMgr::WeekendHolidayIdToBGType(HolidayIds holiday)
         case HOLIDAY_CALL_TO_ARMS_SA: return BATTLEGROUND_SA;
         case HOLIDAY_CALL_TO_ARMS_IC: return BATTLEGROUND_IC;
         case HOLIDAY_CALL_TO_ARMS_TP: return BATTLEGROUND_TP;
-        case HOLIDAY_CALL_TO_ARMS_BG: return BATTLEGROUND_BG;
+		case HOLIDAY_CALL_TO_ARMS_BG: return BATTLEGROUND_BFG; // Battle for Gilneas
         default: return BATTLEGROUND_TYPE_NONE;
     }
 }

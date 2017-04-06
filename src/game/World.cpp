@@ -975,6 +975,7 @@ void World::SetInitialWorldSettings()
     DetectDBCLang();
     sObjectMgr.SetDBCLocaleIndex(GetDefaultDbcLocale());    // Get once for all the locale index of DBC language (console/broadcasts)
 
+	/* FUCK
     sLog.outString("Loading Script Names...");
     sScriptMgr.LoadScriptNames();
 
@@ -1294,14 +1295,15 @@ void World::SetInitialWorldSettings()
 
     sLog.outString("Loading GameObjects for quests...");
     sObjectMgr.LoadGameObjectForQuests();
+	*/
 
     sLog.outString("Loading BattleMasters...");  // stuck here
-//    sBattleGroundMgr.LoadBattleMastersEntry();  // FAULTY
+    sBattleGroundMgr.LoadBattleMastersEntry();  // FAULTY
 
 	sLog.outString("MADE IT HERE????");
 
     sLog.outString("Loading BattleGround event indexes...");
-//    sBattleGroundMgr.LoadBattleEventIndexes();
+    sBattleGroundMgr.LoadBattleEventIndexes();
 
     sLog.outString("Loading GameTeleports...");
     sObjectMgr.LoadGameTele();
@@ -1402,7 +1404,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize Battlegrounds
     sLog.outString("Starting BattleGround System");
-//    sBattleGroundMgr.CreateInitialBattleGrounds(); FAULTY
+    sBattleGroundMgr.CreateInitialBattleGrounds(); // FAULTY
 
     ///- Initialize Outdoor PvP
     sLog.outString("Starting Outdoor PvP System");
