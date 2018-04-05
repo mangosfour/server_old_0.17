@@ -2,7 +2,7 @@
  * MaNGOS is a full featured server for World of Warcraft, supporting
  * the following clients: 1.12.x, 2.4.3, 3.3.5a, 4.3.4a and 5.4.8
  *
- * Copyright (C) 2005-2014  MaNGOS project <http://getmangos.eu>
+ * Copyright (C) 2005-2018  MaNGOS project <https://getmangos.eu>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,7 +114,8 @@ enum AchievementCriteriaTypes
     ACHIEVEMENT_CRITERIA_TYPE_REACH_SKILL_LEVEL = 7,
     ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT = 8,
     ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST_COUNT = 9,
-    ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_DAILY_QUEST_DAILY    = 10, // you have to complete a daily quest x times in a row
+    // you have to complete a daily quest x times in a row
+    ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_DAILY_QUEST_DAILY = 10,
     ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUESTS_IN_ZONE = 11,
     ACHIEVEMENT_CRITERIA_TYPE_CURRENCY_EARNED = 12,
     ACHIEVEMENT_CRITERIA_TYPE_DAMAGE_DONE = 13,
@@ -481,12 +482,12 @@ enum TotemCategoryType
 // SummonProperties.dbc, col 1          == Group            (m_control)
 enum SummonPropGroup
 {
-    SUMMON_PROP_GROUP_WILD              = 0,
-    SUMMON_PROP_GROUP_FRIENDLY          = 1,
-    SUMMON_PROP_GROUP_PETS              = 2,
-    SUMMON_PROP_GROUP_CONTROLLABLE      = 3,
-    SUMMON_PROP_GROUP_VEHICLE           = 4,
-    SUMMON_PROP_GROUP_UNCONTROLLABLE_VEHICLE        = 5
+    SUMMON_PROP_GROUP_WILD                      = 0,
+    SUMMON_PROP_GROUP_FRIENDLY                  = 1,
+    SUMMON_PROP_GROUP_PETS                      = 2,
+    SUMMON_PROP_GROUP_CONTROLLABLE              = 3,
+    SUMMON_PROP_GROUP_VEHICLE                   = 4,
+    SUMMON_PROP_GROUP_UNCONTROLLABLE_VEHICLE    = 5
 };
 
 // SummonProperties.dbc, col 2          == FactionId        (m_faction)
